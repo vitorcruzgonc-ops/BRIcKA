@@ -1,20 +1,385 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Sistema de Pedidos</title>
+    <title>BRICkA - Pedidos</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 32px;
+        }
+
+        #status {
+            margin: 25px 0;
+            padding: 25px;
+            border-radius: 15px;
+            background: #eeeeee;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .pedido {
+            background: #dff5df !important;
+            color: #176b17;
+        }
+
+        .aguardando {
+            background: #eeeeee !important;
+            color: #555;
+        }
+
+        .botoes {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 12px;
+            padding: 18px 25px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #333;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        #mensagem {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .conexao {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        #indicador {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #999;
+            margin-right: 5px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>Sistema de Pedidos</h1>
+    <div class="container">
 
-    <p>Site conectado ao GitHub Pages.</p>
+        <h1>BRICkA</h1>
 
-    <button>X-Salada</button>
-    <button>X-Bacon</button>
+        <div id="status" class="aguardando">
+            AGUARDANDO PEDIDO
+        </div>
+
+        <div class="botoes">
+
+            <button onclick="enviarPedido('x-salada')">
+                X-SALADA
+            </button>
+
+            <button onclick="enviarPedido('x-bacon')">
+                X-BACON
+            </button>
+
+        </div>
+
+        <div id="mensagem">
+            Escolha um pedido.
+        </div>
+
+        <div class="conexao">
+            <span id="indicador"></span>
+            <span id="conexaoTexto">Conectando ao Firebase...</span>
+        </div>
+
+    </div>
+
+
+    <script type="module">
+
+        // =========================================================
+        // FIREBASE
+        // =========================================================
+
+        import { initializeApp }
+        from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+        import {
+            getDatabase,
+            ref,
+            set,
+            onValue
+        }
+        from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+
+        // =========================================================
+        // CONFIGURAÇÃO DO SEU FIREBASE
+        // =========================================================
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyDg_CLZbu0myOpjYUSKTUmteNVD1sWDA",
+
+            authDomain: "bricka-96d91.firebaseapp.com",
+
+            databaseURL: "https://bricka-96d91-default-rtdb.firebaseio.com",
+
+            projectId: "bricka-96d91",
+
+            storageBucket: "bricka-96d91.firebasestorage.app",
+
+            messagingSenderId: "503488729733",
+
+            appId: "1:503488729733:web:3fb5e349d09e82478cfec",
+
+            measurementId: "G-8ZX1JPTR7W"
+        };
+
+
+        // =========================================================
+        // INICIALIZA FIREBASE
+        // =========================================================
+
+        const app = initializeApp(firebaseConfig);
+
+        const database = getDatabase(app);
+
+
+        // =========================================================
+        // REFERÊNCIA DO PEDIDO
+        // =========================================================
+
+        const pedidoRef = ref(database, "pedido");
+
+
+        // =========================================================
+        // ELEMENTOS DO SITE
+        // =========================================================
+
+        const status = document.getElementById("status");
+
+        const mensagem = document.getElementById("mensagem");
+
+        const indicador = document.getElementById("indicador");
+
+        const conexaoTexto = document.getElementById("conexaoTexto");
+
+
+        // =========================================================
+        // ENVIAR PEDIDO
+        // =========================================================
+
+        window.enviarPedido = async function(produto) {
+
+            try {
+
+                await set(pedidoRef, {
+
+                    ativo: true,
+
+                    produto: produto
+
+                });
+
+                mensagem.innerText =
+                    "Pedido enviado: " + produto.toUpperCase();
+
+            }
+
+            catch (erro) {
+
+                console.error("Erro ao enviar pedido:", erro);
+
+                mensagem.innerText =
+                    "Erro ao enviar o pedido.";
+
+                alert("Não foi possível enviar o pedido.");
+
+            }
+
+        };
+
+
+        // =========================================================
+        // ESCUTAR FIREBASE EM TEMPO REAL
+        // =========================================================
+
+        onValue(
+
+            pedidoRef,
+
+            (snapshot) => {
+
+                const dados = snapshot.val();
+
+
+                // -------------------------------------------------
+                // FIREBASE SEM DADOS
+                // -------------------------------------------------
+
+                if (!dados) {
+
+                    mostrarAguardando();
+
+                    return;
+
+                }
+
+
+                // -------------------------------------------------
+                // PEDIDO ATIVO
+                // -------------------------------------------------
+
+                if (dados.ativo === true) {
+
+                    let produto = dados.produto || "Pedido";
+
+
+                    produto = produto.toString().toUpperCase();
+
+
+                    status.innerText = produto;
+
+                    status.className = "pedido";
+
+
+                    mensagem.innerText =
+                        "Pedido em andamento";
+
+
+                }
+
+                // -------------------------------------------------
+                // SEM PEDIDO
+                // -------------------------------------------------
+
+                else {
+
+                    mostrarAguardando();
+
+                }
+
+            },
+
+            (erro) => {
+
+                console.error(
+                    "Erro ao ler Firebase:",
+                    erro
+                );
+
+                conexaoTexto.innerText =
+                    "Erro na conexão com Firebase";
+
+                indicador.style.background =
+                    "#cc0000";
+
+            }
+
+        );
+
+
+        // =========================================================
+        // MOSTRAR AGUARDANDO
+        // =========================================================
+
+        function mostrarAguardando() {
+
+            status.innerText =
+                "AGUARDANDO PEDIDO";
+
+            status.className =
+                "aguardando";
+
+            mensagem.innerText =
+                "Escolha um pedido.";
+
+        }
+
+
+        // =========================================================
+        // INDICADOR DE CONEXÃO
+        // =========================================================
+
+        // Se o listener conseguir receber dados,
+        // consideramos o Firebase conectado.
+
+        onValue(
+
+            ref(database, ".info/connected"),
+
+            (snapshot) => {
+
+                if (snapshot.val() === true) {
+
+                    indicador.style.background =
+                        "#00aa00";
+
+                    conexaoTexto.innerText =
+                        "Firebase conectado";
+
+                }
+
+                else {
+
+                    indicador.style.background =
+                        "#cc0000";
+
+                    conexaoTexto.innerText =
+                        "Firebase desconectado";
+
+                }
+
+            }
+
+        );
+
+    </script>
 
 </body>
+
 </html>
