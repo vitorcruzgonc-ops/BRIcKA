@@ -265,7 +265,6 @@
 
     <div class="lanches">
 
-
       <!-- ======================================
            X-SALADA
            ====================================== -->
@@ -311,11 +310,13 @@
       </h2>
 
       <p>
+
         <strong>Lanche:</strong>
 
         <span id="resumoLanche">
           Nenhum selecionado
         </span>
+
       </p>
 
       <p>
@@ -353,112 +354,130 @@
        FIREBASE
        ========================================== -->
 
- <script type="module">
+  <script type="module">
 
-  // ==========================================
-  // FIREBASE
-  // ==========================================
+    // ==========================================
+    // IMPORTAR FIREBASE
+    // ==========================================
 
-  import {
-    initializeApp
-  } from
-    "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import {
+      initializeApp
+    } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
-  import {
-    getDatabase,
-    ref,
-    set
-  } from
-    "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
-
-
-  const firebaseConfig = {
-
-    apiKey:
-      "SUA_API_KEY",
-
-    authDomain:
-      "bricka-96d91.firebaseapp.com",
-
-    databaseURL:
-      "https://bricka-96d91-default-rtdb.firebaseio.com",
-
-    projectId:
-      "bricka-96d91.firebaseapp.com",
-
-    storageBucket:
-      "bricka-96d91.firebasestorage.app",
-
-    messagingSenderId:
-      "503488792733",
-
-    appId:
-      "SEU_APP_ID"
-
-  };
-
-
-  const app =
-    initializeApp(firebaseConfig);
-
-  const database =
-    getDatabase(app);
-
-
-  // ==========================================
-  // REMOVER ACENTOS
-  // ==========================================
-
-  function removerAcentos(texto) {
-
-    return texto
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-  }
-
-
-  // ==========================================
-  // DAQUI PARA BAIXO CONTINUA O SEU CÓDIGO
-  // ==========================================
-
-
-  const lanches = {
-
-    "x-salada": [
-      "Pão",
-      "Hambúrguer",
-      "Queijo",
-      "Presunto",
-      "Alface",
-      "Tomate",
-      "Milho",
-      "Batata palha",
-      "Molho"
-    ],
-
-    "x-bacon": [
-      "Pão",
-      "Hambúrguer",
-      "Queijo",
-      "Bacon",
-      "Alface",
-      "Tomate",
-      "Milho",
-      "Batata palha",
-      "Molho"
-    ]
-
-  };
+    import {
+      getDatabase,
+      ref,
+      set
+    } from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
 
     // ==========================================
-    // ESTADO DO PEDIDO
+    // CONFIGURAÇÃO DO FIREBASE
+    // ==========================================
+
+    const firebaseConfig = {
+
+      apiKey:
+        "SUA_API_KEY",
+
+      authDomain:
+        "bricka-96d91.firebaseapp.com",
+
+      databaseURL:
+        "https://bricka-96d91-default-rtdb.firebaseio.com",
+
+      projectId:
+        "bricka-96d91",
+
+      storageBucket:
+        "bricka-96d91.firebasestorage.app",
+
+      messagingSenderId:
+        "503488792733",
+
+      appId:
+        "SEU_APP_ID"
+
+    };
+
+
+    // ==========================================
+    // INICIALIZAR FIREBASE
+    // ==========================================
+
+    const app =
+      initializeApp(
+        firebaseConfig
+      );
+
+    const database =
+      getDatabase(
+        app
+      );
+
+
+    // ==========================================
+    // REMOVER ACENTOS
+    // SOMENTE NO ENVIO PARA O FIREBASE
+    // ==========================================
+
+    function removerAcentos(texto) {
+
+      return texto
+        .normalize("NFD")
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        );
+
+    }
+
+
+    // ==========================================
+    // LANCHES
+    // ==========================================
+
+    const lanches = {
+
+      "x-salada": [
+
+        "Pão",
+        "Hambúrguer",
+        "Queijo",
+        "Presunto",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+
+      ],
+
+      "x-bacon": [
+
+        "Pão",
+        "Hambúrguer",
+        "Queijo",
+        "Bacon",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+
+      ]
+
+    };
+
+
+    // ==========================================
+    // ESTADO
     // ==========================================
 
     let lancheSelecionado =
       null;
-
 
     let ingredientesSelecionados =
       [];
@@ -472,7 +491,6 @@
       document.getElementById(
         "enviarPedido"
       );
-
 
     const mensagem =
       document.getElementById(
@@ -491,7 +509,6 @@
 
       elemento.innerHTML = "";
 
-
       lanches[lanche].forEach(
         ingrediente => {
 
@@ -500,10 +517,8 @@
               "div"
             );
 
-
           div.className =
             "ingrediente ativo";
-
 
           div.innerHTML = `
 
@@ -516,7 +531,6 @@
             </span>
 
           `;
-
 
           div.addEventListener(
             "click",
@@ -531,8 +545,9 @@
             }
           );
 
-
-          elemento.appendChild(div);
+          elemento.appendChild(
+            div
+          );
 
         }
       );
@@ -550,22 +565,16 @@
       elemento
     ) {
 
-      // ========================================
-      // SE NÃO HÁ LANCHE SELECIONADO
-      // ========================================
-
       if (
         lancheSelecionado !== lanche
       ) {
 
-        selecionarLanche(lanche);
+        selecionarLanche(
+          lanche
+        );
 
       }
 
-
-      // ========================================
-      // INGREDIENTE JÁ EXISTE
-      // ========================================
 
       const indice =
         ingredientesSelecionados.indexOf(
@@ -577,7 +586,9 @@
         indice >= 0
       ) {
 
-        // REMOVE
+        // ======================================
+        // REMOVER
+        // ======================================
 
         ingredientesSelecionados.splice(
           indice,
@@ -601,7 +612,9 @@
 
       else {
 
-        // ADICIONA
+        // ======================================
+        // ADICIONAR
+        // ======================================
 
         ingredientesSelecionados.push(
           ingrediente
@@ -638,10 +651,6 @@
 
       lancheSelecionado =
         lanche;
-
-
-      // Todos os ingredientes começam
-      // adicionados
 
       ingredientesSelecionados =
         [...lanches[lanche]];
@@ -698,7 +707,6 @@
           "resumoLanche"
         );
 
-
       const resumoIngredientes =
         document.getElementById(
           "resumoIngredientes"
@@ -724,8 +732,7 @@
 
 
       resumoLanche.textContent =
-        lancheSelecionado
-          .toUpperCase();
+        lancheSelecionado.toUpperCase();
 
 
       if (
@@ -745,7 +752,9 @@
               ingrediente =>
                 `✓ ${ingrediente}`
             )
-            .join("<br>");
+            .join(
+              "<br>"
+            );
 
       }
 
@@ -809,23 +818,36 @@
 
 
         // ======================================
-        // DADOS DO PEDIDO
+        // PREPARAR PEDIDO
         // ======================================
 
         const pedido = {
 
-  ativo: true,
+          ativo: true,
 
-  produto:
-    removerAcentos(lancheSelecionado),
+          // Remove acentos do nome
+          produto:
+            removerAcentos(
+              lancheSelecionado
+            ),
 
-  ingredientes:
-    ingredientesSelecionados.map(
-      ingrediente =>
-        removerAcentos(ingrediente)
-    )
+          // Remove acentos de cada ingrediente
+          ingredientes:
+            ingredientesSelecionados.map(
+              ingrediente =>
+                removerAcentos(
+                  ingrediente
+                )
+            )
 
-};
+        };
+
+
+        console.log(
+          "Pedido que será enviado:",
+          pedido
+        );
+
 
         try {
 
@@ -851,13 +873,12 @@
             "sucesso"
           );
 
-
           enviarButton.textContent =
             "PEDIDO ENVIADO";
 
 
           console.log(
-            "Pedido enviado:",
+            "Pedido enviado para o Firebase:",
             pedido
           );
 
@@ -890,7 +911,7 @@
 
 
     // ==========================================
-    // INICIALIZAR TELAS
+    // INICIALIZAR X-SALADA
     // ==========================================
 
     criarIngredientes(
@@ -901,13 +922,16 @@
     );
 
 
+    // ==========================================
+    // INICIALIZAR X-BACON
+    // ==========================================
+
     criarIngredientes(
       "x-bacon",
       document.getElementById(
         "ingredientesXBacon"
       )
     );
-
 
   </script>
 
