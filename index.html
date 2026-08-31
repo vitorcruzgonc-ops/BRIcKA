@@ -814,16 +814,18 @@
 
         const pedido = {
 
-          ativo: true,
+  ativo: true,
 
-          produto:
-            lancheSelecionado,
+  produto:
+    removerAcentos(lancheSelecionado),
 
-          ingredientes:
-            ingredientesSelecionados
+  ingredientes:
+    ingredientesSelecionados.map(
+      ingrediente =>
+        removerAcentos(ingrediente)
+    )
 
-        };
-
+};
 
         try {
 
