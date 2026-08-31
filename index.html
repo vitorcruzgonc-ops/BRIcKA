@@ -2,383 +2,912 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>BRICkA - Pedidos</title>
+  <meta charset="UTF-8">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+  <title>BRICkA - Pedidos</title>
 
-        .container {
-            width: 90%;
-            max-width: 600px;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-            text-align: center;
-        }
+  <style>
 
-        h1 {
-            margin-top: 0;
-            font-size: 32px;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        #status {
-            margin: 25px 0;
-            padding: 25px;
-            border-radius: 15px;
-            background: #eeeeee;
-            font-size: 24px;
-            font-weight: bold;
-        }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      color: #222;
+    }
 
-        .pedido {
-            background: #dff5df !important;
-            color: #176b17;
-        }
+    header {
+      background: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
 
-        .aguardando {
-            background: #eeeeee !important;
-            color: #555;
-        }
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+    }
 
-        .botoes {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+    header p {
+      margin: 8px 0 0;
+      color: #ccc;
+    }
 
-        button {
-            border: none;
-            border-radius: 12px;
-            padding: 18px 25px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            background: #333;
-            color: white;
-        }
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+    }
 
-        button:hover {
-            opacity: 0.8;
-        }
+    /* ==========================================
+       ESCOLHA DO LANCHE
+       ========================================== */
 
-        button:active {
-            transform: scale(0.97);
-        }
+    .lanches {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(300px, 1fr)
+      );
 
-        #mensagem {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #555;
-        }
+      gap: 25px;
+    }
 
-        .conexao {
-            margin-top: 20px;
-            font-size: 14px;
-        }
+    .lanche {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
 
-        #indicador {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #999;
-            margin-right: 5px;
-        }
-    </style>
+      box-shadow:
+        0 4px 15px rgba(0,0,0,0.12);
+    }
+
+    .lanche h2 {
+      margin-top: 0;
+      text-align: center;
+      font-size: 26px;
+    }
+
+    .ingredientes {
+      margin-top: 20px;
+    }
+
+    /* ==========================================
+       INGREDIENTES
+       ========================================== */
+
+    .ingrediente {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 12px;
+      margin-bottom: 8px;
+
+      border-radius: 8px;
+      background: #eee;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .ingrediente:hover {
+      transform: scale(1.01);
+    }
+
+    .ingrediente.ativo {
+      background: #d8f5d8;
+    }
+
+    .ingrediente.removido {
+      background: #ffdada;
+      color: #777;
+      text-decoration: line-through;
+    }
+
+    .ingrediente span {
+      font-size: 17px;
+    }
+
+    .status {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .ativo .status {
+      color: green;
+    }
+
+    .removido .status {
+      color: red;
+    }
+
+    /* ==========================================
+       BOTÃO ENVIAR
+       ========================================== */
+
+    .area-envio {
+      margin-top: 35px;
+      text-align: center;
+    }
+
+    #enviarPedido {
+      width: 100%;
+      max-width: 500px;
+
+      padding: 18px;
+
+      border: none;
+      border-radius: 10px;
+
+      background: #16803c;
+      color: white;
+
+      font-size: 20px;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    #enviarPedido:hover {
+      background: #0f632e;
+      transform: scale(1.02);
+    }
+
+    #enviarPedido:disabled {
+      background: #999;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ==========================================
+       MENSAGEM
+       ========================================== */
+
+    #mensagem {
+      margin-top: 20px;
+      padding: 15px;
+
+      text-align: center;
+
+      border-radius: 10px;
+
+      display: none;
+    }
+
+    .sucesso {
+      display: block !important;
+      background: #d8f5d8;
+      color: #146b14;
+    }
+
+    .erro {
+      display: block !important;
+      background: #ffdada;
+      color: #8a1111;
+    }
+
+    /* ==========================================
+       PEDIDO ATUAL
+       ========================================== */
+
+    .resumo {
+      background: white;
+      margin-top: 35px;
+
+      padding: 25px;
+
+      border-radius: 15px;
+
+      box-shadow:
+        0 4px 15px rgba(0,0,0,0.10);
+    }
+
+    .resumo h2 {
+      margin-top: 0;
+    }
+
+    #resumoIngredientes {
+      line-height: 1.8;
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        padding: 15px;
+      }
+
+      header h1 {
+        font-size: 26px;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
+  <!-- ==========================================
+       CABEÇALHO
+       ========================================== -->
 
-        <h1>BRICkA</h1>
+  <header>
 
-        <div id="status" class="aguardando">
-            AGUARDANDO PEDIDO
-        </div>
+    <h1>BRICkA</h1>
 
-        <div class="botoes">
+    <p>
+      Monte seu lanche
+    </p>
 
-            <button onclick="enviarPedido('x-salada')">
-                X-SALADA
-            </button>
+  </header>
 
-            <button onclick="enviarPedido('x-bacon')">
-                X-BACON
-            </button>
 
-        </div>
+  <main class="container">
 
-        <div id="mensagem">
-            Escolha um pedido.
-        </div>
+    <!-- ========================================
+         LANCHES
+         ======================================== -->
 
-        <div class="conexao">
-            <span id="indicador"></span>
-            <span id="conexaoTexto">Conectando ao Firebase...</span>
-        </div>
+    <div class="lanches">
+
+
+      <!-- ======================================
+           X-SALADA
+           ====================================== -->
+
+      <div class="lanche">
+
+        <h2>🍔 X-SALADA</h2>
+
+        <div
+          class="ingredientes"
+          id="ingredientesXSalada"
+        ></div>
+
+      </div>
+
+
+      <!-- ======================================
+           X-BACON
+           ====================================== -->
+
+      <div class="lanche">
+
+        <h2>🥓 X-BACON</h2>
+
+        <div
+          class="ingredientes"
+          id="ingredientesXBacon"
+        ></div>
+
+      </div>
 
     </div>
 
 
-    <script type="module">
+    <!-- ========================================
+         RESUMO
+         ======================================== -->
 
-        // =========================================================
-        // FIREBASE
-        // =========================================================
+    <div class="resumo">
 
-        import { initializeApp }
-        from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+      <h2>
+        📝 Resumo do pedido
+      </h2>
 
-        import {
-            getDatabase,
-            ref,
-            set,
-            onValue
+      <p>
+        <strong>Lanche:</strong>
+
+        <span id="resumoLanche">
+          Nenhum selecionado
+        </span>
+      </p>
+
+      <p>
+        <strong>Ingredientes:</strong>
+      </p>
+
+      <div id="resumoIngredientes">
+        Selecione um lanche.
+      </div>
+
+    </div>
+
+
+    <!-- ========================================
+         ENVIO
+         ======================================== -->
+
+    <div class="area-envio">
+
+      <button
+        id="enviarPedido"
+        disabled
+      >
+        ENVIAR PEDIDO
+      </button>
+
+      <div id="mensagem"></div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ==========================================
+       FIREBASE
+       ========================================== -->
+
+  <script type="module">
+
+    import {
+      initializeApp
+    }
+    from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+
+    import {
+      getDatabase,
+      ref,
+      set
+    }
+    from
+      "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+
+    // ==========================================
+    // CONFIGURAÇÃO FIREBASE
+    // ==========================================
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyDg_CLZbu0my0pjYUSKTUmteNVD1sWDA",
+
+      authDomain:
+        "bricka-96d91.firebaseapp.com",
+
+      databaseURL:
+        "https://bricka-96d91-default-rtdb.firebaseio.com",
+
+      projectId:
+        "bricka-96d91",
+
+      storageBucket:
+        "bricka-96d91.firebasestorage.app",
+
+      messagingSenderId:
+        "503488792733",
+
+      appId:
+        "1:503488792733:web:3fb5ae349d09e82478cfec",
+
+      measurementId:
+        "G-8ZX1JPTR7W"
+    };
+
+
+    // ==========================================
+    // INICIALIZAR FIREBASE
+    // ==========================================
+
+    const app =
+      initializeApp(firebaseConfig);
+
+
+    const database =
+      getDatabase(app);
+
+
+    // ==========================================
+    // INGREDIENTES
+    // ==========================================
+
+    const lanches = {
+
+      "x-salada": [
+
+        "Pão",
+        "Hambúrguer",
+        "Queijo",
+        "Presunto",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+
+      ],
+
+      "x-bacon": [
+
+        "Pão",
+        "Hambúrguer",
+        "Queijo",
+        "Bacon",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+
+      ]
+
+    };
+
+
+    // ==========================================
+    // ESTADO DO PEDIDO
+    // ==========================================
+
+    let lancheSelecionado =
+      null;
+
+
+    let ingredientesSelecionados =
+      [];
+
+
+    // ==========================================
+    // ELEMENTOS
+    // ==========================================
+
+    const enviarButton =
+      document.getElementById(
+        "enviarPedido"
+      );
+
+
+    const mensagem =
+      document.getElementById(
+        "mensagem"
+      );
+
+
+    // ==========================================
+    // CRIAR INGREDIENTES
+    // ==========================================
+
+    function criarIngredientes(
+      lanche,
+      elemento
+    ) {
+
+      elemento.innerHTML = "";
+
+
+      lanches[lanche].forEach(
+        ingrediente => {
+
+          const div =
+            document.createElement(
+              "div"
+            );
+
+
+          div.className =
+            "ingrediente ativo";
+
+
+          div.innerHTML = `
+
+            <span>
+              ${ingrediente}
+            </span>
+
+            <span class="status">
+              ✓ ADICIONADO
+            </span>
+
+          `;
+
+
+          div.addEventListener(
+            "click",
+            () => {
+
+              alternarIngrediente(
+                lanche,
+                ingrediente,
+                div
+              );
+
+            }
+          );
+
+
+          elemento.appendChild(div);
+
         }
-        from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+      );
 
+    }
 
-        // =========================================================
-        // CONFIGURAÇÃO DO SEU FIREBASE
-        // =========================================================
 
-        const firebaseConfig = {
+    // ==========================================
+    // ALTERNAR INGREDIENTE
+    // ==========================================
 
-            apiKey: "AIzaSyDg_CLZbu0myOpjYUSKTUmteNVD1sWDA",
+    function alternarIngrediente(
+      lanche,
+      ingrediente,
+      elemento
+    ) {
 
-            authDomain: "bricka-96d91.firebaseapp.com",
+      // ========================================
+      // SE NÃO HÁ LANCHE SELECIONADO
+      // ========================================
 
-            databaseURL: "https://bricka-96d91-default-rtdb.firebaseio.com",
+      if (
+        lancheSelecionado !== lanche
+      ) {
 
-            projectId: "bricka-96d91",
+        selecionarLanche(lanche);
 
-            storageBucket: "bricka-96d91.firebasestorage.app",
+      }
 
-            messagingSenderId: "503488729733",
 
-            appId: "1:503488729733:web:3fb5e349d09e82478cfec",
+      // ========================================
+      // INGREDIENTE JÁ EXISTE
+      // ========================================
 
-            measurementId: "G-8ZX1JPTR7W"
-        };
-
-
-        // =========================================================
-        // INICIALIZA FIREBASE
-        // =========================================================
-
-        const app = initializeApp(firebaseConfig);
-
-        const database = getDatabase(app);
-
-
-        // =========================================================
-        // REFERÊNCIA DO PEDIDO
-        // =========================================================
-
-        const pedidoRef = ref(database, "pedido");
-
-
-        // =========================================================
-        // ELEMENTOS DO SITE
-        // =========================================================
-
-        const status = document.getElementById("status");
-
-        const mensagem = document.getElementById("mensagem");
-
-        const indicador = document.getElementById("indicador");
-
-        const conexaoTexto = document.getElementById("conexaoTexto");
-
-
-        // =========================================================
-        // ENVIAR PEDIDO
-        // =========================================================
-
-        window.enviarPedido = async function(produto) {
-
-            try {
-
-                await set(pedidoRef, {
-
-                    ativo: true,
-
-                    produto: produto
-
-                });
-
-                mensagem.innerText =
-                    "Pedido enviado: " + produto.toUpperCase();
-
-            }
-
-            catch (erro) {
-
-                console.error("Erro ao enviar pedido:", erro);
-
-                mensagem.innerText =
-                    "Erro ao enviar o pedido.";
-
-                alert("Não foi possível enviar o pedido.");
-
-            }
-
-        };
-
-
-        // =========================================================
-        // ESCUTAR FIREBASE EM TEMPO REAL
-        // =========================================================
-
-        onValue(
-
-            pedidoRef,
-
-            (snapshot) => {
-
-                const dados = snapshot.val();
-
-
-                // -------------------------------------------------
-                // FIREBASE SEM DADOS
-                // -------------------------------------------------
-
-                if (!dados) {
-
-                    mostrarAguardando();
-
-                    return;
-
-                }
-
-
-                // -------------------------------------------------
-                // PEDIDO ATIVO
-                // -------------------------------------------------
-
-                if (dados.ativo === true) {
-
-                    let produto = dados.produto || "Pedido";
-
-
-                    produto = produto.toString().toUpperCase();
-
-
-                    status.innerText = produto;
-
-                    status.className = "pedido";
-
-
-                    mensagem.innerText =
-                        "Pedido em andamento";
-
-
-                }
-
-                // -------------------------------------------------
-                // SEM PEDIDO
-                // -------------------------------------------------
-
-                else {
-
-                    mostrarAguardando();
-
-                }
-
-            },
-
-            (erro) => {
-
-                console.error(
-                    "Erro ao ler Firebase:",
-                    erro
-                );
-
-                conexaoTexto.innerText =
-                    "Erro na conexão com Firebase";
-
-                indicador.style.background =
-                    "#cc0000";
-
-            }
-
+      const indice =
+        ingredientesSelecionados.indexOf(
+          ingrediente
         );
 
 
-        // =========================================================
-        // MOSTRAR AGUARDANDO
-        // =========================================================
+      if (
+        indice >= 0
+      ) {
 
-        function mostrarAguardando() {
+        // REMOVE
 
-            status.innerText =
-                "AGUARDANDO PEDIDO";
+        ingredientesSelecionados.splice(
+          indice,
+          1
+        );
 
-            status.className =
-                "aguardando";
+        elemento.classList.remove(
+          "ativo"
+        );
 
-            mensagem.innerText =
-                "Escolha um pedido.";
+        elemento.classList.add(
+          "removido"
+        );
+
+        elemento.querySelector(
+          ".status"
+        ).textContent =
+          "✕ REMOVIDO";
+
+      }
+
+      else {
+
+        // ADICIONA
+
+        ingredientesSelecionados.push(
+          ingrediente
+        );
+
+        elemento.classList.remove(
+          "removido"
+        );
+
+        elemento.classList.add(
+          "ativo"
+        );
+
+        elemento.querySelector(
+          ".status"
+        ).textContent =
+          "✓ ADICIONADO";
+
+      }
+
+
+      atualizarResumo();
+
+    }
+
+
+    // ==========================================
+    // SELECIONAR LANCHE
+    // ==========================================
+
+    function selecionarLanche(
+      lanche
+    ) {
+
+      lancheSelecionado =
+        lanche;
+
+
+      // Todos os ingredientes começam
+      // adicionados
+
+      ingredientesSelecionados =
+        [...lanches[lanche]];
+
+
+      // ========================================
+      // ATUALIZAR VISUAL
+      // ========================================
+
+      document
+        .querySelectorAll(
+          ".ingrediente"
+        )
+        .forEach(
+          item => {
+
+            item.classList.remove(
+              "removido"
+            );
+
+            item.classList.add(
+              "ativo"
+            );
+
+            const status =
+              item.querySelector(
+                ".status"
+              );
+
+            if (status) {
+
+              status.textContent =
+                "✓ ADICIONADO";
+
+            }
+
+          }
+        );
+
+
+      atualizarResumo();
+
+    }
+
+
+    // ==========================================
+    // ATUALIZAR RESUMO
+    // ==========================================
+
+    function atualizarResumo() {
+
+      const resumoLanche =
+        document.getElementById(
+          "resumoLanche"
+        );
+
+
+      const resumoIngredientes =
+        document.getElementById(
+          "resumoIngredientes"
+        );
+
+
+      if (
+        !lancheSelecionado
+      ) {
+
+        resumoLanche.textContent =
+          "Nenhum selecionado";
+
+        resumoIngredientes.textContent =
+          "Selecione um lanche.";
+
+        enviarButton.disabled =
+          true;
+
+        return;
+
+      }
+
+
+      resumoLanche.textContent =
+        lancheSelecionado
+          .toUpperCase();
+
+
+      if (
+        ingredientesSelecionados.length === 0
+      ) {
+
+        resumoIngredientes.innerHTML =
+          "<strong>Nenhum ingrediente.</strong>";
+
+      }
+
+      else {
+
+        resumoIngredientes.innerHTML =
+          ingredientesSelecionados
+            .map(
+              ingrediente =>
+                `✓ ${ingrediente}`
+            )
+            .join("<br>");
+
+      }
+
+
+      enviarButton.disabled =
+        false;
+
+    }
+
+
+    // ==========================================
+    // MOSTRAR MENSAGEM
+    // ==========================================
+
+    function mostrarMensagem(
+      texto,
+      tipo
+    ) {
+
+      mensagem.textContent =
+        texto;
+
+      mensagem.className =
+        tipo;
+
+    }
+
+
+    // ==========================================
+    // ENVIAR PEDIDO
+    // ==========================================
+
+    enviarButton.addEventListener(
+      "click",
+      async () => {
+
+        if (
+          !lancheSelecionado
+        ) {
+
+          return;
 
         }
 
 
-        // =========================================================
-        // INDICADOR DE CONEXÃO
-        // =========================================================
+        // ======================================
+        // DESABILITAR BOTÃO
+        // ======================================
 
-        // Se o listener conseguir receber dados,
-        // consideramos o Firebase conectado.
+        enviarButton.disabled =
+          true;
 
-        onValue(
+        enviarButton.textContent =
+          "ENVIANDO...";
 
-            ref(database, ".info/connected"),
 
-            (snapshot) => {
-
-                if (snapshot.val() === true) {
-
-                    indicador.style.background =
-                        "#00aa00";
-
-                    conexaoTexto.innerText =
-                        "Firebase conectado";
-
-                }
-
-                else {
-
-                    indicador.style.background =
-                        "#cc0000";
-
-                    conexaoTexto.innerText =
-                        "Firebase desconectado";
-
-                }
-
-            }
-
+        mostrarMensagem(
+          "Enviando pedido...",
+          ""
         );
 
-    </script>
+
+        // ======================================
+        // DADOS DO PEDIDO
+        // ======================================
+
+        const pedido = {
+
+          ativo: true,
+
+          produto:
+            lancheSelecionado,
+
+          ingredientes:
+            ingredientesSelecionados
+
+        };
+
+
+        try {
+
+          // ====================================
+          // ENVIAR PARA FIREBASE
+          // ====================================
+
+          await set(
+            ref(
+              database,
+              "pedido"
+            ),
+            pedido
+          );
+
+
+          // ====================================
+          // SUCESSO
+          // ====================================
+
+          mostrarMensagem(
+            "✓ Pedido enviado com sucesso!",
+            "sucesso"
+          );
+
+
+          enviarButton.textContent =
+            "PEDIDO ENVIADO";
+
+
+          console.log(
+            "Pedido enviado:",
+            pedido
+          );
+
+        }
+
+        catch (erro) {
+
+          console.error(
+            "Erro Firebase:",
+            erro
+          );
+
+
+          mostrarMensagem(
+            "✕ Erro ao enviar o pedido.",
+            "erro"
+          );
+
+
+          enviarButton.disabled =
+            false;
+
+          enviarButton.textContent =
+            "ENVIAR PEDIDO";
+
+        }
+
+      }
+    );
+
+
+    // ==========================================
+    // INICIALIZAR TELAS
+    // ==========================================
+
+    criarIngredientes(
+      "x-salada",
+      document.getElementById(
+        "ingredientesXSalada"
+      )
+    );
+
+
+    criarIngredientes(
+      "x-bacon",
+      document.getElementById(
+        "ingredientesXBacon"
+      )
+    );
+
+
+  </script>
 
 </body>
 
