@@ -1,19 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>BRICkA - Pedidos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRICKA - Pedidos</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -48,17 +42,9 @@
       padding: 25px;
     }
 
-    /* ==========================================
-       ESCOLHA DO LANCHE
-       ========================================== */
-
     .lanches {
       display: grid;
-      grid-template-columns: repeat(
-        auto-fit,
-        minmax(300px, 1fr)
-      );
-
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 25px;
     }
 
@@ -66,9 +52,7 @@
       background: white;
       border-radius: 15px;
       padding: 25px;
-
-      box-shadow:
-        0 4px 15px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
     }
 
     .lanche h2 {
@@ -77,27 +61,55 @@
       font-size: 26px;
     }
 
+    .botoes-lanche {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn-completo,
+    .btn-personalizar {
+      border: none;
+      border-radius: 8px;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-completo {
+      background: #16803c;
+      color: white;
+    }
+
+    .btn-completo:hover {
+      background: #0f632e;
+    }
+
+    .btn-personalizar {
+      background: #e8e8e8;
+      color: #222;
+    }
+
+    .btn-personalizar:hover {
+      background: #d5d5d5;
+    }
+
     .ingredientes {
       margin-top: 20px;
     }
-
-    /* ==========================================
-       INGREDIENTES
-       ========================================== */
 
     .ingrediente {
       display: flex;
       align-items: center;
       justify-content: space-between;
-
+      gap: 8px;
       padding: 12px;
       margin-bottom: 8px;
-
       border-radius: 8px;
       background: #eee;
-
       cursor: pointer;
-
       transition: 0.2s;
     }
 
@@ -116,12 +128,13 @@
     }
 
     .ingrediente span {
-      font-size: 17px;
+      font-size: 16px;
     }
 
     .status {
-      font-size: 14px;
+      font-size: 13px !important;
       font-weight: bold;
+      text-align: right;
     }
 
     .ativo .status {
@@ -132,9 +145,21 @@
       color: red;
     }
 
-    /* ==========================================
-       BOTÃO ENVIAR
-       ========================================== */
+    .resumo {
+      background: white;
+      margin-top: 35px;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+    }
+
+    .resumo h2 {
+      margin-top: 0;
+    }
+
+    #resumoIngredientes {
+      line-height: 1.8;
+    }
 
     .area-envio {
       margin-top: 35px;
@@ -144,20 +169,14 @@
     #enviarPedido {
       width: 100%;
       max-width: 500px;
-
       padding: 18px;
-
       border: none;
       border-radius: 10px;
-
       background: #16803c;
       color: white;
-
       font-size: 20px;
       font-weight: bold;
-
       cursor: pointer;
-
       transition: 0.2s;
     }
 
@@ -172,18 +191,11 @@
       transform: none;
     }
 
-    /* ==========================================
-       MENSAGEM
-       ========================================== */
-
     #mensagem {
       margin-top: 20px;
       padding: 15px;
-
       text-align: center;
-
       border-radius: 10px;
-
       display: none;
     }
 
@@ -199,32 +211,7 @@
       color: #8a1111;
     }
 
-    /* ==========================================
-       PEDIDO ATUAL
-       ========================================== */
-
-    .resumo {
-      background: white;
-      margin-top: 35px;
-
-      padding: 25px;
-
-      border-radius: 15px;
-
-      box-shadow:
-        0 4px 15px rgba(0,0,0,0.10);
-    }
-
-    .resumo h2 {
-      margin-top: 0;
-    }
-
-    #resumoIngredientes {
-      line-height: 1.8;
-    }
-
     @media (max-width: 600px) {
-
       .container {
         padding: 15px;
       }
@@ -233,90 +220,31 @@
         font-size: 26px;
       }
 
+      .lanche {
+        padding: 20px;
+      }
     }
-
   </style>
-
 </head>
-
 
 <body>
 
-  <!-- ==========================================
-       CABEÇALHO
-       ========================================== -->
-
   <header>
-
-    <h1>BRICkA</h1>
-
-    <p>
-      Monte seu lanche
-    </p>
-
+    <h1>BRICKA</h1>
+    <p>Monte seu lanche do seu jeito!</p>
   </header>
-
 
   <main class="container">
 
-    <!-- ========================================
-         LANCHES
-         ======================================== -->
-
-    <div class="lanches">
-
-      <!-- ======================================
-           X-SALADA
-           ====================================== -->
-
-      <div class="lanche">
-
-        <h2>🍔 X-SALADA</h2>
-
-        <div
-          class="ingredientes"
-          id="ingredientesXSalada"
-        ></div>
-
-      </div>
-
-
-      <!-- ======================================
-           X-BACON
-           ====================================== -->
-
-      <div class="lanche">
-
-        <h2>🥓 X-BACON</h2>
-
-        <div
-          class="ingredientes"
-          id="ingredientesXBacon"
-        ></div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ========================================
-         RESUMO
-         ======================================== -->
+    <div class="lanches" id="listaLanches"></div>
 
     <div class="resumo">
 
-      <h2>
-        📝 Resumo do pedido
-      </h2>
+      <h2>📝 Resumo do pedido</h2>
 
       <p>
-
         <strong>Lanche:</strong>
-
-        <span id="resumoLanche">
-          Nenhum selecionado
-        </span>
-
+        <span id="resumoLanche">Nenhum selecionado</span>
       </p>
 
       <p>
@@ -329,17 +257,9 @@
 
     </div>
 
-
-    <!-- ========================================
-         ENVIO
-         ======================================== -->
-
     <div class="area-envio">
 
-      <button
-        id="enviarPedido"
-        disabled
-      >
+      <button id="enviarPedido" disabled>
         ENVIAR PEDIDO
       </button>
 
@@ -349,15 +269,10 @@
 
   </main>
 
-
-  <!-- ==========================================
-       FIREBASE
-       ========================================== -->
-
   <script type="module">
 
     // ==========================================
-    // IMPORTAR FIREBASE
+    // FIREBASE
     // ==========================================
 
     import {
@@ -379,8 +294,7 @@
 
     const firebaseConfig = {
 
-      apiKey:
-        "SUA_API_KEY",
+      apiKey: "SUA_API_KEY",
 
       authDomain:
         "bricka-96d91.firebaseapp.com",
@@ -397,77 +311,117 @@
       messagingSenderId:
         "503488792733",
 
-      appId:
-        "SEU_APP_ID"
+      appId: "SEU_APP_ID"
 
     };
 
 
-    // ==========================================
-    // INICIALIZAR FIREBASE
-    // ==========================================
+    const app = initializeApp(firebaseConfig);
 
-    const app =
-      initializeApp(
-        firebaseConfig
-      );
-
-    const database =
-      getDatabase(
-        app
-      );
+    const database = getDatabase(app);
 
 
     // ==========================================
-    // REMOVER ACENTOS
-    // SOMENTE NO ENVIO PARA O FIREBASE
-    // ==========================================
-
-    function removerAcentos(texto) {
-
-      return texto
-        .normalize("NFD")
-        .replace(
-          /[\u0300-\u036f]/g,
-          ""
-        );
-
-    }
-
-
-    // ==========================================
-    // LANCHES
+    // LANCHES DISPONÍVEIS
     // ==========================================
 
     const lanches = {
 
-      "x-salada": [
+      "x-salada": {
+        nome: "X-SALADA",
+        emoji: "🍔",
+        ingredientes: [
+          "Pão",
+          "Hambúrguer",
+          "Queijo",
+          "Presunto",
+          "Alface",
+          "Tomate",
+          "Milho",
+          "Batata palha",
+          "Molho"
+        ]
+      },
 
-        "Pão",
-        "Hambúrguer",
-        "Queijo",
-        "Presunto",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
+      "x-bacon": {
+        nome: "X-BACON",
+        emoji: "🥓",
+        ingredientes: [
+          "Pão",
+          "Hambúrguer",
+          "Queijo",
+          "Bacon",
+          "Alface",
+          "Tomate",
+          "Milho",
+          "Batata palha",
+          "Molho"
+        ]
+      },
 
-      ],
+      "x-frango": {
+        nome: "X-FRANGO",
+        emoji: "🍗",
+        ingredientes: [
+          "Pão",
+          "Frango",
+          "Queijo",
+          "Alface",
+          "Tomate",
+          "Milho",
+          "Batata palha",
+          "Molho"
+        ]
+      },
 
-      "x-bacon": [
+      "x-egg": {
+        nome: "X-EGG",
+        emoji: "🍳",
+        ingredientes: [
+          "Pão",
+          "Hambúrguer",
+          "Ovo",
+          "Queijo",
+          "Alface",
+          "Tomate",
+          "Milho",
+          "Batata palha",
+          "Molho"
+        ]
+      },
 
-        "Pão",
-        "Hambúrguer",
-        "Queijo",
-        "Bacon",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
+      "x-calabresa": {
+        nome: "X-CALABRESA",
+        emoji: "🌭",
+        ingredientes: [
+          "Pão",
+          "Calabresa",
+          "Queijo",
+          "Alface",
+          "Tomate",
+          "Milho",
+          "Batata palha",
+          "Molho"
+        ]
+      },
 
-      ]
+      "x-tudo": {
+        nome: "X-TUDO",
+        emoji: "🍔",
+        ingredientes: [
+          "Pão",
+          "Hambúrguer",
+          "Bacon",
+          "Presunto",
+          "Ovo",
+          "Queijo",
+          "Alface",
+          "Tomate",
+          "Milho",
+          "Batata palha",
+          "Molho"
+        ]
+      }
 
     };
 
@@ -476,81 +430,216 @@
     // ESTADO
     // ==========================================
 
-    let lancheSelecionado =
-      null;
+    let lancheSelecionado = null;
 
-    let ingredientesSelecionados =
-      [];
+    let ingredientesSelecionados = [];
 
 
     // ==========================================
     // ELEMENTOS
     // ==========================================
 
+    const listaLanches =
+      document.getElementById("listaLanches");
+
     const enviarButton =
-      document.getElementById(
-        "enviarPedido"
-      );
+      document.getElementById("enviarPedido");
 
     const mensagem =
-      document.getElementById(
-        "mensagem"
-      );
+      document.getElementById("mensagem");
+
+
+    // ==========================================
+    // REMOVER ACENTOS
+    // ==========================================
+
+    function removerAcentos(texto) {
+
+      return texto
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    }
+
+
+    // ==========================================
+    // CRIAR OS CARDS DOS LANCHES
+    // ==========================================
+
+    function criarCards() {
+
+      listaLanches.innerHTML = "";
+
+      Object.keys(lanches).forEach(chave => {
+
+        const lanche = lanches[chave];
+
+        const card = document.createElement("div");
+
+        card.className = "lanche";
+
+        const titulo = document.createElement("h2");
+
+        titulo.textContent =
+          `${lanche.emoji} ${lanche.nome}`;
+
+        card.appendChild(titulo);
+
+
+        const botoes = document.createElement("div");
+
+        botoes.className = "botoes-lanche";
+
+
+        // BOTÃO LANCHE COMPLETO
+
+        const botaoCompleto =
+          document.createElement("button");
+
+        botaoCompleto.className = "btn-completo";
+
+        botaoCompleto.textContent =
+          "✓ LANCHE COMPLETO";
+
+        botaoCompleto.addEventListener("click", () => {
+
+          selecionarLancheCompleto(chave);
+
+        });
+
+
+        // BOTÃO PERSONALIZAR
+
+        const botaoPersonalizar =
+          document.createElement("button");
+
+        botaoPersonalizar.className =
+          "btn-personalizar";
+
+        botaoPersonalizar.textContent =
+          "⚙ PERSONALIZAR LANCHE";
+
+        botaoPersonalizar.addEventListener("click", () => {
+
+          selecionarLanchePersonalizado(chave);
+
+        });
+
+
+        botoes.appendChild(botaoCompleto);
+
+        botoes.appendChild(botaoPersonalizar);
+
+        card.appendChild(botoes);
+
+
+        // INGREDIENTES
+
+        const ingredientesDiv =
+          document.createElement("div");
+
+        ingredientesDiv.className = "ingredientes";
+
+        ingredientesDiv.id =
+          `ingredientes-${chave}`;
+
+        card.appendChild(ingredientesDiv);
+
+
+        listaLanches.appendChild(card);
+
+
+        criarIngredientes(
+          chave,
+          ingredientesDiv
+        );
+
+      });
+
+    }
 
 
     // ==========================================
     // CRIAR INGREDIENTES
     // ==========================================
 
-    function criarIngredientes(
-      lanche,
-      elemento
-    ) {
+    function criarIngredientes(chave, elemento) {
 
       elemento.innerHTML = "";
 
-      lanches[lanche].forEach(
-        ingrediente => {
+      lanches[chave].ingredientes.forEach(ingrediente => {
 
-          const div =
-            document.createElement(
-              "div"
-            );
+        const div =
+          document.createElement("div");
 
-          div.className =
-            "ingrediente ativo";
+        div.className = "ingrediente";
 
-          div.innerHTML = `
+        div.dataset.lanche = chave;
 
-            <span>
-              ${ingrediente}
-            </span>
+        div.dataset.ingrediente = ingrediente;
 
-            <span class="status">
-              ✓ ADICIONADO
-            </span>
+        div.innerHTML = `
 
-          `;
+          <span>${ingrediente}</span>
 
-          div.addEventListener(
-            "click",
-            () => {
+          <span class="status">
+            NÃO SELECIONADO
+          </span>
 
-              alternarIngrediente(
-                lanche,
-                ingrediente,
-                div
-              );
+        `;
 
-            }
+
+        div.addEventListener("click", () => {
+
+          alternarIngrediente(
+            chave,
+            ingrediente
           );
 
-          elemento.appendChild(
-            div
-          );
+        });
 
-        }
-      );
+
+        elemento.appendChild(div);
+
+      });
+
+    }
+
+
+    // ==========================================
+    // SELECIONAR LANCHE COMPLETO
+    // ==========================================
+
+    function selecionarLancheCompleto(chave) {
+
+      lancheSelecionado = chave;
+
+      ingredientesSelecionados =
+        [...lanches[chave].ingredientes];
+
+
+      atualizarVisualIngredientes();
+
+      atualizarResumo();
+
+    }
+
+
+    // ==========================================
+    // SELECIONAR LANCHE PERSONALIZADO
+    // ==========================================
+
+    function selecionarLanchePersonalizado(chave) {
+
+      lancheSelecionado = chave;
+
+      ingredientesSelecionados =
+        [...lanches[chave].ingredientes];
+
+
+      atualizarVisualIngredientes();
+
+      atualizarResumo();
 
     }
 
@@ -559,82 +648,41 @@
     // ALTERNAR INGREDIENTE
     // ==========================================
 
-    function alternarIngrediente(
-      lanche,
-      ingrediente,
-      elemento
-    ) {
+    function alternarIngrediente(chave, ingrediente) {
 
-      if (
-        lancheSelecionado !== lanche
-      ) {
+      // Se clicar em ingrediente de outro lanche,
+      // seleciona o novo lanche completo primeiro.
 
-        selecionarLanche(
-          lanche
-        );
+      if (lancheSelecionado !== chave) {
+
+        lancheSelecionado = chave;
+
+        ingredientesSelecionados =
+          [...lanches[chave].ingredientes];
 
       }
 
 
       const indice =
-        ingredientesSelecionados.indexOf(
-          ingrediente
-        );
+        ingredientesSelecionados.indexOf(ingrediente);
 
 
-      if (
-        indice >= 0
-      ) {
+      if (indice >= 0) {
 
-        // ======================================
-        // REMOVER
-        // ======================================
+        // REMOVER INGREDIENTE
 
-        ingredientesSelecionados.splice(
-          indice,
-          1
-        );
+        ingredientesSelecionados.splice(indice, 1);
 
-        elemento.classList.remove(
-          "ativo"
-        );
+      } else {
 
-        elemento.classList.add(
-          "removido"
-        );
+        // ADICIONAR INGREDIENTE
 
-        elemento.querySelector(
-          ".status"
-        ).textContent =
-          "✕ REMOVIDO";
+        ingredientesSelecionados.push(ingrediente);
 
       }
 
-      else {
 
-        // ======================================
-        // ADICIONAR
-        // ======================================
-
-        ingredientesSelecionados.push(
-          ingrediente
-        );
-
-        elemento.classList.remove(
-          "removido"
-        );
-
-        elemento.classList.add(
-          "ativo"
-        );
-
-        elemento.querySelector(
-          ".status"
-        ).textContent =
-          "✓ ADICIONADO";
-
-      }
-
+      atualizarVisualIngredientes();
 
       atualizarResumo();
 
@@ -642,56 +690,47 @@
 
 
     // ==========================================
-    // SELECIONAR LANCHE
+    // ATUALIZAR VISUAL DOS INGREDIENTES
     // ==========================================
 
-    function selecionarLanche(
-      lanche
-    ) {
+    function atualizarVisualIngredientes() {
 
-      lancheSelecionado =
-        lanche;
+      document.querySelectorAll(".ingrediente").forEach(item => {
 
-      ingredientesSelecionados =
-        [...lanches[lanche]];
+        const chave = item.dataset.lanche;
 
+        const ingrediente = item.dataset.ingrediente;
 
-      // ========================================
-      // ATUALIZAR VISUAL
-      // ========================================
-
-      document
-        .querySelectorAll(
-          ".ingrediente"
-        )
-        .forEach(
-          item => {
-
-            item.classList.remove(
-              "removido"
-            );
-
-            item.classList.add(
-              "ativo"
-            );
-
-            const status =
-              item.querySelector(
-                ".status"
-              );
-
-            if (status) {
-
-              status.textContent =
-                "✓ ADICIONADO";
-
-            }
-
-          }
-        );
+        const selecionado =
+          chave === lancheSelecionado &&
+          ingredientesSelecionados.includes(ingrediente);
 
 
-      atualizarResumo();
+        item.classList.toggle("ativo", selecionado);
+
+        item.classList.toggle("removido", !selecionado);
+
+
+        const status = item.querySelector(".status");
+
+
+        if (chave !== lancheSelecionado) {
+
+          item.classList.remove("ativo", "removido");
+
+          status.textContent = "NÃO SELECIONADO";
+
+        } else if (selecionado) {
+
+          status.textContent = "✓ ADICIONADO";
+
+        } else {
+
+          status.textContent = "✕ REMOVIDO";
+
+        }
+
+      });
 
     }
 
@@ -703,19 +742,13 @@
     function atualizarResumo() {
 
       const resumoLanche =
-        document.getElementById(
-          "resumoLanche"
-        );
+        document.getElementById("resumoLanche");
 
       const resumoIngredientes =
-        document.getElementById(
-          "resumoIngredientes"
-        );
+        document.getElementById("resumoIngredientes");
 
 
-      if (
-        !lancheSelecionado
-      ) {
+      if (!lancheSelecionado) {
 
         resumoLanche.textContent =
           "Nenhum selecionado";
@@ -723,8 +756,7 @@
         resumoIngredientes.textContent =
           "Selecione um lanche.";
 
-        enviarButton.disabled =
-          true;
+        enviarButton.disabled = true;
 
         return;
 
@@ -732,53 +764,38 @@
 
 
       resumoLanche.textContent =
-        lancheSelecionado.toUpperCase();
+        lanches[lancheSelecionado].nome;
 
 
-      if (
-        ingredientesSelecionados.length === 0
-      ) {
+      if (ingredientesSelecionados.length === 0) {
 
         resumoIngredientes.innerHTML =
           "<strong>Nenhum ingrediente.</strong>";
 
-      }
-
-      else {
+      } else {
 
         resumoIngredientes.innerHTML =
           ingredientesSelecionados
-            .map(
-              ingrediente =>
-                `✓ ${ingrediente}`
-            )
-            .join(
-              "<br>"
-            );
+            .map(ingrediente => `✓ ${ingrediente}`)
+            .join("<br>");
 
       }
 
 
-      enviarButton.disabled =
-        false;
+      enviarButton.disabled = false;
 
     }
 
 
     // ==========================================
-    // MOSTRAR MENSAGEM
+    // MENSAGEM
     // ==========================================
 
-    function mostrarMensagem(
-      texto,
-      tipo
-    ) {
+    function mostrarMensagem(texto, tipo) {
 
-      mensagem.textContent =
-        texto;
+      mensagem.textContent = texto;
 
-      mensagem.className =
-        tipo;
+      mensagem.className = tipo;
 
     }
 
@@ -787,151 +804,100 @@
     // ENVIAR PEDIDO
     // ==========================================
 
-    enviarButton.addEventListener(
-      "click",
-      async () => {
+    enviarButton.addEventListener("click", async () => {
 
-        if (
-          !lancheSelecionado
-        ) {
+      if (!lancheSelecionado) {
 
-          return;
+        return;
 
-        }
+      }
 
 
-        // ======================================
-        // DESABILITAR BOTÃO
-        // ======================================
+      enviarButton.disabled = true;
 
-        enviarButton.disabled =
-          true;
-
-        enviarButton.textContent =
-          "ENVIANDO...";
+      enviarButton.textContent = "ENVIANDO...";
 
 
-        mostrarMensagem(
-          "Enviando pedido...",
-          ""
-        );
+      mostrarMensagem(
+        "Enviando pedido...",
+        ""
+      );
 
 
-        // ======================================
-        // PREPARAR PEDIDO
-        // ======================================
+      const pedido = {
 
-        const pedido = {
+        ativo: true,
 
-          ativo: true,
+        produto: removerAcentos(
+          lanches[lancheSelecionado].nome
+        ),
 
-          // Remove acentos do nome
-          produto:
-            removerAcentos(
-              lancheSelecionado
-            ),
+        ingredientes:
+          ingredientesSelecionados.map(ingrediente =>
+            removerAcentos(ingrediente)
+          )
 
-          // Remove acentos de cada ingrediente
-          ingredientes:
-            ingredientesSelecionados.map(
-              ingrediente =>
-                removerAcentos(
-                  ingrediente
-                )
-            )
-
-        };
+      };
 
 
-        console.log(
-          "Pedido que será enviado:",
+      console.log(
+        "Pedido que será enviado:",
+        pedido
+      );
+
+
+      try {
+
+        await set(
+          ref(database, "pedido"),
           pedido
         );
 
 
-        try {
-
-          // ====================================
-          // ENVIAR PARA FIREBASE
-          // ====================================
-
-          await set(
-            ref(
-              database,
-              "pedido"
-            ),
-            pedido
-          );
+        mostrarMensagem(
+          "✓ Pedido enviado com sucesso!",
+          "sucesso"
+        );
 
 
-          // ====================================
-          // SUCESSO
-          // ====================================
-
-          mostrarMensagem(
-            "✓ Pedido enviado com sucesso!",
-            "sucesso"
-          );
-
-          enviarButton.textContent =
-            "PEDIDO ENVIADO";
+        enviarButton.textContent =
+          "PEDIDO ENVIADO";
 
 
-          console.log(
-            "Pedido enviado para o Firebase:",
-            pedido
-          );
+        console.log(
+          "Pedido enviado para o Firebase:",
+          pedido
+        );
 
-        }
+      } catch (erro) {
 
-        catch (erro) {
-
-          console.error(
-            "Erro Firebase:",
-            erro
-          );
+        console.error(
+          "Erro Firebase:",
+          erro
+        );
 
 
-          mostrarMensagem(
-            "✕ Erro ao enviar o pedido.",
-            "erro"
-          );
+        mostrarMensagem(
+          "✕ Erro ao enviar o pedido.",
+          "erro"
+        );
 
 
-          enviarButton.disabled =
-            false;
+        enviarButton.disabled = false;
 
-          enviarButton.textContent =
-            "ENVIAR PEDIDO";
-
-        }
+        enviarButton.textContent =
+          "ENVIAR PEDIDO";
 
       }
-    );
+
+    });
 
 
     // ==========================================
-    // INICIALIZAR X-SALADA
+    // INICIALIZAR SITE
     // ==========================================
 
-    criarIngredientes(
-      "x-salada",
-      document.getElementById(
-        "ingredientesXSalada"
-      )
-    );
-
-
-    // ==========================================
-    // INICIALIZAR X-BACON
-    // ==========================================
-
-    criarIngredientes(
-      "x-bacon",
-      document.getElementById(
-        "ingredientesXBacon"
-      )
-    );
+    criarCards();
 
   </script>
 
