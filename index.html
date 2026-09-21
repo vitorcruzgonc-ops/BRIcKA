@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -7,6 +8,7 @@
   <title>BRICKA - Pedidos</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -67,14 +69,19 @@
       margin-bottom: 20px;
     }
 
+    button {
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
     .btn-completo,
-    .btn-personalizar {
+    .btn-personalizar,
+    .btn-adicionar {
       border: none;
       border-radius: 8px;
       padding: 13px;
       font-size: 15px;
       font-weight: bold;
-      cursor: pointer;
     }
 
     .btn-completo {
@@ -93,6 +100,15 @@
 
     .btn-personalizar:hover {
       background: #d5d5d5;
+    }
+
+    .btn-adicionar {
+      background: #1769aa;
+      color: white;
+    }
+
+    .btn-adicionar:hover {
+      background: #0d4f82;
     }
 
     .ingredientes {
@@ -156,6 +172,64 @@
       margin-top: 0;
     }
 
+    .item-pedido {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .item-pedido h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .item-pedido p {
+      margin: 5px 0;
+      line-height: 1.6;
+    }
+
+    .controles {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-controle {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #ddd;
+    }
+
+    .btn-remover {
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      background: #c62828;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn-editar {
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      background: #1769aa;
+      color: white;
+      font-weight: bold;
+    }
+
+    .quantidade {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
     #resumoIngredientes {
       line-height: 1.8;
     }
@@ -210,7 +284,21 @@
       color: #8a1111;
     }
 
+    .aviso {
+      display: block !important;
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .contador {
+      text-align: center;
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
     @media (max-width: 600px) {
+
       .container {
         padding: 15px;
       }
@@ -222,39 +310,46 @@
       .lanche {
         padding: 20px;
       }
+
     }
+
   </style>
+
 </head>
 
 <body>
 
   <header>
+
     <h1>BRICKA</h1>
+
     <p>Monte seu lanche do seu jeito!</p>
+
   </header>
+
 
   <main class="container">
 
+    <div class="contador" id="contadorCarrinho">
+      🛒 Lanches no pedido: 0
+    </div>
+
+
     <div class="lanches" id="listaLanches"></div>
+
 
     <div class="resumo">
 
       <h2>📝 Resumo do pedido</h2>
 
-      <p>
-        <strong>Lanche:</strong>
-        <span id="resumoLanche">Nenhum selecionado</span>
-      </p>
+      <div id="listaResumo">
 
-      <p>
-        <strong>Ingredientes:</strong>
-      </p>
+        Nenhum lanche adicionado.
 
-      <div id="resumoIngredientes">
-        Selecione um lanche.
       </div>
 
     </div>
+
 
     <div class="area-envio">
 
@@ -268,7 +363,9 @@
 
   </main>
 
+
   <script type="module">
+
 
     // ==========================================
     // FIREBASE
@@ -288,7 +385,7 @@
 
 
     // ==========================================
-    // CONFIGURAÇÃO DO FIREBASE
+    // CONFIGURAÇÃO FIREBASE
     // ==========================================
 
     const firebaseConfig = {
@@ -321,7 +418,7 @@
 
 
     // ==========================================
-    // LANCHES DISPONÍVEIS
+    // LANCHES
     // ==========================================
 
     const lanches = {
@@ -426,12 +523,12 @@
 
 
     // ==========================================
-    // ESTADO
+    // ESTADO DO CARRINHO
     // ==========================================
 
-    let lancheSelecionado = null;
+    let carrinho = [];
 
-    let ingredientesSelecionados = [];
+    let lancheEmEdicao = null;
 
 
     // ==========================================
@@ -440,6 +537,12 @@
 
     const listaLanches =
       document.getElementById("listaLanches");
+
+    const listaResumo =
+      document.getElementById("listaResumo");
+
+    const contadorCarrinho =
+      document.getElementById("contadorCarrinho");
 
     const enviarButton =
       document.getElementById("enviarPedido");
@@ -462,7 +565,7 @@
 
 
     // ==========================================
-    // CRIAR OS CARDS DOS LANCHES
+    // CRIAR CARDS
     // ==========================================
 
     function criarCards() {
@@ -477,6 +580,7 @@
 
         card.className = "lanche";
 
+
         const titulo = document.createElement("h2");
 
         titulo.textContent =
@@ -485,7 +589,8 @@
         card.appendChild(titulo);
 
 
-        const botoes = document.createElement("div");
+        const botoes =
+          document.createElement("div");
 
         botoes.className = "botoes-lanche";
 
@@ -498,11 +603,14 @@
         botaoCompleto.className = "btn-completo";
 
         botaoCompleto.textContent =
-          "✓ LANCHE COMPLETO";
+          "✓ ADICIONAR COMPLETO";
 
         botaoCompleto.addEventListener("click", () => {
 
-          selecionarLancheCompleto(chave);
+          adicionarLanche(
+            chave,
+            [...lanches[chave].ingredientes]
+          );
 
         });
 
@@ -520,7 +628,7 @@
 
         botaoPersonalizar.addEventListener("click", () => {
 
-          selecionarLanchePersonalizado(chave);
+          iniciarPersonalizacao(chave);
 
         });
 
@@ -590,7 +698,7 @@
 
         div.addEventListener("click", () => {
 
-          alternarIngrediente(
+          alternarIngredienteVisual(
             chave,
             ingrediente
           );
@@ -606,39 +714,127 @@
 
 
     // ==========================================
-    // SELECIONAR LANCHE COMPLETO
+    // PERSONALIZAÇÃO TEMPORÁRIA
     // ==========================================
 
-    function selecionarLancheCompleto(chave) {
+    function iniciarPersonalizacao(chave) {
 
-      lancheSelecionado = chave;
+      lancheEmEdicao = {
 
-      ingredientesSelecionados =
-        [...lanches[chave].ingredientes];
+        chave: chave,
+
+        ingredientes:
+          [...lanches[chave].ingredientes]
+
+      };
 
 
-      atualizarVisualIngredientes();
+      atualizarVisualPersonalizacao(chave);
 
-      atualizarResumo();
+      mostrarMensagem(
+        "Selecione os ingredientes e clique em ADICIONAR PERSONALIZADO.",
+        "aviso"
+      );
+
+
+      const elemento =
+        document.getElementById(`ingredientes-${chave}`);
+
+
+      let botaoExistente =
+        elemento.querySelector(".btn-adicionar");
+
+
+      if (!botaoExistente) {
+
+        const botao =
+          document.createElement("button");
+
+        botao.className = "btn-adicionar";
+
+        botao.textContent =
+          "➕ ADICIONAR PERSONALIZADO";
+
+        botao.style.width = "100%";
+
+        botao.style.marginTop = "10px";
+
+
+        botao.addEventListener("click", () => {
+
+          if (!lancheEmEdicao) {
+
+            return;
+
+          }
+
+
+          adicionarLanche(
+            lancheEmEdicao.chave,
+            [...lancheEmEdicao.ingredientes]
+          );
+
+
+          lancheEmEdicao = null;
+
+          botao.remove();
+
+          mensagem.className = "";
+
+          mensagem.textContent = "";
+
+        });
+
+
+        elemento.appendChild(botao);
+
+      }
 
     }
 
 
     // ==========================================
-    // SELECIONAR LANCHE PERSONALIZADO
+    // VISUAL PERSONALIZAÇÃO
     // ==========================================
 
-    function selecionarLanchePersonalizado(chave) {
+    function atualizarVisualPersonalizacao(chave) {
 
-      lancheSelecionado = chave;
+      document
+        .querySelectorAll(
+          `.ingrediente[data-lanche="${chave}"]`
+        )
+        .forEach(item => {
 
-      ingredientesSelecionados =
-        [...lanches[chave].ingredientes];
+          const ingrediente =
+            item.dataset.ingrediente;
+
+          const selecionado =
+            lancheEmEdicao &&
+            lancheEmEdicao.chave === chave &&
+            lancheEmEdicao.ingredientes.includes(ingrediente);
 
 
-      atualizarVisualIngredientes();
+          item.classList.toggle(
+            "ativo",
+            selecionado
+          );
 
-      atualizarResumo();
+          item.classList.toggle(
+            "removido",
+            !selecionado
+          );
+
+
+          const status =
+            item.querySelector(".status");
+
+
+          status.textContent =
+            selecionado
+              ? "✓ ADICIONADO"
+              : "✕ REMOVIDO";
+
+        });
 
     }
 
@@ -647,89 +843,230 @@
     // ALTERNAR INGREDIENTE
     // ==========================================
 
-    function alternarIngrediente(chave, ingrediente) {
+    function alternarIngredienteVisual(chave, ingrediente) {
 
-      // Se clicar em ingrediente de outro lanche,
-      // seleciona o novo lanche completo primeiro.
+      if (
+        !lancheEmEdicao ||
+        lancheEmEdicao.chave !== chave
+      ) {
 
-      if (lancheSelecionado !== chave) {
-
-        lancheSelecionado = chave;
-
-        ingredientesSelecionados =
-          [...lanches[chave].ingredientes];
+        iniciarPersonalizacao(chave);
 
       }
 
 
       const indice =
-        ingredientesSelecionados.indexOf(ingrediente);
+        lancheEmEdicao.ingredientes.indexOf(
+          ingrediente
+        );
 
 
       if (indice >= 0) {
 
-        // REMOVER INGREDIENTE
-
-        ingredientesSelecionados.splice(indice, 1);
+        lancheEmEdicao.ingredientes.splice(
+          indice,
+          1
+        );
 
       } else {
 
-        // ADICIONAR INGREDIENTE
-
-        ingredientesSelecionados.push(ingrediente);
+        lancheEmEdicao.ingredientes.push(
+          ingrediente
+        );
 
       }
 
 
-      atualizarVisualIngredientes();
-
-      atualizarResumo();
+      atualizarVisualPersonalizacao(chave);
 
     }
 
 
     // ==========================================
-    // ATUALIZAR VISUAL DOS INGREDIENTES
+    // ADICIONAR LANCHE AO CARRINHO
     // ==========================================
 
-    function atualizarVisualIngredientes() {
+    function adicionarLanche(chave, ingredientes) {
 
-      document.querySelectorAll(".ingrediente").forEach(item => {
+      const item = {
 
-        const chave = item.dataset.lanche;
+        id: Date.now() + Math.random(),
 
-        const ingrediente = item.dataset.ingrediente;
+        chave: chave,
 
-        const selecionado =
-          chave === lancheSelecionado &&
-          ingredientesSelecionados.includes(ingrediente);
+        produto: lanches[chave].nome,
 
+        ingredientes: ingredientes
 
-        item.classList.toggle("ativo", selecionado);
-
-        item.classList.toggle("removido", !selecionado);
+      };
 
 
-        const status = item.querySelector(".status");
+      carrinho.push(item);
 
 
-        if (chave !== lancheSelecionado) {
+      atualizarResumo();
 
-          item.classList.remove("ativo", "removido");
+      atualizarContador();
 
-          status.textContent = "NÃO SELECIONADO";
+    }
 
-        } else if (selecionado) {
 
-          status.textContent = "✓ ADICIONADO";
+    // ==========================================
+    // REMOVER ITEM
+    // ==========================================
 
-        } else {
+    function removerItem(id) {
 
-          status.textContent = "✕ REMOVIDO";
+      carrinho =
+        carrinho.filter(item => item.id !== id);
+
+
+      atualizarResumo();
+
+      atualizarContador();
+
+    }
+
+
+    // ==========================================
+    // DUPLICAR ITEM
+    // ==========================================
+
+    function duplicarItem(id) {
+
+      const original =
+        carrinho.find(item => item.id === id);
+
+
+      if (!original) {
+
+        return;
+
+      }
+
+
+      adicionarLanche(
+        original.chave,
+        [...original.ingredientes]
+      );
+
+    }
+
+
+    // ==========================================
+    // EDITAR ITEM DO CARRINHO
+    // ==========================================
+
+    function editarItem(id) {
+
+      const item =
+        carrinho.find(item => item.id === id);
+
+
+      if (!item) {
+
+        return;
+
+      }
+
+
+      lancheEmEdicao = {
+
+        chave: item.chave,
+
+        ingredientes: [...item.ingredientes]
+
+      };
+
+
+      atualizarVisualPersonalizacao(item.chave);
+
+
+      const elemento =
+        document.getElementById(
+          `ingredientes-${item.chave}`
+        );
+
+
+      let botaoExistente =
+        elemento.querySelector(".btn-adicionar");
+
+
+      if (botaoExistente) {
+
+        botaoExistente.remove();
+
+      }
+
+
+      const botao =
+        document.createElement("button");
+
+      botao.className = "btn-adicionar";
+
+      botao.textContent =
+        "✓ SALVAR ALTERAÇÕES";
+
+      botao.style.width = "100%";
+
+      botao.style.marginTop = "10px";
+
+
+      botao.addEventListener("click", () => {
+
+        const novosIngredientes =
+          [...lancheEmEdicao.ingredientes];
+
+
+        const indice =
+          carrinho.findIndex(item => item.id === id);
+
+
+        if (indice >= 0) {
+
+          carrinho[indice].ingredientes =
+            novosIngredientes;
 
         }
 
+
+        lancheEmEdicao = null;
+
+        botao.remove();
+
+        atualizarResumo();
+
+        atualizarContador();
+
+        mensagem.className = "";
+
+        mensagem.textContent = "";
+
       });
+
+
+      elemento.appendChild(botao);
+
+
+      window.scrollTo({
+
+        top: elemento.offsetTop - 100,
+
+        behavior: "smooth"
+
+      });
+
+    }
+
+
+    // ==========================================
+    // ATUALIZAR CONTADOR
+    // ==========================================
+
+    function atualizarContador() {
+
+      contadorCarrinho.textContent =
+        `🛒 Lanches no pedido: ${carrinho.length}`;
 
     }
 
@@ -740,20 +1077,13 @@
 
     function atualizarResumo() {
 
-      const resumoLanche =
-        document.getElementById("resumoLanche");
-
-      const resumoIngredientes =
-        document.getElementById("resumoIngredientes");
+      listaResumo.innerHTML = "";
 
 
-      if (!lancheSelecionado) {
+      if (carrinho.length === 0) {
 
-        resumoLanche.textContent =
-          "Nenhum selecionado";
-
-        resumoIngredientes.textContent =
-          "Selecione um lanche.";
+        listaResumo.textContent =
+          "Nenhum lanche adicionado.";
 
         enviarButton.disabled = true;
 
@@ -762,23 +1092,123 @@
       }
 
 
-      resumoLanche.textContent =
-        lanches[lancheSelecionado].nome;
+      carrinho.forEach((item, indice) => {
+
+        const div =
+          document.createElement("div");
+
+        div.className = "item-pedido";
 
 
-      if (ingredientesSelecionados.length === 0) {
+        const titulo =
+          document.createElement("h3");
 
-        resumoIngredientes.innerHTML =
-          "<strong>Nenhum ingrediente.</strong>";
+        titulo.textContent =
+          `${indice + 1}. ${item.produto}`;
 
-      } else {
+        div.appendChild(titulo);
 
-        resumoIngredientes.innerHTML =
-          ingredientesSelecionados
-            .map(ingrediente => `✓ ${ingrediente}`)
-            .join("<br>");
 
-      }
+        const ingredientes =
+          document.createElement("p");
+
+        ingredientes.innerHTML =
+          "<strong>Ingredientes:</strong><br>" +
+          (
+            item.ingredientes.length > 0
+              ? item.ingredientes
+                  .map(ingrediente => `✓ ${ingrediente}`)
+                  .join("<br>")
+              : "Nenhum ingrediente"
+          );
+
+        div.appendChild(ingredientes);
+
+
+        const controles =
+          document.createElement("div");
+
+        controles.className = "controles";
+
+
+        // DUPLICAR
+
+        const duplicar =
+          document.createElement("button");
+
+        duplicar.className = "btn-controle";
+
+        duplicar.textContent = "➕";
+
+        duplicar.title =
+          "Adicionar outro igual";
+
+        duplicar.addEventListener("click", () => {
+
+          duplicarItem(item.id);
+
+        });
+
+
+        // QUANTIDADE
+
+        const quantidade =
+          document.createElement("span");
+
+        quantidade.className = "quantidade";
+
+        quantidade.textContent =
+          "1 unidade";
+
+
+        // EDITAR
+
+        const editar =
+          document.createElement("button");
+
+        editar.className = "btn-editar";
+
+        editar.textContent =
+          "✏ EDITAR";
+
+        editar.addEventListener("click", () => {
+
+          editarItem(item.id);
+
+        });
+
+
+        // REMOVER
+
+        const remover =
+          document.createElement("button");
+
+        remover.className = "btn-remover";
+
+        remover.textContent =
+          "🗑 REMOVER";
+
+        remover.addEventListener("click", () => {
+
+          removerItem(item.id);
+
+        });
+
+
+        controles.appendChild(duplicar);
+
+        controles.appendChild(quantidade);
+
+        controles.appendChild(editar);
+
+        controles.appendChild(remover);
+
+
+        div.appendChild(controles);
+
+        listaResumo.appendChild(div);
+
+      });
 
 
       enviarButton.disabled = false;
@@ -805,7 +1235,7 @@
 
     enviarButton.addEventListener("click", async () => {
 
-      if (!lancheSelecionado) {
+      if (carrinho.length === 0) {
 
         return;
 
@@ -814,7 +1244,8 @@
 
       enviarButton.disabled = true;
 
-      enviarButton.textContent = "ENVIANDO...";
+      enviarButton.textContent =
+        "ENVIANDO...";
 
 
       mostrarMensagem(
@@ -823,18 +1254,26 @@
       );
 
 
+      // ========================================
+      // PREPARAR PEDIDO
+      // ========================================
+
       const pedido = {
 
         ativo: true,
 
-        produto: removerAcentos(
-          lanches[lancheSelecionado].nome
-        ),
+        itens: carrinho.map(item => ({
 
-        ingredientes:
-          ingredientesSelecionados.map(ingrediente =>
-            removerAcentos(ingrediente)
-          )
+          produto: removerAcentos(
+            item.produto
+          ),
+
+          ingredientes:
+            item.ingredientes.map(ingrediente =>
+              removerAcentos(ingrediente)
+            )
+
+        }))
 
       };
 
@@ -868,6 +1307,7 @@
           pedido
         );
 
+
       } catch (erro) {
 
         console.error(
@@ -893,10 +1333,15 @@
 
 
     // ==========================================
-    // INICIALIZAR SITE
+    // INICIALIZAR
     // ==========================================
 
     criarCards();
+
+    atualizarResumo();
+
+    atualizarContador();
+
 
   </script>
 
