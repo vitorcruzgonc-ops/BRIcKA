@@ -43,6 +43,50 @@
       padding: 25px;
     }
 
+    /* =========================
+       ABAS
+       ========================= */
+
+    .abas {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .aba {
+      border: none;
+      border-radius: 10px;
+      padding: 14px 25px;
+      font-size: 17px;
+      font-weight: bold;
+      background: #ddd;
+      color: #222;
+      cursor: pointer;
+    }
+
+    .aba.ativa {
+      background: #111;
+      color: white;
+    }
+
+    .aba:hover {
+      transform: scale(1.02);
+    }
+
+    .conteudo-aba {
+      display: none;
+    }
+
+    .conteudo-aba.ativo {
+      display: block;
+    }
+
+    /* =========================
+       LANCHES
+       ========================= */
+
     .lanches {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -61,8 +105,6 @@
       text-align: center;
       font-size: 26px;
     }
-
-    /* PREÇO DO CARD */
 
     .preco-lanche {
       text-align: center;
@@ -121,6 +163,10 @@
       background: #0d4f82;
     }
 
+    /* =========================
+       INGREDIENTES
+       ========================= */
+
     .ingredientes {
       margin-top: 20px;
     }
@@ -170,6 +216,73 @@
       color: red;
     }
 
+    /* =========================
+       BEBIDAS
+       ========================= */
+
+    .categoria-bebida {
+      margin-bottom: 35px;
+    }
+
+    .categoria-bebida h2 {
+      background: #111;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .bebidas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .bebida {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+    }
+
+    .bebida .emoji {
+      font-size: 45px;
+      margin-bottom: 10px;
+    }
+
+    .bebida h3 {
+      margin: 5px 0;
+      font-size: 20px;
+    }
+
+    .bebida .preco {
+      font-size: 21px;
+      font-weight: bold;
+      color: #16803c;
+      margin: 10px 0 15px;
+    }
+
+    .btn-bebida {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      background: #1769aa;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .btn-bebida:hover {
+      background: #0d4f82;
+    }
+
+    /* =========================
+       RESUMO
+       ========================= */
+
     .resumo {
       background: white;
       margin-top: 35px;
@@ -195,7 +308,12 @@
       font-size: 18px;
     }
 
-    /* PREÇO DO ITEM */
+    .tipo-item {
+      font-size: 13px;
+      color: #666;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
 
     .preco-item {
       font-size: 19px;
@@ -249,11 +367,9 @@
       font-size: 18px;
     }
 
-    #resumoIngredientes {
-      line-height: 1.8;
-    }
-
-    /* TOTAL */
+    /* =========================
+       TOTAL
+       ========================= */
 
     .total-pedido {
       margin-top: 25px;
@@ -277,6 +393,10 @@
       font-weight: bold;
       color: #7cff9b;
     }
+
+    /* =========================
+       ENVIO
+       ========================= */
 
     .area-envio {
       margin-top: 35px;
@@ -380,22 +500,91 @@
   <main class="container">
 
     <div class="contador" id="contadorCarrinho">
-      🛒 Lanches no pedido: 0
+      🛒 Itens no pedido: 0
     </div>
 
 
-    <div class="lanches" id="listaLanches"></div>
+    <!-- =========================
+         ABAS
+         ========================= -->
 
+    <div class="abas">
+
+      <button class="aba ativa" data-aba="lanches">
+        🍔 LANCHES
+      </button>
+
+      <button class="aba" data-aba="bebidas">
+        🥤 BEBIDAS
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         ABA LANCHES
+         ========================= -->
+
+    <div id="aba-lanches" class="conteudo-aba ativo">
+
+      <div class="lanches" id="listaLanches"></div>
+
+    </div>
+
+
+    <!-- =========================
+         ABA BEBIDAS
+         ========================= -->
+
+    <div id="aba-bebidas" class="conteudo-aba">
+
+      <!-- REFRIGERANTES -->
+
+      <div class="categoria-bebida">
+
+        <h2>🥤 REFRIGERANTES</h2>
+
+        <div class="bebidas" id="listaRefrigerantes"></div>
+
+      </div>
+
+
+      <!-- SUCOS -->
+
+      <div class="categoria-bebida">
+
+        <h2>🧃 SUCOS</h2>
+
+        <div class="bebidas" id="listaSucos"></div>
+
+      </div>
+
+
+      <!-- ÁGUAS -->
+
+      <div class="categoria-bebida">
+
+        <h2>💧 ÁGUAS</h2>
+
+        <div class="bebidas" id="listaAguas"></div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         RESUMO
+         ========================= -->
 
     <div class="resumo">
 
       <h2>📝 Resumo do pedido</h2>
 
       <div id="listaResumo">
-        Nenhum lanche adicionado.
+        Nenhum item adicionado.
       </div>
 
-      <!-- TOTAL DO PEDIDO -->
 
       <div class="total-pedido">
 
@@ -411,6 +600,10 @@
 
     </div>
 
+
+    <!-- =========================
+         ENVIO
+         ========================= -->
 
     <div class="area-envio">
 
@@ -589,7 +782,94 @@
 
 
     // ==========================================
-    // ESTADO DO CARRINHO
+    // BEBIDAS
+    // ==========================================
+
+    const bebidas = {
+
+      refrigerantes: [
+
+        {
+          nome: "Coca-Cola",
+          emoji: "🥤",
+          preco: 6.00
+        },
+
+        {
+          nome: "Coca-Cola Zero",
+          emoji: "🥤",
+          preco: 6.00
+        },
+
+        {
+          nome: "Guaraná",
+          emoji: "🥤",
+          preco: 6.00
+        },
+
+        {
+          nome: "Fanta Laranja",
+          emoji: "🥤",
+          preco: 6.00
+        },
+
+        {
+          nome: "Sprite",
+          emoji: "🥤",
+          preco: 6.00
+        }
+
+      ],
+
+      sucos: [
+
+        {
+          nome: "Suco de Laranja",
+          emoji: "🧃",
+          preco: 7.00
+        },
+
+        {
+          nome: "Suco de Maracujá",
+          emoji: "🧃",
+          preco: 7.00
+        },
+
+        {
+          nome: "Suco de Morango",
+          emoji: "🧃",
+          preco: 7.00
+        },
+
+        {
+          nome: "Suco de Uva",
+          emoji: "🧃",
+          preco: 7.00
+        }
+
+      ],
+
+      aguas: [
+
+        {
+          nome: "Água Mineral",
+          emoji: "💧",
+          preco: 4.00
+        },
+
+        {
+          nome: "Água com Gás",
+          emoji: "💧",
+          preco: 4.50
+        }
+
+      ]
+
+    };
+
+
+    // ==========================================
+    // ESTADO
     // ==========================================
 
     let carrinho = [];
@@ -654,10 +934,8 @@
 
     function atualizarTotal() {
 
-      const total = calcularTotal();
-
       valorTotal.textContent =
-        formatarPreco(total);
+        formatarPreco(calcularTotal());
 
     }
 
@@ -676,31 +954,69 @@
 
 
     // ==========================================
-    // CRIAR CARDS
+    // ABAS
+    // ==========================================
+
+    document.querySelectorAll(".aba").forEach(botao => {
+
+      botao.addEventListener("click", () => {
+
+        const abaEscolhida =
+          botao.dataset.aba;
+
+
+        document.querySelectorAll(".aba")
+          .forEach(aba => {
+            aba.classList.remove("ativa");
+          });
+
+
+        document.querySelectorAll(".conteudo-aba")
+          .forEach(conteudo => {
+            conteudo.classList.remove("ativo");
+          });
+
+
+        botao.classList.add("ativa");
+
+
+        document
+          .getElementById(`aba-${abaEscolhida}`)
+          .classList.add("ativo");
+
+      });
+
+    });
+
+
+    // ==========================================
+    // CRIAR CARDS DOS LANCHES
     // ==========================================
 
     function criarCards() {
 
       listaLanches.innerHTML = "";
 
+
       Object.keys(lanches).forEach(chave => {
 
         const lanche = lanches[chave];
 
-        const card = document.createElement("div");
+
+        const card =
+          document.createElement("div");
 
         card.className = "lanche";
 
 
-        const titulo = document.createElement("h2");
+        const titulo =
+          document.createElement("h2");
 
         titulo.textContent =
           `${lanche.emoji} ${lanche.nome}`;
 
         card.appendChild(titulo);
 
-
-        // PREÇO
 
         const preco =
           document.createElement("div");
@@ -719,27 +1035,29 @@
         botoes.className = "botoes-lanche";
 
 
-        // BOTÃO LANCHE COMPLETO
+        // COMPLETO
 
         const botaoCompleto =
           document.createElement("button");
 
-        botaoCompleto.className = "btn-completo";
+        botaoCompleto.className =
+          "btn-completo";
 
         botaoCompleto.textContent =
           "✓ ADICIONAR COMPLETO";
+
 
         botaoCompleto.addEventListener("click", () => {
 
           adicionarLanche(
             chave,
-            [...lanches[chave].ingredientes]
+            [...lanche.ingredientes]
           );
 
         });
 
 
-        // BOTÃO PERSONALIZAR
+        // PERSONALIZAR
 
         const botaoPersonalizar =
           document.createElement("button");
@@ -749,6 +1067,7 @@
 
         botaoPersonalizar.textContent =
           "⚙ PERSONALIZAR LANCHE";
+
 
         botaoPersonalizar.addEventListener("click", () => {
 
@@ -769,7 +1088,8 @@
         const ingredientesDiv =
           document.createElement("div");
 
-        ingredientesDiv.className = "ingredientes";
+        ingredientesDiv.className =
+          "ingredientes";
 
         ingredientesDiv.id =
           `ingredientes-${chave}`;
@@ -791,23 +1111,28 @@
 
 
     // ==========================================
-    // CRIAR INGREDIENTES
+    // INGREDIENTES
     // ==========================================
 
     function criarIngredientes(chave, elemento) {
 
       elemento.innerHTML = "";
 
+
       lanches[chave].ingredientes.forEach(ingrediente => {
 
         const div =
           document.createElement("div");
 
-        div.className = "ingrediente";
+        div.className =
+          "ingrediente";
 
-        div.dataset.lanche = chave;
+        div.dataset.lanche =
+          chave;
 
-        div.dataset.ingrediente = ingrediente;
+        div.dataset.ingrediente =
+          ingrediente;
+
 
         div.innerHTML = `
 
@@ -838,7 +1163,7 @@
 
 
     // ==========================================
-    // PERSONALIZAÇÃO TEMPORÁRIA
+    // PERSONALIZAÇÃO
     // ==========================================
 
     function iniciarPersonalizacao(chave) {
@@ -855,6 +1180,7 @@
 
       atualizarVisualPersonalizacao(chave);
 
+
       mostrarMensagem(
         "Selecione os ingredientes e clique em ADICIONAR PERSONALIZADO.",
         "aviso"
@@ -862,7 +1188,9 @@
 
 
       const elemento =
-        document.getElementById(`ingredientes-${chave}`);
+        document.getElementById(
+          `ingredientes-${chave}`
+        );
 
 
       let botaoExistente =
@@ -874,22 +1202,23 @@
         const botao =
           document.createElement("button");
 
-        botao.className = "btn-adicionar";
+        botao.className =
+          "btn-adicionar";
 
         botao.textContent =
           "➕ ADICIONAR PERSONALIZADO";
 
-        botao.style.width = "100%";
+        botao.style.width =
+          "100%";
 
-        botao.style.marginTop = "10px";
+        botao.style.marginTop =
+          "10px";
 
 
         botao.addEventListener("click", () => {
 
           if (!lancheEmEdicao) {
-
             return;
-
           }
 
 
@@ -932,16 +1261,20 @@
           const ingrediente =
             item.dataset.ingrediente;
 
+
           const selecionado =
             lancheEmEdicao &&
             lancheEmEdicao.chave === chave &&
-            lancheEmEdicao.ingredientes.includes(ingrediente);
+            lancheEmEdicao.ingredientes.includes(
+              ingrediente
+            );
 
 
           item.classList.toggle(
             "ativo",
             selecionado
           );
+
 
           item.classList.toggle(
             "removido",
@@ -967,7 +1300,10 @@
     // ALTERNAR INGREDIENTE
     // ==========================================
 
-    function alternarIngredienteVisual(chave, ingrediente) {
+    function alternarIngredienteVisual(
+      chave,
+      ingrediente
+    ) {
 
       if (
         !lancheEmEdicao ||
@@ -1007,22 +1343,146 @@
 
 
     // ==========================================
-    // ADICIONAR LANCHE AO CARRINHO
+    // ADICIONAR LANCHE
     // ==========================================
 
-    function adicionarLanche(chave, ingredientes) {
+    function adicionarLanche(
+      chave,
+      ingredientes
+    ) {
 
       const item = {
 
-        id: Date.now() + Math.random(),
+        id:
+          Date.now() + Math.random(),
 
-        chave: chave,
+        tipo:
+          "lanche",
 
-        produto: lanches[chave].nome,
+        chave:
+          chave,
 
-        preco: lanches[chave].preco,
+        produto:
+          lanches[chave].nome,
 
-        ingredientes: ingredientes
+        preco:
+          lanches[chave].preco,
+
+        ingredientes:
+          ingredientes
+
+      };
+
+
+      carrinho.push(item);
+
+
+      atualizarResumo();
+
+      atualizarContador();
+
+      atualizarTotal();
+
+    }
+
+
+    // ==========================================
+    // CRIAR BEBIDAS
+    // ==========================================
+
+    function criarBebidas(
+      lista,
+      elementoId
+    ) {
+
+      const elemento =
+        document.getElementById(elementoId);
+
+
+      elemento.innerHTML = "";
+
+
+      lista.forEach((bebida, indice) => {
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "bebida";
+
+
+        card.innerHTML = `
+
+          <div class="emoji">
+            ${bebida.emoji}
+          </div>
+
+          <h3>
+            ${bebida.nome}
+          </h3>
+
+          <div class="preco">
+            ${formatarPreco(bebida.preco)}
+          </div>
+
+        `;
+
+
+        const botao =
+          document.createElement("button");
+
+        botao.className =
+          "btn-bebida";
+
+        botao.textContent =
+          "➕ ADICIONAR";
+
+
+        botao.addEventListener("click", () => {
+
+          adicionarBebida(bebida);
+
+        });
+
+
+        card.appendChild(botao);
+
+        elemento.appendChild(card);
+
+      });
+
+    }
+
+
+    // ==========================================
+    // ADICIONAR BEBIDA
+    // ==========================================
+
+    function adicionarBebida(bebida) {
+
+      const item = {
+
+        id:
+          Date.now() + Math.random(),
+
+        tipo:
+          "bebida",
+
+        chave:
+          removerAcentos(
+            bebida.nome
+              .toLowerCase()
+              .replace(/\s+/g, "-")
+          ),
+
+        produto:
+          bebida.nome,
+
+        preco:
+          bebida.preco,
+
+        ingredientes:
+          []
 
       };
 
@@ -1046,7 +1506,9 @@
     function removerItem(id) {
 
       carrinho =
-        carrinho.filter(item => item.id !== id);
+        carrinho.filter(
+          item => item.id !== id
+        );
 
 
       atualizarResumo();
@@ -1065,51 +1527,74 @@
     function duplicarItem(id) {
 
       const original =
-        carrinho.find(item => item.id === id);
+        carrinho.find(
+          item => item.id === id
+        );
 
 
       if (!original) {
-
         return;
-
       }
 
 
-      adicionarLanche(
-        original.chave,
-        [...original.ingredientes]
-      );
+      if (original.tipo === "bebida") {
+
+        adicionarBebida({
+
+          nome:
+            original.produto,
+
+          emoji:
+            "🥤",
+
+          preco:
+            original.preco
+
+        });
+
+      } else {
+
+        adicionarLanche(
+          original.chave,
+          [...original.ingredientes]
+        );
+
+      }
 
     }
 
 
     // ==========================================
-    // EDITAR ITEM DO CARRINHO
+    // EDITAR LANCHE
     // ==========================================
 
     function editarItem(id) {
 
       const item =
-        carrinho.find(item => item.id === id);
+        carrinho.find(
+          item => item.id === id
+        );
 
 
-      if (!item) {
-
+      if (!item || item.tipo !== "lanche") {
         return;
-
       }
 
 
       lancheEmEdicao = {
 
-        chave: item.chave,
+        chave:
+          item.chave,
 
-        ingredientes: [...item.ingredientes]
+        ingredientes:
+          [...item.ingredientes]
 
       };
 
 
-      atualizarVisualPersonalizacao(item.chave);
+      atualizarVisualPersonalizacao(
+        item.chave
+      );
 
 
       const elemento =
@@ -1119,27 +1604,34 @@
 
 
       let botaoExistente =
-        elemento.querySelector(".btn-adicionar");
+        elemento.querySelector(
+          ".btn-adicionar"
+        );
 
 
       if (botaoExistente) {
-
         botaoExistente.remove();
-
       }
 
 
       const botao =
         document.createElement("button");
 
-      botao.className = "btn-adicionar";
+
+      botao.className =
+        "btn-adicionar";
+
 
       botao.textContent =
         "✓ SALVAR ALTERAÇÕES";
 
-      botao.style.width = "100%";
 
-      botao.style.marginTop = "10px";
+      botao.style.width =
+        "100%";
+
+
+      botao.style.marginTop =
+        "10px";
 
 
       botao.addEventListener("click", () => {
@@ -1149,7 +1641,9 @@
 
 
         const indice =
-          carrinho.findIndex(item => item.id === id);
+          carrinho.findIndex(
+            item => item.id === id
+          );
 
 
         if (indice >= 0) {
@@ -1182,9 +1676,11 @@
 
       window.scrollTo({
 
-        top: elemento.offsetTop - 100,
+        top:
+          elemento.offsetTop - 100,
 
-        behavior: "smooth"
+        behavior:
+          "smooth"
 
       });
 
@@ -1192,19 +1688,19 @@
 
 
     // ==========================================
-    // ATUALIZAR CONTADOR
+    // CONTADOR
     // ==========================================
 
     function atualizarContador() {
 
       contadorCarrinho.textContent =
-        `🛒 Lanches no pedido: ${carrinho.length}`;
+        `🛒 Itens no pedido: ${carrinho.length}`;
 
     }
 
 
     // ==========================================
-    // ATUALIZAR RESUMO
+    // RESUMO
     // ==========================================
 
     function atualizarResumo() {
@@ -1215,9 +1711,10 @@
       if (carrinho.length === 0) {
 
         listaResumo.textContent =
-          "Nenhum lanche adicionado.";
+          "Nenhum item adicionado.";
 
-        enviarButton.disabled = true;
+        enviarButton.disabled =
+          true;
 
         atualizarTotal();
 
@@ -1226,139 +1723,239 @@
       }
 
 
-      carrinho.forEach((item, indice) => {
+      carrinho.forEach(
+        (item, indice) => {
 
-        const div =
-          document.createElement("div");
+          const div =
+            document.createElement("div");
 
-        div.className = "item-pedido";
-
-
-        const titulo =
-          document.createElement("h3");
-
-        titulo.textContent =
-          `${indice + 1}. ${item.produto}`;
-
-        div.appendChild(titulo);
+          div.className =
+            "item-pedido";
 
 
-        // PREÇO DO ITEM
-
-        const precoItem =
-          document.createElement("div");
-
-        precoItem.className = "preco-item";
-
-        precoItem.textContent =
-          formatarPreco(item.preco);
-
-        div.appendChild(precoItem);
+          const titulo =
+            document.createElement("h3");
 
 
-        const ingredientes =
-          document.createElement("p");
+          titulo.textContent =
+            `${indice + 1}. ${item.produto}`;
 
-        ingredientes.innerHTML =
-          "<strong>Ingredientes:</strong><br>" +
-          (
-            item.ingredientes.length > 0
-              ? item.ingredientes
-                  .map(ingrediente => `✓ ${ingrediente}`)
-                  .join("<br>")
-              : "Nenhum ingrediente"
+
+          div.appendChild(titulo);
+
+
+          const tipo =
+            document.createElement("div");
+
+
+          tipo.className =
+            "tipo-item";
+
+
+          tipo.textContent =
+            item.tipo === "bebida"
+              ? "🥤 BEBIDA"
+              : "🍔 LANCHE";
+
+
+          div.appendChild(tipo);
+
+
+          const precoItem =
+            document.createElement("div");
+
+
+          precoItem.className =
+            "preco-item";
+
+
+          precoItem.textContent =
+            formatarPreco(item.preco);
+
+
+          div.appendChild(precoItem);
+
+
+          // INGREDIENTES SOMENTE PARA LANCHES
+
+          if (item.tipo === "lanche") {
+
+            const ingredientes =
+              document.createElement("p");
+
+
+            ingredientes.innerHTML =
+              "<strong>Ingredientes:</strong><br>" +
+
+              (
+                item.ingredientes.length > 0
+
+                  ? item.ingredientes
+                      .map(
+                        ingrediente =>
+                          `✓ ${ingrediente}`
+                      )
+                      .join("<br>")
+
+                  : "Nenhum ingrediente"
+              );
+
+
+            div.appendChild(
+              ingredientes
+            );
+
+          }
+
+
+          const controles =
+            document.createElement("div");
+
+
+          controles.className =
+            "controles";
+
+
+          // DUPLICAR
+
+          const duplicar =
+            document.createElement("button");
+
+
+          duplicar.className =
+            "btn-controle";
+
+
+          duplicar.textContent =
+            "➕";
+
+
+          duplicar.title =
+            "Adicionar outro igual";
+
+
+          duplicar.addEventListener(
+            "click",
+            () => {
+
+              duplicarItem(
+                item.id
+              );
+
+            }
           );
 
-        div.appendChild(ingredientes);
+
+          // QUANTIDADE
+
+          const quantidade =
+            document.createElement("span");
 
 
-        const controles =
-          document.createElement("div");
-
-        controles.className = "controles";
+          quantidade.className =
+            "quantidade";
 
 
-        // DUPLICAR
-
-        const duplicar =
-          document.createElement("button");
-
-        duplicar.className = "btn-controle";
-
-        duplicar.textContent = "➕";
-
-        duplicar.title =
-          "Adicionar outro igual";
-
-        duplicar.addEventListener("click", () => {
-
-          duplicarItem(item.id);
-
-        });
+          quantidade.textContent =
+            "1 unidade";
 
 
-        // QUANTIDADE
-
-        const quantidade =
-          document.createElement("span");
-
-        quantidade.className = "quantidade";
-
-        quantidade.textContent =
-          "1 unidade";
+          controles.appendChild(
+            duplicar
+          );
 
 
-        // EDITAR
-
-        const editar =
-          document.createElement("button");
-
-        editar.className = "btn-editar";
-
-        editar.textContent =
-          "✏ EDITAR";
-
-        editar.addEventListener("click", () => {
-
-          editarItem(item.id);
-
-        });
+          controles.appendChild(
+            quantidade
+          );
 
 
-        // REMOVER
+          // EDITAR SOMENTE LANCHE
 
-        const remover =
-          document.createElement("button");
+          if (item.tipo === "lanche") {
 
-        remover.className = "btn-remover";
-
-        remover.textContent =
-          "🗑 REMOVER";
-
-        remover.addEventListener("click", () => {
-
-          removerItem(item.id);
-
-        });
+            const editar =
+              document.createElement(
+                "button"
+              );
 
 
-        controles.appendChild(duplicar);
-
-        controles.appendChild(quantidade);
-
-        controles.appendChild(editar);
-
-        controles.appendChild(remover);
+            editar.className =
+              "btn-editar";
 
 
-        div.appendChild(controles);
-
-        listaResumo.appendChild(div);
-
-      });
+            editar.textContent =
+              "✏ EDITAR";
 
 
-      enviarButton.disabled = false;
+            editar.addEventListener(
+              "click",
+              () => {
+
+                editarItem(
+                  item.id
+                );
+
+              }
+            );
+
+
+            controles.appendChild(
+              editar
+            );
+
+          }
+
+
+          // REMOVER
+
+          const remover =
+            document.createElement(
+              "button"
+            );
+
+
+          remover.className =
+            "btn-remover";
+
+
+          remover.textContent =
+            "🗑 REMOVER";
+
+
+          remover.addEventListener(
+            "click",
+            () => {
+
+              removerItem(
+                item.id
+              );
+
+            }
+          );
+
+
+          controles.appendChild(
+            remover
+          );
+
+
+          div.appendChild(
+            controles
+          );
+
+
+          listaResumo.appendChild(
+            div
+          );
+
+        }
+      );
+
+
+      enviarButton.disabled =
+        false;
+
 
       atualizarTotal();
 
@@ -1369,11 +1966,16 @@
     // MENSAGEM
     // ==========================================
 
-    function mostrarMensagem(texto, tipo) {
+    function mostrarMensagem(
+      texto,
+      tipo
+    ) {
 
-      mensagem.textContent = texto;
+      mensagem.textContent =
+        texto;
 
-      mensagem.className = tipo;
+      mensagem.className =
+        tipo;
 
     }
 
@@ -1382,121 +1984,158 @@
     // ENVIAR PEDIDO
     // ==========================================
 
-    enviarButton.addEventListener("click", async () => {
+    enviarButton.addEventListener(
+      "click",
+      async () => {
 
-      if (carrinho.length === 0) {
-
-        return;
-
-      }
-
-
-      enviarButton.disabled = true;
-
-      enviarButton.textContent =
-        "ENVIANDO...";
+        if (carrinho.length === 0) {
+          return;
+        }
 
 
-      mostrarMensagem(
-        "Enviando pedido...",
-        ""
-      );
-
-
-      // ========================================
-      // CALCULAR TOTAL
-      // ========================================
-
-      const total = calcularTotal();
-
-
-      // ========================================
-      // PREPARAR PEDIDO
-      // ========================================
-
-      const pedido = {
-
-        ativo: true,
-
-        total: total,
-
-        itens: carrinho.map(item => ({
-
-          produto: removerAcentos(
-            item.produto
-          ),
-
-          preco: item.preco,
-
-          ingredientes:
-            item.ingredientes.map(ingrediente =>
-              removerAcentos(ingrediente)
-            )
-
-        }))
-
-      };
-
-
-      console.log(
-        "Pedido que será enviado:",
-        pedido
-      );
-
-
-      try {
-
-        await set(
-          ref(database, "pedido"),
-          pedido
-        );
-
-
-        mostrarMensagem(
-          "✓ Pedido enviado com sucesso!",
-          "sucesso"
-        );
+        enviarButton.disabled =
+          true;
 
 
         enviarButton.textContent =
-          "PEDIDO ENVIADO";
+          "ENVIANDO...";
+
+
+        mostrarMensagem(
+          "Enviando pedido...",
+          ""
+        );
+
+
+        const total =
+          calcularTotal();
+
+
+        // ====================================
+        // PEDIDO
+        // ====================================
+
+        const pedido = {
+
+          ativo:
+            true,
+
+          total:
+            total,
+
+          itens:
+
+            carrinho.map(item => ({
+
+              tipo:
+                item.tipo,
+
+              produto:
+                removerAcentos(
+                  item.produto
+                ),
+
+              preco:
+                item.preco,
+
+              ingredientes:
+
+                item.ingredientes.map(
+                  ingrediente =>
+                    removerAcentos(
+                      ingrediente
+                    )
+                )
+
+            }))
+
+        };
 
 
         console.log(
-          "Pedido enviado para o Firebase:",
+          "Pedido que será enviado:",
           pedido
         );
 
 
-      } catch (erro) {
+        try {
 
-        console.error(
-          "Erro Firebase:",
-          erro
-        );
-
-
-        mostrarMensagem(
-          "✕ Erro ao enviar o pedido.",
-          "erro"
-        );
+          await set(
+            ref(
+              database,
+              "pedido"
+            ),
+            pedido
+          );
 
 
-        enviarButton.disabled = false;
+          mostrarMensagem(
+            "✓ Pedido enviado com sucesso!",
+            "sucesso"
+          );
 
-        enviarButton.textContent =
-          "ENVIAR PEDIDO";
+
+          enviarButton.textContent =
+            "PEDIDO ENVIADO";
+
+
+          console.log(
+            "Pedido enviado:",
+            pedido
+          );
+
+
+        } catch (erro) {
+
+          console.error(
+            "Erro Firebase:",
+            erro
+          );
+
+
+          mostrarMensagem(
+            "✕ Erro ao enviar o pedido.",
+            "erro"
+          );
+
+
+          enviarButton.disabled =
+            false;
+
+
+          enviarButton.textContent =
+            "ENVIAR PEDIDO";
+
+        }
 
       }
-
-    });
+    );
 
 
     // ==========================================
-    // INICIALIZAR
+    // INICIALIZAÇÃO
     // ==========================================
 
     criarCards();
+
+
+    criarBebidas(
+      bebidas.refrigerantes,
+      "listaRefrigerantes"
+    );
+
+
+    criarBebidas(
+      bebidas.sucos,
+      "listaSucos"
+    );
+
+
+    criarBebidas(
+      bebidas.aguas,
+      "listaAguas"
+    );
+
 
     atualizarResumo();
 
