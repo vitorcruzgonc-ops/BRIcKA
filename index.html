@@ -1,2151 +1,2521 @@
-```html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BRICKA - Pedidos</title>
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      color: #222;
-    }
-
-    header {
-      background: #111;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 32px;
-    }
-
-    header p {
-      margin: 8px 0 0;
-      color: #ccc;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 25px;
-    }
-
-    /* =========================
-       ABAS
-       ========================= */
-
-    .abas {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 25px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .aba {
-      border: none;
-      border-radius: 10px;
-      padding: 14px 25px;
-      font-size: 17px;
-      font-weight: bold;
-      background: #ddd;
-      color: #222;
-      cursor: pointer;
-    }
-
-    .aba.ativa {
-      background: #111;
-      color: white;
-    }
-
-    .aba:hover {
-      transform: scale(1.02);
-    }
-
-    .conteudo-aba {
-      display: none;
-    }
-
-    .conteudo-aba.ativo {
-      display: block;
-    }
-
-    /* =========================
-       LANCHES
-       ========================= */
-
-    .lanches {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-    }
-
-    .lanche {
-      background: white;
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-    }
-
-    .lanche h2 {
-      margin-top: 0;
-      text-align: center;
-      font-size: 26px;
-    }
-
-    .preco-lanche {
-      text-align: center;
-      font-size: 23px;
-      font-weight: bold;
-      color: #16803c;
-      margin: 10px 0 20px;
-    }
-
-    .botoes-lanche {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    button {
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .btn-completo,
-    .btn-personalizar,
-    .btn-adicionar {
-      border: none;
-      border-radius: 8px;
-      padding: 13px;
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .btn-completo {
-      background: #16803c;
-      color: white;
-    }
-
-    .btn-completo:hover {
-      background: #0f632e;
-    }
-
-    .btn-personalizar {
-      background: #e8e8e8;
-      color: #222;
-    }
-
-    .btn-personalizar:hover {
-      background: #d5d5d5;
-    }
-
-    .btn-adicionar {
-      background: #1769aa;
-      color: white;
-    }
-
-    .btn-adicionar:hover {
-      background: #0d4f82;
-    }
-
-    /* =========================
-       INGREDIENTES
-       ========================= */
-
-    .ingredientes {
-      margin-top: 20px;
-    }
-
-    .ingrediente {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 12px;
-      margin-bottom: 8px;
-      border-radius: 8px;
-      background: #eee;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .ingrediente:hover {
-      transform: scale(1.01);
-    }
-
-    .ingrediente.ativo {
-      background: #d8f5d8;
-    }
-
-    .ingrediente.removido {
-      background: #ffdada;
-      color: #777;
-      text-decoration: line-through;
-    }
-
-    .ingrediente span {
-      font-size: 16px;
-    }
-
-    .status {
-      font-size: 13px !important;
-      font-weight: bold;
-      text-align: right;
-    }
-
-    .ativo .status {
-      color: green;
-    }
-
-    .removido .status {
-      color: red;
-    }
-
-    /* =========================
-       BEBIDAS
-       ========================= */
-
-    .categoria-bebida {
-      margin-bottom: 35px;
-    }
-
-    .categoria-bebida h2 {
-      background: #111;
-      color: white;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .bebidas {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
-    }
-
-    .bebida {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.10);
-    }
-
-    .bebida .emoji {
-      font-size: 45px;
-      margin-bottom: 10px;
-    }
-
-    .bebida h3 {
-      margin: 5px 0;
-      font-size: 20px;
-    }
-
-    .bebida .preco {
-      font-size: 21px;
-      font-weight: bold;
-      color: #16803c;
-      margin: 10px 0 15px;
-    }
-
-    .btn-bebida {
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      padding: 12px;
-      background: #1769aa;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .btn-bebida:hover {
-      background: #0d4f82;
-    }
-
-    /* =========================
-       RESUMO
-       ========================= */
-
-    .resumo {
-      background: white;
-      margin-top: 35px;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.10);
-    }
-
-    .resumo h2 {
-      margin-top: 0;
-    }
-
-    .item-pedido {
-      background: #f5f5f5;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-
-    .item-pedido h3 {
-      margin: 0 0 5px;
-      font-size: 18px;
-    }
-
-    .tipo-item {
-      font-size: 13px;
-      color: #666;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .preco-item {
-      font-size: 19px;
-      font-weight: bold;
-      color: #16803c;
-      margin: 5px 0 12px;
-    }
-
-    .item-pedido p {
-      margin: 5px 0;
-      line-height: 1.6;
-    }
-
-    .controles {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
-
-    .btn-controle {
-      border: none;
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 18px;
-      font-weight: bold;
-      background: #ddd;
-    }
-
-    .btn-remover {
-      border: none;
-      border-radius: 8px;
-      padding: 10px;
-      background: #c62828;
-      color: white;
-      font-weight: bold;
-    }
-
-    .btn-editar {
-      border: none;
-      border-radius: 8px;
-      padding: 10px;
-      background: #1769aa;
-      color: white;
-      font-weight: bold;
-    }
-
-    .quantidade {
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    /* =========================
-       TOTAL
-       ========================= */
-
-    .total-pedido {
-      margin-top: 25px;
-      padding: 20px;
-      border-radius: 12px;
-      background: #111;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .total-pedido span:first-child {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    #valorTotal {
-      font-size: 28px;
-      font-weight: bold;
-      color: #7cff9b;
-    }
-
-    /* =========================
-       ENVIO
-       ========================= */
-
-    .area-envio {
-      margin-top: 35px;
-      text-align: center;
-    }
-
-    #enviarPedido {
-      width: 100%;
-      max-width: 500px;
-      padding: 18px;
-      border: none;
-      border-radius: 10px;
-      background: #16803c;
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    #enviarPedido:hover {
-      background: #0f632e;
-      transform: scale(1.02);
-    }
-
-    #enviarPedido:disabled {
-      background: #999;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    #mensagem {
-      margin-top: 20px;
-      padding: 15px;
-      text-align: center;
-      border-radius: 10px;
-      display: none;
-    }
-
-    .sucesso {
-      display: block !important;
-      background: #d8f5d8;
-      color: #146b14;
-    }
-
-    .erro {
-      display: block !important;
-      background: #ffdada;
-      color: #8a1111;
-    }
-
-    .aviso {
-      display: block !important;
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .contador {
-      text-align: center;
-      font-weight: bold;
-      color: #555;
-      margin-bottom: 20px;
-    }
-
-    @media (max-width: 600px) {
-
-      .container {
-        padding: 15px;
-      }
-
-      header h1 {
-        font-size: 26px;
-      }
-
-      .lanche {
-        padding: 20px;
-      }
-
-      .total-pedido {
-        flex-direction: column;
-        text-align: center;
-      }
-
-    }
-
-  </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRICKA - Pedidos</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  color: #222;
+}
+
+header {
+  background: #111;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+header p {
+  margin: 8px 0 0;
+  color: #ccc;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 25px;
+}
+
+/* =========================
+   ABAS
+   ========================= */
+
+.abas {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.aba {
+  border: none;
+  border-radius: 10px;
+  padding: 14px 25px;
+  font-size: 17px;
+  font-weight: bold;
+  background: #ddd;
+  color: #222;
+  cursor: pointer;
+}
+
+.aba.ativa {
+  background: #111;
+  color: white;
+}
+
+.conteudo-aba {
+  display: none;
+}
+
+.conteudo-aba.ativo {
+  display: block;
+}
+
+/* =========================
+   LANCHES
+   ========================= */
+
+.lanches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.lanche {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}
+
+.lanche h2 {
+  margin-top: 0;
+  text-align: center;
+  font-size: 26px;
+}
+
+.preco-lanche {
+  text-align: center;
+  font-size: 23px;
+  font-weight: bold;
+  color: #16803c;
+  margin: 10px 0 20px;
+}
+
+.botoes-lanche {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+button {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-completo,
+.btn-personalizar,
+.btn-adicionar {
+  border: none;
+  border-radius: 8px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.btn-completo {
+  background: #16803c;
+  color: white;
+}
+
+.btn-personalizar {
+  background: #e8e8e8;
+  color: #222;
+}
+
+.btn-adicionar {
+  background: #1769aa;
+  color: white;
+}
+
+/* =========================
+   INGREDIENTES
+   ========================= */
+
+.ingredientes {
+  margin-top: 20px;
+}
+
+.ingrediente {
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #eee;
+}
+
+.ingrediente-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ingrediente.ativo {
+  background: #d8f5d8;
+}
+
+.ingrediente.removido {
+  background: #ffdada;
+  color: #777;
+  text-decoration: line-through;
+}
+
+.ingrediente-nome {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.status {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.ativo .status {
+  color: green;
+}
+
+.removido .status {
+  color: red;
+}
+
+/* =========================
+   ADICIONAL
+   ========================= */
+
+.adicional-area {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.adicional-info {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.controle-adicional {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-extra {
+  border: none;
+  border-radius: 6px;
+  padding: 7px 12px;
+  background: #1769aa;
+  color: white;
+  font-weight: bold;
+}
+
+.btn-extra:hover {
+  background: #0d4f82;
+}
+
+.qtd-extra {
+  min-width: 35px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+/* =========================
+   BEBIDAS
+   ========================= */
+
+.categoria-bebida {
+  margin-bottom: 35px;
+}
+
+.categoria-bebida h2 {
+  background: #111;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.bebidas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.bebida {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+}
+
+.bebida .emoji {
+  font-size: 45px;
+}
+
+.bebida h3 {
+  margin: 5px 0;
+}
+
+.bebida .preco {
+  font-size: 21px;
+  font-weight: bold;
+  color: #16803c;
+  margin: 10px 0 15px;
+}
+
+.btn-bebida {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  background: #1769aa;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* =========================
+   RESUMO
+   ========================= */
+
+.resumo {
+  background: white;
+  margin-top: 35px;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+}
+
+.resumo h2 {
+  margin-top: 0;
+}
+
+.item-pedido {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.item-pedido h3 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+
+.tipo-item {
+  font-size: 13px;
+  color: #666;
+  font-weight: bold;
+}
+
+.preco-item {
+  font-size: 19px;
+  font-weight: bold;
+  color: #16803c;
+  margin: 8px 0 12px;
+}
+
+.adicionais-resumo {
+  margin-top: 8px;
+  padding: 10px;
+  background: #fff3cd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-controle {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 18px;
+  font-weight: bold;
+  background: #ddd;
+}
+
+.btn-remover {
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  background: #c62828;
+  color: white;
+  font-weight: bold;
+}
+
+.btn-editar {
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  background: #1769aa;
+  color: white;
+  font-weight: bold;
+}
+
+/* =========================
+   TOTAL
+   ========================= */
+
+.total-pedido {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #111;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#valorTotal {
+  font-size: 28px;
+  font-weight: bold;
+  color: #7cff9b;
+}
+
+/* =========================
+   ENVIO
+   ========================= */
+
+.area-envio {
+  margin-top: 35px;
+  text-align: center;
+}
+
+#enviarPedido {
+  width: 100%;
+  max-width: 500px;
+  padding: 18px;
+  border: none;
+  border-radius: 10px;
+  background: #16803c;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#enviarPedido:disabled {
+  background: #999;
+}
+
+#mensagem {
+  margin-top: 20px;
+  padding: 15px;
+  text-align: center;
+  border-radius: 10px;
+  display: none;
+}
+
+.sucesso {
+  display: block !important;
+  background: #d8f5d8;
+  color: #146b14;
+}
+
+.erro {
+  display: block !important;
+  background: #ffdada;
+  color: #8a1111;
+}
+
+.aviso {
+  display: block !important;
+  background: #fff3cd;
+  color: #856404;
+}
+
+.contador {
+  text-align: center;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+
+  .container {
+    padding: 15px;
+  }
+
+  header h1 {
+    font-size: 26px;
+  }
+
+  .lanche {
+    padding: 20px;
+  }
+
+  .total-pedido {
+    flex-direction: column;
+    text-align: center;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-  <header>
+<header>
 
-    <h1>BRICKA</h1>
+<h1>BRICKA</h1>
 
-    <p>Monte seu lanche do seu jeito!</p>
+<p>Monte seu lanche do seu jeito!</p>
 
-  </header>
+</header>
 
 
-  <main class="container">
+<main class="container">
 
-    <div class="contador" id="contadorCarrinho">
-      🛒 Itens no pedido: 0
-    </div>
+<div class="contador" id="contadorCarrinho">
+🛒 Itens no pedido: 0
+</div>
 
 
-    <!-- =========================
-         ABAS
-         ========================= -->
+<!-- =========================
+     ABAS
+     ========================= -->
 
-    <div class="abas">
+<div class="abas">
 
-      <button class="aba ativa" data-aba="lanches">
-        🍔 LANCHES
-      </button>
+<button class="aba ativa" data-aba="lanches">
+🍔 LANCHES
+</button>
 
-      <button class="aba" data-aba="bebidas">
-        🥤 BEBIDAS
-      </button>
+<button class="aba" data-aba="bebidas">
+🥤 BEBIDAS
+</button>
 
-    </div>
+</div>
 
 
-    <!-- =========================
-         ABA LANCHES
-         ========================= -->
+<!-- =========================
+     LANCHES
+     ========================= -->
 
-    <div id="aba-lanches" class="conteudo-aba ativo">
+<div id="aba-lanches" class="conteudo-aba ativo">
 
-      <div class="lanches" id="listaLanches"></div>
+<div class="lanches" id="listaLanches"></div>
 
-    </div>
+</div>
 
 
-    <!-- =========================
-         ABA BEBIDAS
-         ========================= -->
+<!-- =========================
+     BEBIDAS
+     ========================= -->
 
-    <div id="aba-bebidas" class="conteudo-aba">
+<div id="aba-bebidas" class="conteudo-aba">
 
-      <!-- REFRIGERANTES -->
+<div class="categoria-bebida">
 
-      <div class="categoria-bebida">
+<h2>🥤 REFRIGERANTES</h2>
 
-        <h2>🥤 REFRIGERANTES</h2>
+<div class="bebidas" id="listaRefrigerantes"></div>
 
-        <div class="bebidas" id="listaRefrigerantes"></div>
+</div>
 
-      </div>
 
+<div class="categoria-bebida">
 
-      <!-- SUCOS -->
+<h2>🧃 SUCOS</h2>
 
-      <div class="categoria-bebida">
+<div class="bebidas" id="listaSucos"></div>
 
-        <h2>🧃 SUCOS</h2>
+</div>
 
-        <div class="bebidas" id="listaSucos"></div>
 
-      </div>
+<div class="categoria-bebida">
 
+<h2>💧 ÁGUAS</h2>
 
-      <!-- ÁGUAS -->
+<div class="bebidas" id="listaAguas"></div>
 
-      <div class="categoria-bebida">
+</div>
 
-        <h2>💧 ÁGUAS</h2>
+</div>
 
-        <div class="bebidas" id="listaAguas"></div>
 
-      </div>
+<!-- =========================
+     RESUMO
+     ========================= -->
 
-    </div>
+<div class="resumo">
 
+<h2>📝 Resumo do pedido</h2>
 
-    <!-- =========================
-         RESUMO
-         ========================= -->
+<div id="listaResumo">
+Nenhum item adicionado.
+</div>
 
-    <div class="resumo">
 
-      <h2>📝 Resumo do pedido</h2>
+<div class="total-pedido">
 
-      <div id="listaResumo">
-        Nenhum item adicionado.
-      </div>
+<span>
+💰 TOTAL DO PEDIDO
+</span>
 
+<span id="valorTotal">
+R$ 0,00
+</span>
 
-      <div class="total-pedido">
+</div>
 
-        <span>
-          💰 TOTAL DO PEDIDO
-        </span>
+</div>
 
-        <span id="valorTotal">
-          R$ 0,00
-        </span>
 
-      </div>
+<div class="area-envio">
 
-    </div>
+<button id="enviarPedido" disabled>
+ENVIAR PEDIDO
+</button>
 
+<div id="mensagem"></div>
 
-    <!-- =========================
-         ENVIO
-         ========================= -->
+</div>
 
-    <div class="area-envio">
+</main>
 
-      <button id="enviarPedido" disabled>
-        ENVIAR PEDIDO
-      </button>
 
-      <div id="mensagem"></div>
+<script type="module">
 
-    </div>
+// ==========================================
+// FIREBASE
+// ==========================================
 
-  </main>
+import {
+initializeApp
+} from
+"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
+import {
+getDatabase,
+ref,
+set
+} from
+"https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-  <script type="module">
 
-    // ==========================================
-    // FIREBASE
-    // ==========================================
+const firebaseConfig = {
 
-    import {
-      initializeApp
-    } from
-      "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+apiKey: "SUA_API_KEY",
 
-    import {
-      getDatabase,
-      ref,
-      set
-    } from
-      "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
-
-
-    // ==========================================
-    // CONFIGURAÇÃO FIREBASE
-    // ==========================================
-
-    const firebaseConfig = {
-
-      apiKey: "SUA_API_KEY",
-
-      authDomain:
-        "bricka-96d91.firebaseapp.com",
-
-      databaseURL:
-        "https://bricka-96d91-default-rtdb.firebaseio.com",
-
-      projectId:
-        "bricka-96d91",
-
-      storageBucket:
-        "bricka-96d91.firebasestorage.app",
-
-      messagingSenderId:
-        "503488792733",
-
-      appId: "SEU_APP_ID"
-
-    };
-
-
-    const app = initializeApp(firebaseConfig);
-
-    const database = getDatabase(app);
-
-
-    // ==========================================
-    // LANCHES
-    // ==========================================
-
-    const lanches = {
-
-      "x-salada": {
-        nome: "X-SALADA",
-        emoji: "🍔",
-        preco: 15.00,
-        ingredientes: [
-          "Pão",
-          "Hambúrguer",
-          "Queijo",
-          "Presunto",
-          "Alface",
-          "Tomate",
-          "Milho",
-          "Batata palha",
-          "Molho"
-        ]
-      },
-
-      "x-bacon": {
-        nome: "X-BACON",
-        emoji: "🥓",
-        preco: 18.00,
-        ingredientes: [
-          "Pão",
-          "Hambúrguer",
-          "Queijo",
-          "Bacon",
-          "Alface",
-          "Tomate",
-          "Milho",
-          "Batata palha",
-          "Molho"
-        ]
-      },
-
-      "x-frango": {
-        nome: "X-FRANGO",
-        emoji: "🍗",
-        preco: 16.00,
-        ingredientes: [
-          "Pão",
-          "Frango",
-          "Queijo",
-          "Alface",
-          "Tomate",
-          "Milho",
-          "Batata palha",
-          "Molho"
-        ]
-      },
-
-      "x-egg": {
-        nome: "X-EGG",
-        emoji: "🍳",
-        preco: 17.00,
-        ingredientes: [
-          "Pão",
-          "Hambúrguer",
-          "Ovo",
-          "Queijo",
-          "Alface",
-          "Tomate",
-          "Milho",
-          "Batata palha",
-          "Molho"
-        ]
-      },
-
-      "x-calabresa": {
-        nome: "X-CALABRESA",
-        emoji: "🌭",
-        preco: 18.00,
-        ingredientes: [
-          "Pão",
-          "Calabresa",
-          "Queijo",
-          "Alface",
-          "Tomate",
-          "Milho",
-          "Batata palha",
-          "Molho"
-        ]
-      },
-
-      "x-tudo": {
-        nome: "X-TUDO",
-        emoji: "🍔",
-        preco: 22.00,
-        ingredientes: [
-          "Pão",
-          "Hambúrguer",
-          "Bacon",
-          "Presunto",
-          "Ovo",
-          "Queijo",
-          "Alface",
-          "Tomate",
-          "Milho",
-          "Batata palha",
-          "Molho"
-        ]
-      }
-
-    };
-
-
-    // ==========================================
-    // BEBIDAS
-    // ==========================================
-
-    const bebidas = {
-
-      refrigerantes: [
-
-        {
-          nome: "Coca-Cola",
-          emoji: "🥤",
-          preco: 6.00
-        },
-
-        {
-          nome: "Coca-Cola Zero",
-          emoji: "🥤",
-          preco: 6.00
-        },
-
-        {
-          nome: "Guaraná",
-          emoji: "🥤",
-          preco: 6.00
-        },
-
-        {
-          nome: "Fanta Laranja",
-          emoji: "🥤",
-          preco: 6.00
-        },
-
-        {
-          nome: "Sprite",
-          emoji: "🥤",
-          preco: 6.00
-        }
-
-      ],
-
-      sucos: [
-
-        {
-          nome: "Suco de Laranja",
-          emoji: "🧃",
-          preco: 7.00
-        },
-
-        {
-          nome: "Suco de Maracujá",
-          emoji: "🧃",
-          preco: 7.00
-        },
-
-        {
-          nome: "Suco de Morango",
-          emoji: "🧃",
-          preco: 7.00
-        },
+authDomain:
+"bricka-96d91.firebaseapp.com",
 
-        {
-          nome: "Suco de Uva",
-          emoji: "🧃",
-          preco: 7.00
-        }
+databaseURL:
+"https://bricka-96d91-default-rtdb.firebaseio.com",
 
-      ],
+projectId:
+"bricka-96d91",
 
-      aguas: [
+storageBucket:
+"bricka-96d91.firebasestorage.app",
 
-        {
-          nome: "Água Mineral",
-          emoji: "💧",
-          preco: 4.00
-        },
+messagingSenderId:
+"503488792733",
 
-        {
-          nome: "Água com Gás",
-          emoji: "💧",
-          preco: 4.50
-        }
+appId: "SEU_APP_ID"
 
-      ]
+};
 
-    };
 
+const app = initializeApp(firebaseConfig);
 
-    // ==========================================
-    // ESTADO
-    // ==========================================
+const database = getDatabase(app);
 
-    let carrinho = [];
 
-    let lancheEmEdicao = null;
+// ==========================================
+// LANCHES
+// ==========================================
 
+const lanches = {
 
-    // ==========================================
-    // ELEMENTOS
-    // ==========================================
+"x-salada": {
 
-    const listaLanches =
-      document.getElementById("listaLanches");
+nome: "X-SALADA",
 
-    const listaResumo =
-      document.getElementById("listaResumo");
+emoji: "🍔",
 
-    const contadorCarrinho =
-      document.getElementById("contadorCarrinho");
+preco: 15.00,
 
-    const enviarButton =
-      document.getElementById("enviarPedido");
+ingredientes: [
 
-    const mensagem =
-      document.getElementById("mensagem");
+"Pão",
+"Hambúrguer",
+"Queijo",
+"Presunto",
+"Alface",
+"Tomate",
+"Milho",
+"Batata palha",
+"Molho"
 
-    const valorTotal =
-      document.getElementById("valorTotal");
+]
 
+},
 
-    // ==========================================
-    // FORMATAR PREÇO
-    // ==========================================
 
-    function formatarPreco(valor) {
+"x-bacon": {
 
-      return valor.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      });
+nome: "X-BACON",
 
-    }
+emoji: "🥓",
 
+preco: 18.00,
 
-    // ==========================================
-    // CALCULAR TOTAL
-    // ==========================================
+ingredientes: [
 
-    function calcularTotal() {
+"Pão",
+"Hambúrguer",
+"Queijo",
+"Bacon",
+"Alface",
+"Tomate",
+"Milho",
+"Batata palha",
+"Molho"
 
-      return carrinho.reduce(
-        (total, item) => total + item.preco,
-        0
-      );
+]
 
-    }
+},
 
 
-    // ==========================================
-    // ATUALIZAR TOTAL
-    // ==========================================
+"x-frango": {
 
-    function atualizarTotal() {
+nome: "X-FRANGO",
 
-      valorTotal.textContent =
-        formatarPreco(calcularTotal());
+emoji: "🍗",
 
-    }
+preco: 16.00,
 
+ingredientes: [
 
-    // ==========================================
-    // REMOVER ACENTOS
-    // ==========================================
+"Pão",
+"Frango",
+"Queijo",
+"Alface",
+"Tomate",
+"Milho",
+"Batata palha",
+"Molho"
 
-    function removerAcentos(texto) {
+]
 
-      return texto
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+},
 
-    }
 
+"x-egg": {
 
-    // ==========================================
-    // ABAS
-    // ==========================================
+nome: "X-EGG",
 
-    document.querySelectorAll(".aba").forEach(botao => {
+emoji: "🍳",
 
-      botao.addEventListener("click", () => {
+preco: 17.00,
 
-        const abaEscolhida =
-          botao.dataset.aba;
+ingredientes: [
 
+"Pão",
+"Hambúrguer",
+"Ovo",
+"Queijo",
+"Alface",
+"Tomate",
+"Milho",
+"Batata palha",
+"Molho"
 
-        document.querySelectorAll(".aba")
-          .forEach(aba => {
-            aba.classList.remove("ativa");
-          });
+]
 
+},
 
-        document.querySelectorAll(".conteudo-aba")
-          .forEach(conteudo => {
-            conteudo.classList.remove("ativo");
-          });
 
+"x-calabresa": {
 
-        botao.classList.add("ativa");
+nome: "X-CALABRESA",
 
+emoji: "🌭",
 
-        document
-          .getElementById(`aba-${abaEscolhida}`)
-          .classList.add("ativo");
+preco: 18.00,
 
-      });
+ingredientes: [
 
-    });
+"Pão",
+"Calabresa",
+"Queijo",
+"Alface",
+"Tomate",
+"Milho",
+"Batata palha",
+"Molho"
 
+]
 
-    // ==========================================
-    // CRIAR CARDS DOS LANCHES
-    // ==========================================
+},
 
-    function criarCards() {
 
-      listaLanches.innerHTML = "";
+"x-tudo": {
 
+nome: "X-TUDO",
 
-      Object.keys(lanches).forEach(chave => {
+emoji: "🍔",
 
-        const lanche = lanches[chave];
+preco: 22.00,
 
+ingredientes: [
 
-        const card =
-          document.createElement("div");
+"Pão",
+"Hambúrguer",
+"Bacon",
+"Presunto",
+"Ovo",
+"Queijo",
+"Alface",
+"Tomate",
+"Milho",
+"Batata palha",
+"Molho"
 
-        card.className = "lanche";
+]
 
+}
 
-        const titulo =
-          document.createElement("h2");
+};
 
-        titulo.textContent =
-          `${lanche.emoji} ${lanche.nome}`;
 
-        card.appendChild(titulo);
+// ==========================================
+// BEBIDAS
+// ==========================================
 
+const bebidas = {
 
-        const preco =
-          document.createElement("div");
+refrigerantes: [
 
-        preco.className = "preco-lanche";
+{
+nome: "Coca-Cola",
+emoji: "🥤",
+preco: 6.00
+},
 
-        preco.textContent =
-          formatarPreco(lanche.preco);
+{
+nome: "Coca-Cola Zero",
+emoji: "🥤",
+preco: 6.00
+},
 
-        card.appendChild(preco);
+{
+nome: "Guaraná",
+emoji: "🥤",
+preco: 6.00
+},
 
+{
+nome: "Fanta Laranja",
+emoji: "🥤",
+preco: 6.00
+},
 
-        const botoes =
-          document.createElement("div");
+{
+nome: "Sprite",
+emoji: "🥤",
+preco: 6.00
+}
 
-        botoes.className = "botoes-lanche";
+],
 
 
-        // COMPLETO
+sucos: [
 
-        const botaoCompleto =
-          document.createElement("button");
+{
+nome: "Suco de Laranja",
+emoji: "🧃",
+preco: 7.00
+},
 
-        botaoCompleto.className =
-          "btn-completo";
+{
+nome: "Suco de Maracujá",
+emoji: "🧃",
+preco: 7.00
+},
 
-        botaoCompleto.textContent =
-          "✓ ADICIONAR COMPLETO";
+{
+nome: "Suco de Morango",
+emoji: "🧃",
+preco: 7.00
+},
 
+{
+nome: "Suco de Uva",
+emoji: "🧃",
+preco: 7.00
+}
 
-        botaoCompleto.addEventListener("click", () => {
+],
 
-          adicionarLanche(
-            chave,
-            [...lanche.ingredientes]
-          );
 
-        });
+aguas: [
 
+{
+nome: "Água Mineral",
+emoji: "💧",
+preco: 4.00
+},
 
-        // PERSONALIZAR
+{
+nome: "Água com Gás",
+emoji: "💧",
+preco: 4.50
+}
 
-        const botaoPersonalizar =
-          document.createElement("button");
+]
 
-        botaoPersonalizar.className =
-          "btn-personalizar";
+};
 
-        botaoPersonalizar.textContent =
-          "⚙ PERSONALIZAR LANCHE";
 
+// ==========================================
+// ESTADO
+// ==========================================
 
-        botaoPersonalizar.addEventListener("click", () => {
+let carrinho = [];
 
-          iniciarPersonalizacao(chave);
+let lancheEmEdicao = null;
 
-        });
 
+// ==========================================
+// ELEMENTOS
+// ==========================================
 
-        botoes.appendChild(botaoCompleto);
+const listaLanches =
+document.getElementById("listaLanches");
 
-        botoes.appendChild(botaoPersonalizar);
+const listaResumo =
+document.getElementById("listaResumo");
 
-        card.appendChild(botoes);
+const contadorCarrinho =
+document.getElementById("contadorCarrinho");
 
+const enviarButton =
+document.getElementById("enviarPedido");
 
-        // INGREDIENTES
+const mensagem =
+document.getElementById("mensagem");
 
-        const ingredientesDiv =
-          document.createElement("div");
+const valorTotal =
+document.getElementById("valorTotal");
 
-        ingredientesDiv.className =
-          "ingredientes";
 
-        ingredientesDiv.id =
-          `ingredientes-${chave}`;
+// ==========================================
+// PREÇO
+// ==========================================
 
-        card.appendChild(ingredientesDiv);
+function formatarPreco(valor) {
 
+return valor.toLocaleString("pt-BR", {
 
-        listaLanches.appendChild(card);
+style: "currency",
 
+currency: "BRL"
 
-        criarIngredientes(
-          chave,
-          ingredientesDiv
-        );
+});
 
-      });
+}
 
-    }
 
+// ==========================================
+// REMOVER ACENTOS
+// ==========================================
 
-    // ==========================================
-    // INGREDIENTES
-    // ==========================================
+function removerAcentos(texto) {
 
-    function criarIngredientes(chave, elemento) {
+return texto
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "");
 
-      elemento.innerHTML = "";
+}
 
 
-      lanches[chave].ingredientes.forEach(ingrediente => {
+// ==========================================
+// PREÇO DE UM ADICIONAL
+// ==========================================
 
-        const div =
-          document.createElement("div");
+function precoAdicional(ingrediente) {
 
-        div.className =
-          "ingrediente";
+if (
+ingrediente.toLowerCase() === "hambúrguer"
+) {
 
-        div.dataset.lanche =
-          chave;
+return 3.00;
 
-        div.dataset.ingrediente =
-          ingrediente;
+}
 
+return 1.00;
 
-        div.innerHTML = `
+}
 
-          <span>${ingrediente}</span>
 
-          <span class="status">
-            NÃO SELECIONADO
-          </span>
+// ==========================================
+// CALCULAR PREÇO DOS ADICIONAIS
+// ==========================================
 
-        `;
+function calcularAdicionais(item) {
 
+if (!item.adicionais) {
 
-        div.addEventListener("click", () => {
+return 0;
 
-          alternarIngredienteVisual(
-            chave,
-            ingrediente
-          );
+}
 
-        });
+return item.adicionais.reduce(
+(total, adicional) => {
 
+return total +
+(
+precoAdicional(adicional.nome) *
+adicional.quantidade
+);
 
-        elemento.appendChild(div);
+},
+0
+);
 
-      });
+}
 
-    }
 
+// ==========================================
+// PREÇO TOTAL DO ITEM
+// ==========================================
 
-    // ==========================================
-    // PERSONALIZAÇÃO
-    // ==========================================
+function calcularPrecoItem(item) {
 
-    function iniciarPersonalizacao(chave) {
+return item.precoBase +
+calcularAdicionais(item);
 
-      lancheEmEdicao = {
+}
 
-        chave: chave,
 
-        ingredientes:
-          [...lanches[chave].ingredientes]
+// ==========================================
+// TOTAL DO PEDIDO
+// ==========================================
 
-      };
+function calcularTotal() {
 
+return carrinho.reduce(
+(total, item) => {
 
-      atualizarVisualPersonalizacao(chave);
+return total +
+calcularPrecoItem(item);
 
+},
+0
+);
 
-      mostrarMensagem(
-        "Selecione os ingredientes e clique em ADICIONAR PERSONALIZADO.",
-        "aviso"
-      );
+}
 
 
-      const elemento =
-        document.getElementById(
-          `ingredientes-${chave}`
-        );
+// ==========================================
+// ATUALIZAR TOTAL
+// ==========================================
 
+function atualizarTotal() {
 
-      let botaoExistente =
-        elemento.querySelector(".btn-adicionar");
+valorTotal.textContent =
+formatarPreco(calcularTotal());
 
+}
 
-      if (!botaoExistente) {
 
-        const botao =
-          document.createElement("button");
+// ==========================================
+// ABAS
+// ==========================================
 
-        botao.className =
-          "btn-adicionar";
+document.querySelectorAll(".aba").forEach(botao => {
 
-        botao.textContent =
-          "➕ ADICIONAR PERSONALIZADO";
+botao.addEventListener("click", () => {
 
-        botao.style.width =
-          "100%";
+const aba =
+botao.dataset.aba;
 
-        botao.style.marginTop =
-          "10px";
 
+document.querySelectorAll(".aba")
+.forEach(aba => {
 
-        botao.addEventListener("click", () => {
+aba.classList.remove("ativa");
 
-          if (!lancheEmEdicao) {
-            return;
-          }
+});
 
 
-          adicionarLanche(
-            lancheEmEdicao.chave,
-            [...lancheEmEdicao.ingredientes]
-          );
+document.querySelectorAll(".conteudo-aba")
+.forEach(conteudo => {
 
+conteudo.classList.remove("ativo");
 
-          lancheEmEdicao = null;
+});
 
-          botao.remove();
 
-          mensagem.className = "";
+botao.classList.add("ativa");
 
-          mensagem.textContent = "";
 
-        });
+document
+.getElementById(`aba-${aba}`)
+.classList.add("ativo");
 
+});
 
-        elemento.appendChild(botao);
+});
 
-      }
 
-    }
+// ==========================================
+// CRIAR CARDS
+// ==========================================
 
+function criarCards() {
 
-    // ==========================================
-    // VISUAL PERSONALIZAÇÃO
-    // ==========================================
+listaLanches.innerHTML = "";
 
-    function atualizarVisualPersonalizacao(chave) {
 
-      document
-        .querySelectorAll(
-          `.ingrediente[data-lanche="${chave}"]`
-        )
-        .forEach(item => {
+Object.keys(lanches).forEach(chave => {
 
-          const ingrediente =
-            item.dataset.ingrediente;
+const lanche =
+lanches[chave];
 
 
-          const selecionado =
-            lancheEmEdicao &&
-            lancheEmEdicao.chave === chave &&
-            lancheEmEdicao.ingredientes.includes(
-              ingrediente
-            );
+const card =
+document.createElement("div");
 
+card.className =
+"lanche";
 
-          item.classList.toggle(
-            "ativo",
-            selecionado
-          );
 
+const titulo =
+document.createElement("h2");
 
-          item.classList.toggle(
-            "removido",
-            !selecionado
-          );
+titulo.textContent =
+`${lanche.emoji} ${lanche.nome}`;
 
+card.appendChild(titulo);
 
-          const status =
-            item.querySelector(".status");
 
+const preco =
+document.createElement("div");
 
-          status.textContent =
-            selecionado
-              ? "✓ ADICIONADO"
-              : "✕ REMOVIDO";
+preco.className =
+"preco-lanche";
 
-        });
+preco.textContent =
+formatarPreco(lanche.preco);
 
-    }
+card.appendChild(preco);
 
 
-    // ==========================================
-    // ALTERNAR INGREDIENTE
-    // ==========================================
+const botoes =
+document.createElement("div");
 
-    function alternarIngredienteVisual(
-      chave,
-      ingrediente
-    ) {
+botoes.className =
+"botoes-lanche";
 
-      if (
-        !lancheEmEdicao ||
-        lancheEmEdicao.chave !== chave
-      ) {
 
-        iniciarPersonalizacao(chave);
+const completo =
+document.createElement("button");
 
-      }
+completo.className =
+"btn-completo";
 
+completo.textContent =
+"✓ ADICIONAR COMPLETO";
 
-      const indice =
-        lancheEmEdicao.ingredientes.indexOf(
-          ingrediente
-        );
 
+completo.addEventListener("click", () => {
 
-      if (indice >= 0) {
+adicionarLanche(
+chave,
+[...lanche.ingredientes]
+);
 
-        lancheEmEdicao.ingredientes.splice(
-          indice,
-          1
-        );
+});
 
-      } else {
 
-        lancheEmEdicao.ingredientes.push(
-          ingrediente
-        );
+const personalizar =
+document.createElement("button");
 
-      }
+personalizar.className =
+"btn-personalizar";
 
+personalizar.textContent =
+"⚙ PERSONALIZAR LANCHE";
 
-      atualizarVisualPersonalizacao(chave);
 
-    }
+personalizar.addEventListener("click", () => {
 
+iniciarPersonalizacao(chave);
 
-    // ==========================================
-    // ADICIONAR LANCHE
-    // ==========================================
+});
 
-    function adicionarLanche(
-      chave,
-      ingredientes
-    ) {
 
-      const item = {
+botoes.appendChild(completo);
 
-        id:
-          Date.now() + Math.random(),
+botoes.appendChild(personalizar);
 
-        tipo:
-          "lanche",
+card.appendChild(botoes);
 
-        chave:
-          chave,
 
-        produto:
-          lanches[chave].nome,
+const ingredientes =
+document.createElement("div");
 
-        preco:
-          lanches[chave].preco,
+ingredientes.className =
+"ingredientes";
 
-        ingredientes:
-          ingredientes
+ingredientes.id =
+`ingredientes-${chave}`;
 
-      };
+card.appendChild(ingredientes);
 
 
-      carrinho.push(item);
+listaLanches.appendChild(card);
 
 
-      atualizarResumo();
+criarIngredientes(
+chave,
+ingredientes
+);
 
-      atualizarContador();
+});
 
-      atualizarTotal();
+}
 
-    }
 
+// ==========================================
+// CRIAR INGREDIENTES
+// ==========================================
 
-    // ==========================================
-    // CRIAR BEBIDAS
-    // ==========================================
+function criarIngredientes(
+chave,
+elemento
+) {
 
-    function criarBebidas(
-      lista,
-      elementoId
-    ) {
+elemento.innerHTML = "";
 
-      const elemento =
-        document.getElementById(elementoId);
 
+lanches[chave].ingredientes
+.forEach(ingrediente => {
 
-      elemento.innerHTML = "";
+const div =
+document.createElement("div");
 
+div.className =
+"ingrediente";
 
-      lista.forEach((bebida, indice) => {
+div.dataset.lanche =
+chave;
 
-        const card =
-          document.createElement("div");
+div.dataset.ingrediente =
+ingrediente;
 
-        card.className =
-          "bebida";
 
+div.innerHTML = `
 
-        card.innerHTML = `
+<div class="ingrediente-topo">
 
-          <div class="emoji">
-            ${bebida.emoji}
-          </div>
+<span class="ingrediente-nome">
+${ingrediente}
+</span>
 
-          <h3>
-            ${bebida.nome}
-          </h3>
+<span class="status">
+NÃO SELECIONADO
+</span>
 
-          <div class="preco">
-            ${formatarPreco(bebida.preco)}
-          </div>
+</div>
 
-        `;
+<div class="adicional-area">
 
+<div class="adicional-info">
 
-        const botao =
-          document.createElement("button");
+Extra:
+<strong>
+${formatarPreco(
+precoAdicional(ingrediente)
+)}
+</strong>
 
-        botao.className =
-          "btn-bebida";
+</div>
 
-        botao.textContent =
-          "➕ ADICIONAR";
+<div class="controle-adicional">
 
+<button
+class="btn-extra btn-menos"
+type="button">
+−
+</button>
 
-        botao.addEventListener("click", () => {
+<span class="qtd-extra">
+0
+</span>
 
-          adicionarBebida(bebida);
+<button
+class="btn-extra btn-mais"
+type="button">
++
+</button>
 
-        });
+</div>
 
+</div>
 
-        card.appendChild(botao);
+`;
 
-        elemento.appendChild(card);
 
-      });
+div.querySelector(".btn-menos")
+.addEventListener("click", evento => {
 
-    }
+evento.stopPropagation();
 
+alterarAdicionalVisual(
+chave,
+ingrediente,
+-1
+);
 
-    // ==========================================
-    // ADICIONAR BEBIDA
-    // ==========================================
+});
 
-    function adicionarBebida(bebida) {
 
-      const item = {
+div.querySelector(".btn-mais")
+.addEventListener("click", evento => {
 
-        id:
-          Date.now() + Math.random(),
+evento.stopPropagation();
 
-        tipo:
-          "bebida",
+alterarAdicionalVisual(
+chave,
+ingrediente,
+1
+);
 
-        chave:
-          removerAcentos(
-            bebida.nome
-              .toLowerCase()
-              .replace(/\s+/g, "-")
-          ),
+});
 
-        produto:
-          bebida.nome,
 
-        preco:
-          bebida.preco,
+div.addEventListener("click", () => {
 
-        ingredientes:
-          []
+alternarIngredienteVisual(
+chave,
+ingrediente
+);
 
-      };
+});
 
 
-      carrinho.push(item);
+elemento.appendChild(div);
 
+});
 
-      atualizarResumo();
+}
 
-      atualizarContador();
 
-      atualizarTotal();
+// ==========================================
+// INICIAR PERSONALIZAÇÃO
+// ==========================================
 
-    }
+function iniciarPersonalizacao(chave) {
 
+lancheEmEdicao = {
 
-    // ==========================================
-    // REMOVER ITEM
-    // ==========================================
+chave: chave,
 
-    function removerItem(id) {
+ingredientes:
+[...lanches[chave].ingredientes],
 
-      carrinho =
-        carrinho.filter(
-          item => item.id !== id
-        );
+adicionais: []
 
+};
 
-      atualizarResumo();
 
-      atualizarContador();
+atualizarVisualPersonalizacao(chave);
 
-      atualizarTotal();
 
-    }
+mostrarMensagem(
+"Selecione os ingredientes e adicione extras usando +.",
+"aviso"
+);
 
 
-    // ==========================================
-    // DUPLICAR ITEM
-    // ==========================================
+criarBotaoSalvarPersonalizacao(
+chave
+);
 
-    function duplicarItem(id) {
+}
 
-      const original =
-        carrinho.find(
-          item => item.id === id
-        );
 
+// ==========================================
+// BOTÃO SALVAR PERSONALIZAÇÃO
+// ==========================================
 
-      if (!original) {
-        return;
-      }
+function criarBotaoSalvarPersonalizacao(chave) {
 
+const elemento =
+document.getElementById(
+`ingredientes-${chave}`
+);
 
-      if (original.tipo === "bebida") {
 
-        adicionarBebida({
+let antigo =
+elemento.querySelector(
+".btn-adicionar"
+);
 
-          nome:
-            original.produto,
 
-          emoji:
-            "🥤",
+if (antigo) {
 
-          preco:
-            original.preco
+antigo.remove();
 
-        });
+}
 
-      } else {
 
-        adicionarLanche(
-          original.chave,
-          [...original.ingredientes]
-        );
+const botao =
+document.createElement("button");
 
-      }
+botao.className =
+"btn-adicionar";
 
-    }
+botao.textContent =
+"➕ ADICIONAR PERSONALIZADO";
 
+botao.style.width =
+"100%";
 
-    // ==========================================
-    // EDITAR LANCHE
-    // ==========================================
+botao.style.marginTop =
+"10px";
 
-    function editarItem(id) {
 
-      const item =
-        carrinho.find(
-          item => item.id === id
-        );
+botao.addEventListener(
+"click",
+() => {
 
+if (!lancheEmEdicao) {
+return;
+}
 
-      if (!item || item.tipo !== "lanche") {
-        return;
-      }
 
+adicionarLanche(
 
-      lancheEmEdicao = {
+lancheEmEdicao.chave,
 
-        chave:
-          item.chave,
+[...lancheEmEdicao.ingredientes],
 
-        ingredientes:
-          [...item.ingredientes]
+[...lancheEmEdicao.adicionais]
 
-      };
+);
 
 
-      atualizarVisualPersonalizacao(
-        item.chave
-      );
+lancheEmEdicao = null;
 
+botao.remove();
 
-      const elemento =
-        document.getElementById(
-          `ingredientes-${item.chave}`
-        );
+mensagem.className = "";
 
+mensagem.textContent = "";
 
-      let botaoExistente =
-        elemento.querySelector(
-          ".btn-adicionar"
-        );
+});
 
+elemento.appendChild(botao);
 
-      if (botaoExistente) {
-        botaoExistente.remove();
-      }
+}
 
 
-      const botao =
-        document.createElement("button");
+// ==========================================
+// ALTERNAR INGREDIENTE
+// ==========================================
 
+function alternarIngredienteVisual(
+chave,
+ingrediente
+) {
 
-      botao.className =
-        "btn-adicionar";
+if (
+!lancheEmEdicao ||
+lancheEmEdicao.chave !== chave
+) {
 
+iniciarPersonalizacao(chave);
 
-      botao.textContent =
-        "✓ SALVAR ALTERAÇÕES";
+}
 
 
-      botao.style.width =
-        "100%";
+const indice =
+lancheEmEdicao.ingredientes.indexOf(
+ingrediente
+);
 
 
-      botao.style.marginTop =
-        "10px";
+if (indice >= 0) {
 
+lancheEmEdicao.ingredientes.splice(
+indice,
+1
+);
 
-      botao.addEventListener("click", () => {
+} else {
 
-        const novosIngredientes =
-          [...lancheEmEdicao.ingredientes];
+lancheEmEdicao.ingredientes.push(
+ingrediente
+);
 
+}
 
-        const indice =
-          carrinho.findIndex(
-            item => item.id === id
-          );
 
+atualizarVisualPersonalizacao(chave);
 
-        if (indice >= 0) {
+}
 
-          carrinho[indice].ingredientes =
-            novosIngredientes;
 
-        }
+// ==========================================
+// ADICIONAR / REMOVER EXTRA
+// ==========================================
 
+function alterarAdicionalVisual(
+chave,
+ingrediente,
+quantidade
+) {
 
-        lancheEmEdicao = null;
+if (
+!lancheEmEdicao ||
+lancheEmEdicao.chave !== chave
+) {
 
-        botao.remove();
+iniciarPersonalizacao(chave);
 
-        atualizarResumo();
+}
 
-        atualizarContador();
 
-        atualizarTotal();
+let adicional =
+lancheEmEdicao.adicionais.find(
+item =>
+item.nome === ingrediente
+);
 
-        mensagem.className = "";
 
-        mensagem.textContent = "";
+if (!adicional) {
 
-      });
+adicional = {
 
+nome: ingrediente,
 
-      elemento.appendChild(botao);
+quantidade: 0
 
+};
 
-      window.scrollTo({
+lancheEmEdicao.adicionais.push(
+adicional
+);
 
-        top:
-          elemento.offsetTop - 100,
+}
 
-        behavior:
-          "smooth"
 
-      });
+adicional.quantidade +=
+quantidade;
 
-    }
 
+if (adicional.quantidade < 0) {
 
-    // ==========================================
-    // CONTADOR
-    // ==========================================
+adicional.quantidade = 0;
 
-    function atualizarContador() {
+}
 
-      contadorCarrinho.textContent =
-        `🛒 Itens no pedido: ${carrinho.length}`;
 
-    }
+lancheEmEdicao.adicionais =
+lancheEmEdicao.adicionais.filter(
+item =>
+item.quantidade > 0
+);
 
 
-    // ==========================================
-    // RESUMO
-    // ==========================================
+atualizarVisualPersonalizacao(chave);
 
-    function atualizarResumo() {
+}
 
-      listaResumo.innerHTML = "";
 
+// ==========================================
+// ATUALIZAR VISUAL
+// ==========================================
 
-      if (carrinho.length === 0) {
+function atualizarVisualPersonalizacao(chave) {
 
-        listaResumo.textContent =
-          "Nenhum item adicionado.";
+document
+.querySelectorAll(
+`.ingrediente[data-lanche="${chave}"]`
+)
+.forEach(item => {
 
-        enviarButton.disabled =
-          true;
+const ingrediente =
+item.dataset.ingrediente;
 
-        atualizarTotal();
 
-        return;
+const selecionado =
+lancheEmEdicao &&
+lancheEmEdicao.chave === chave &&
+lancheEmEdicao.ingredientes.includes(
+ingrediente
+);
 
-      }
 
+item.classList.toggle(
+"ativo",
+selecionado
+);
 
-      carrinho.forEach(
-        (item, indice) => {
+item.classList.toggle(
+"removido",
+!selecionado
+);
 
-          const div =
-            document.createElement("div");
 
-          div.className =
-            "item-pedido";
+const status =
+item.querySelector(".status");
 
 
-          const titulo =
-            document.createElement("h3");
+status.textContent =
+selecionado
+? "✓ INCLUÍDO"
+: "✕ REMOVIDO";
 
 
-          titulo.textContent =
-            `${indice + 1}. ${item.produto}`;
+const adicional =
+lancheEmEdicao &&
+lancheEmEdicao.adicionais.find(
+item =>
+item.nome === ingrediente
+);
 
 
-          div.appendChild(titulo);
+const quantidade =
+adicional
+? adicional.quantidade
+: 0;
 
 
-          const tipo =
-            document.createElement("div");
+item.querySelector(
+".qtd-extra"
+).textContent =
+quantidade;
 
+});
 
-          tipo.className =
-            "tipo-item";
+}
 
 
-          tipo.textContent =
-            item.tipo === "bebida"
-              ? "🥤 BEBIDA"
-              : "🍔 LANCHE";
+// ==========================================
+// ADICIONAR LANCHE
+// ==========================================
 
+function adicionarLanche(
+chave,
+ingredientes,
+adicionais = []
+) {
 
-          div.appendChild(tipo);
+const item = {
 
+id:
+Date.now() + Math.random(),
 
-          const precoItem =
-            document.createElement("div");
+tipo:
+"lanche",
 
+chave:
+chave,
 
-          precoItem.className =
-            "preco-item";
+produto:
+lanches[chave].nome,
 
+precoBase:
+lanches[chave].preco,
 
-          precoItem.textContent =
-            formatarPreco(item.preco);
+ingredientes:
+ingredientes,
 
+adicionais:
+adicionais
 
-          div.appendChild(precoItem);
+};
 
 
-          // INGREDIENTES SOMENTE PARA LANCHES
+carrinho.push(item);
 
-          if (item.tipo === "lanche") {
 
-            const ingredientes =
-              document.createElement("p");
+atualizarResumo();
 
+atualizarContador();
 
-            ingredientes.innerHTML =
-              "<strong>Ingredientes:</strong><br>" +
+atualizarTotal();
 
-              (
-                item.ingredientes.length > 0
+}
 
-                  ? item.ingredientes
-                      .map(
-                        ingrediente =>
-                          `✓ ${ingrediente}`
-                      )
-                      .join("<br>")
 
-                  : "Nenhum ingrediente"
-              );
+// ==========================================
+// BEBIDAS
+// ==========================================
 
+function criarBebidas(
+lista,
+elementoId
+) {
 
-            div.appendChild(
-              ingredientes
-            );
+const elemento =
+document.getElementById(elementoId);
 
-          }
 
+elemento.innerHTML = "";
 
-          const controles =
-            document.createElement("div");
 
+lista.forEach(bebida => {
 
-          controles.className =
-            "controles";
+const card =
+document.createElement("div");
 
+card.className =
+"bebida";
 
-          // DUPLICAR
 
-          const duplicar =
-            document.createElement("button");
+card.innerHTML = `
 
+<div class="emoji">
+${bebida.emoji}
+</div>
 
-          duplicar.className =
-            "btn-controle";
+<h3>
+${bebida.nome}
+</h3>
 
+<div class="preco">
+${formatarPreco(bebida.preco)}
+</div>
 
-          duplicar.textContent =
-            "➕";
+`;
 
 
-          duplicar.title =
-            "Adicionar outro igual";
+const botao =
+document.createElement("button");
 
+botao.className =
+"btn-bebida";
 
-          duplicar.addEventListener(
-            "click",
-            () => {
+botao.textContent =
+"➕ ADICIONAR";
 
-              duplicarItem(
-                item.id
-              );
 
-            }
-          );
+botao.addEventListener(
+"click",
+() => {
 
+adicionarBebida(bebida);
 
-          // QUANTIDADE
+});
 
-          const quantidade =
-            document.createElement("span");
 
+card.appendChild(botao);
 
-          quantidade.className =
-            "quantidade";
+elemento.appendChild(card);
 
+});
 
-          quantidade.textContent =
-            "1 unidade";
+}
 
 
-          controles.appendChild(
-            duplicar
-          );
+// ==========================================
+// ADICIONAR BEBIDA
+// ==========================================
 
+function adicionarBebida(bebida) {
 
-          controles.appendChild(
-            quantidade
-          );
+const item = {
 
+id:
+Date.now() + Math.random(),
 
-          // EDITAR SOMENTE LANCHE
+tipo:
+"bebida",
 
-          if (item.tipo === "lanche") {
+produto:
+bebida.nome,
 
-            const editar =
-              document.createElement(
-                "button"
-              );
+precoBase:
+bebida.preco,
 
+ingredientes: [],
 
-            editar.className =
-              "btn-editar";
+adicionais: []
 
+};
 
-            editar.textContent =
-              "✏ EDITAR";
 
+carrinho.push(item);
 
-            editar.addEventListener(
-              "click",
-              () => {
 
-                editarItem(
-                  item.id
-                );
+atualizarResumo();
 
-              }
-            );
+atualizarContador();
 
+atualizarTotal();
 
-            controles.appendChild(
-              editar
-            );
+}
 
-          }
 
+// ==========================================
+// REMOVER ITEM
+// ==========================================
 
-          // REMOVER
+function removerItem(id) {
 
-          const remover =
-            document.createElement(
-              "button"
-            );
+carrinho =
+carrinho.filter(
+item =>
+item.id !== id
+);
 
 
-          remover.className =
-            "btn-remover";
+atualizarResumo();
 
+atualizarContador();
 
-          remover.textContent =
-            "🗑 REMOVER";
+atualizarTotal();
 
+}
 
-          remover.addEventListener(
-            "click",
-            () => {
 
-              removerItem(
-                item.id
-              );
+// ==========================================
+// DUPLICAR
+// ==========================================
 
-            }
-          );
+function duplicarItem(id) {
 
+const original =
+carrinho.find(
+item =>
+item.id === id
+);
 
-          controles.appendChild(
-            remover
-          );
 
+if (!original) {
+return;
+}
 
-          div.appendChild(
-            controles
-          );
 
+const copia = {
 
-          listaResumo.appendChild(
-            div
-          );
+id:
+Date.now() + Math.random(),
 
-        }
-      );
+tipo:
+original.tipo,
 
+chave:
+original.chave,
 
-      enviarButton.disabled =
-        false;
+produto:
+original.produto,
 
+precoBase:
+original.precoBase,
 
-      atualizarTotal();
+ingredientes:
+[...original.ingredientes],
 
-    }
+adicionais:
+original.adicionais.map(
+adicional => ({
 
+nome:
+adicional.nome,
 
-    // ==========================================
-    // MENSAGEM
-    // ==========================================
+quantidade:
+adicional.quantidade
 
-    function mostrarMensagem(
-      texto,
-      tipo
-    ) {
+})
+)
 
-      mensagem.textContent =
-        texto;
+};
 
-      mensagem.className =
-        tipo;
 
-    }
+carrinho.push(copia);
 
 
-    // ==========================================
-    // ENVIAR PEDIDO
-    // ==========================================
+atualizarResumo();
 
-    enviarButton.addEventListener(
-      "click",
-      async () => {
+atualizarContador();
 
-        if (carrinho.length === 0) {
-          return;
-        }
+atualizarTotal();
 
+}
 
-        enviarButton.disabled =
-          true;
 
+// ==========================================
+// EDITAR ITEM
+// ==========================================
 
-        enviarButton.textContent =
-          "ENVIANDO...";
+function editarItem(id) {
 
+const item =
+carrinho.find(
+item =>
+item.id === id
+);
 
-        mostrarMensagem(
-          "Enviando pedido...",
-          ""
-        );
 
+if (!item || item.tipo !== "lanche") {
 
-        const total =
-          calcularTotal();
+return;
 
+}
 
-        // ====================================
-        // PEDIDO
-        // ====================================
 
-        const pedido = {
+lancheEmEdicao = {
 
-          ativo:
-            true,
+chave:
+item.chave,
 
-          total:
-            total,
+ingredientes:
+[...item.ingredientes],
 
-          itens:
+adicionais:
+item.adicionais.map(
+adicional => ({
 
-            carrinho.map(item => ({
+nome:
+adicional.nome,
 
-              tipo:
-                item.tipo,
+quantidade:
+adicional.quantidade
 
-              produto:
-                removerAcentos(
-                  item.produto
-                ),
+})
+)
 
-              preco:
-                item.preco,
+};
 
-              ingredientes:
 
-                item.ingredientes.map(
-                  ingrediente =>
-                    removerAcentos(
-                      ingrediente
-                    )
-                )
+atualizarVisualPersonalizacao(
+item.chave
+);
 
-            }))
 
-        };
+criarBotaoSalvarEdicao(
+item.id
+);
 
 
-        console.log(
-          "Pedido que será enviado:",
-          pedido
-        );
+window.scrollTo({
 
+top:
+document.getElementById(
+`ingredientes-${item.chave}`
+).offsetTop - 100,
 
-        try {
+behavior:
+"smooth"
 
-          await set(
-            ref(
-              database,
-              "pedido"
-            ),
-            pedido
-          );
+});
 
+}
 
-          mostrarMensagem(
-            "✓ Pedido enviado com sucesso!",
-            "sucesso"
-          );
 
+// ==========================================
+// SALVAR EDIÇÃO
+// ==========================================
 
-          enviarButton.textContent =
-            "PEDIDO ENVIADO";
+function criarBotaoSalvarEdicao(id) {
 
+const chave =
+carrinho.find(
+item =>
+item.id === id
+).chave;
 
-          console.log(
-            "Pedido enviado:",
-            pedido
-          );
 
+const elemento =
+document.getElementById(
+`ingredientes-${chave}`
+);
 
-        } catch (erro) {
 
-          console.error(
-            "Erro Firebase:",
-            erro
-          );
+let antigo =
+elemento.querySelector(
+".btn-adicionar"
+);
 
 
-          mostrarMensagem(
-            "✕ Erro ao enviar o pedido.",
-            "erro"
-          );
+if (antigo) {
+antigo.remove();
+}
 
 
-          enviarButton.disabled =
-            false;
+const botao =
+document.createElement("button");
 
+botao.className =
+"btn-adicionar";
 
-          enviarButton.textContent =
-            "ENVIAR PEDIDO";
+botao.textContent =
+"✓ SALVAR ALTERAÇÕES";
 
-        }
+botao.style.width =
+"100%";
 
-      }
-    );
+botao.style.marginTop =
+"10px";
 
 
-    // ==========================================
-    // INICIALIZAÇÃO
-    // ==========================================
+botao.addEventListener(
+"click",
+() => {
 
-    criarCards();
+const indice =
+carrinho.findIndex(
+item =>
+item.id === id
+);
 
 
-    criarBebidas(
-      bebidas.refrigerantes,
-      "listaRefrigerantes"
-    );
+if (indice >= 0) {
 
+carrinho[indice].ingredientes =
+[...lancheEmEdicao.ingredientes];
 
-    criarBebidas(
-      bebidas.sucos,
-      "listaSucos"
-    );
+carrinho[indice].adicionais =
+[...lancheEmEdicao.adicionais];
 
+}
 
-    criarBebidas(
-      bebidas.aguas,
-      "listaAguas"
-    );
 
+lancheEmEdicao = null;
 
-    atualizarResumo();
+botao.remove();
 
-    atualizarContador();
+atualizarResumo();
 
-    atualizarTotal();
+atualizarContador();
 
-  </script>
+atualizarTotal();
+
+mensagem.className = "";
+
+mensagem.textContent = "";
+
+});
+
+
+elemento.appendChild(botao);
+
+}
+
+
+// ==========================================
+// CONTADOR
+// ==========================================
+
+function atualizarContador() {
+
+contadorCarrinho.textContent =
+`🛒 Itens no pedido: ${carrinho.length}`;
+
+}
+
+
+// ==========================================
+// RESUMO
+// ==========================================
+
+function atualizarResumo() {
+
+listaResumo.innerHTML = "";
+
+
+if (carrinho.length === 0) {
+
+listaResumo.textContent =
+"Nenhum item adicionado.";
+
+enviarButton.disabled =
+true;
+
+atualizarTotal();
+
+return;
+
+}
+
+
+carrinho.forEach(
+(item, indice) => {
+
+const div =
+document.createElement("div");
+
+div.className =
+"item-pedido";
+
+
+const titulo =
+document.createElement("h3");
+
+titulo.textContent =
+`${indice + 1}. ${item.produto}`;
+
+div.appendChild(titulo);
+
+
+const tipo =
+document.createElement("div");
+
+tipo.className =
+"tipo-item";
+
+tipo.textContent =
+item.tipo === "bebida"
+? "🥤 BEBIDA"
+: "🍔 LANCHE";
+
+div.appendChild(tipo);
+
+
+const preco =
+calcularPrecoItem(item);
+
+
+const precoItem =
+document.createElement("div");
+
+precoItem.className =
+"preco-item";
+
+precoItem.textContent =
+formatarPreco(preco);
+
+div.appendChild(precoItem);
+
+
+// ====================================
+// INGREDIENTES
+// ====================================
+
+if (item.tipo === "lanche") {
+
+const ingredientes =
+document.createElement("p");
+
+ingredientes.innerHTML =
+"<strong>Ingredientes:</strong><br>" +
+
+(
+item.ingredientes.length > 0
+
+? item.ingredientes
+.map(
+ingrediente =>
+`✓ ${ingrediente}`
+)
+.join("<br>")
+
+: "Nenhum ingrediente"
+);
+
+
+div.appendChild(
+ingredientes
+);
+
+
+// ====================================
+// ADICIONAIS
+// ====================================
+
+if (
+item.adicionais &&
+item.adicionais.length > 0
+) {
+
+const adicionais =
+document.createElement("div");
+
+adicionais.className =
+"adicionais-resumo";
+
+adicionais.innerHTML =
+"<strong>➕ Adicionais:</strong><br>" +
+
+item.adicionais
+.map(adicional => {
+
+const valor =
+precoAdicional(
+adicional.nome
+);
+
+return `
+${adicional.quantidade}x
+${adicional.nome}
+(+${formatarPreco(
+valor *
+adicional.quantidade
+)})
+`;
+
+})
+.join("<br>");
+
+
+div.appendChild(
+adicionais
+);
+
+}
+
+}
+
+
+// ====================================
+// CONTROLES
+// ====================================
+
+const controles =
+document.createElement("div");
+
+controles.className =
+"controles";
+
+
+// DUPLICAR
+
+const duplicar =
+document.createElement("button");
+
+duplicar.className =
+"btn-controle";
+
+duplicar.textContent =
+"➕";
+
+duplicar.title =
+"Adicionar outro igual";
+
+
+duplicar.addEventListener(
+"click",
+() => {
+
+duplicarItem(
+item.id
+);
+
+});
+
+
+controles.appendChild(
+duplicar
+);
+
+
+// EDITAR
+
+if (item.tipo === "lanche") {
+
+const editar =
+document.createElement("button");
+
+editar.className =
+"btn-editar";
+
+editar.textContent =
+"✏ EDITAR";
+
+
+editar.addEventListener(
+"click",
+() => {
+
+editarItem(
+item.id
+);
+
+});
+
+
+controles.appendChild(
+editar
+);
+
+}
+
+
+// REMOVER
+
+const remover =
+document.createElement("button");
+
+remover.className =
+"btn-remover";
+
+remover.textContent =
+"🗑 REMOVER";
+
+
+remover.addEventListener(
+"click",
+() => {
+
+removerItem(
+item.id
+);
+
+});
+
+
+controles.appendChild(
+remover
+);
+
+
+div.appendChild(
+controles
+);
+
+
+listaResumo.appendChild(
+div
+);
+
+});
+
+
+enviarButton.disabled =
+false;
+
+
+atualizarTotal();
+
+}
+
+
+// ==========================================
+// MENSAGEM
+// ==========================================
+
+function mostrarMensagem(
+texto,
+tipo
+) {
+
+mensagem.textContent =
+texto;
+
+mensagem.className =
+tipo;
+
+}
+
+
+// ==========================================
+// ENVIAR PEDIDO
+// ==========================================
+
+enviarButton.addEventListener(
+"click",
+async () => {
+
+if (carrinho.length === 0) {
+return;
+}
+
+
+enviarButton.disabled =
+true;
+
+enviarButton.textContent =
+"ENVIANDO...";
+
+
+mostrarMensagem(
+"Enviando pedido...",
+""
+);
+
+
+const total =
+calcularTotal();
+
+
+const pedido = {
+
+ativo:
+true,
+
+total:
+total,
+
+itens:
+
+carrinho.map(item => ({
+
+tipo:
+item.tipo,
+
+produto:
+removerAcentos(
+item.produto
+),
+
+precoBase:
+item.precoBase,
+
+adicionais:
+
+item.adicionais.map(
+adicional => ({
+
+ingrediente:
+removerAcentos(
+adicional.nome
+),
+
+quantidade:
+adicional.quantidade,
+
+precoUnitario:
+precoAdicional(
+adicional.nome
+),
+
+subtotal:
+precoAdicional(
+adicional.nome
+) *
+adicional.quantidade
+
+})
+),
+
+precoTotal:
+calcularPrecoItem(item),
+
+ingredientes:
+
+item.ingredientes.map(
+ingrediente =>
+removerAcentos(
+ingrediente
+)
+)
+
+}))
+
+};
+
+
+console.log(
+"Pedido:",
+pedido
+);
+
+
+try {
+
+await set(
+ref(
+database,
+"pedido"
+),
+pedido
+);
+
+
+mostrarMensagem(
+"✓ Pedido enviado com sucesso!",
+"sucesso"
+);
+
+
+enviarButton.textContent =
+"PEDIDO ENVIADO";
+
+
+} catch (erro) {
+
+console.error(
+"Erro Firebase:",
+erro
+);
+
+
+mostrarMensagem(
+"✕ Erro ao enviar o pedido.",
+"erro"
+);
+
+
+enviarButton.disabled =
+false;
+
+enviarButton.textContent =
+"ENVIAR PEDIDO";
+
+}
+
+});
+
+
+// ==========================================
+// INICIALIZAR
+// ==========================================
+
+criarCards();
+
+criarBebidas(
+bebidas.refrigerantes,
+"listaRefrigerantes"
+);
+
+criarBebidas(
+bebidas.sucos,
+"listaSucos"
+);
+
+criarBebidas(
+bebidas.aguas,
+"listaAguas"
+);
+
+atualizarResumo();
+
+atualizarContador();
+
+atualizarTotal();
+
+</script>
 
 </body>
-
 </html>
 ```
