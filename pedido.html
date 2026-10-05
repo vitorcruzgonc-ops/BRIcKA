@@ -1,8 +1,3 @@
-# 1. `index.html`
-
-Substitua **todo o seu `index.html` atual** por este código:
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -16,19 +11,18 @@ Substitua **todo o seu `index.html` atual** por este código:
 <title>BRICKA - Pedidos</title>
 
 
-<!-- FIREBASE -->
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-
-<!-- QR CODE -->
+<!-- =====================================================
+     QR CODE
+===================================================== -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 
 <style>
+
+/* =====================================================
+   GERAL
+===================================================== */
 
 * {
     box-sizing: border-box;
@@ -38,7 +32,10 @@ body {
 
     margin: 0;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     background: #f3f3f3;
 
@@ -178,7 +175,10 @@ header p {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fit, minmax(260px, 1fr));
+        repeat(
+            auto-fit,
+            minmax(260px, 1fr)
+        );
 
     gap: 20px;
 
@@ -186,7 +186,7 @@ header p {
 
 
 /* =====================================================
-   CARD
+   CARDS
 ===================================================== */
 
 .card {
@@ -358,6 +358,14 @@ header p {
 
 }
 
+.btn-finalizar {
+
+    background: #0a8f3d;
+
+    color: white;
+
+}
+
 
 /* =====================================================
    CARRINHO
@@ -380,7 +388,8 @@ header p {
 
 .item-carrinho {
 
-    border-bottom: 1px solid #ddd;
+    border-bottom:
+        1px solid #ddd;
 
     padding: 15px 0;
 
@@ -474,7 +483,8 @@ header p {
 
     padding-top: 20px;
 
-    border-top: 2px solid #111;
+    border-top:
+        2px solid #111;
 
     display: flex;
 
@@ -483,16 +493,6 @@ header p {
     font-size: 22px;
 
     font-weight: bold;
-
-}
-
-.finalizar {
-
-    background: #0a8f3d;
-
-    color: white;
-
-    margin-top: 15px;
 
 }
 
@@ -560,7 +560,8 @@ header p {
 
     display: grid;
 
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+        repeat(2, 1fr);
 
     gap: 15px;
 
@@ -611,7 +612,7 @@ header p {
 
 
 /* =====================================================
-   ÁREA PAGAMENTO
+   ÁREAS DE PAGAMENTO
 ===================================================== */
 
 .area-pagamento {
@@ -689,8 +690,6 @@ header p {
 
     padding: 12px;
 
-    word-break: break-all;
-
     font-weight: bold;
 
 }
@@ -703,7 +702,8 @@ header p {
 
     padding: 12px;
 
-    border: 2px solid #ddd;
+    border:
+        2px solid #ddd;
 
     border-radius: 8px;
 
@@ -720,8 +720,6 @@ header p {
     color: #777;
 
     font-size: 13px;
-
-    margin-top: 15px;
 
 }
 
@@ -744,7 +742,8 @@ header p {
 
     font-size: 20px;
 
-    border: 2px solid #ddd;
+    border:
+        2px solid #ddd;
 
     border-radius: 10px;
 
@@ -770,7 +769,7 @@ header p {
 
 
 /* =====================================================
-   SUCESSO
+   TELA FINAL
 ===================================================== */
 
 #telaSucesso {
@@ -787,17 +786,19 @@ header p {
 
     text-align: center;
 
+    padding: 20px;
+
 }
 
 .sucesso-container {
 
     background: white;
 
+    width: 100%;
+
     max-width: 500px;
 
-    margin: 30px;
-
-    padding: 40px 25px;
+    padding: 35px 25px;
 
     border-radius: 20px;
 
@@ -808,17 +809,65 @@ header p {
 
 .sucesso-icone {
 
-    font-size: 70px;
+    font-size: 65px;
+
+}
+
+.sucesso-container h1 {
+
+    margin-bottom: 10px;
 
 }
 
 .numero-pedido {
 
-    font-size: 32px;
+    font-size: 30px;
 
     font-weight: bold;
 
-    margin: 10px 0 20px;
+    margin: 15px 0 25px;
+
+}
+
+
+/* =====================================================
+   QR CODE DE ACOMPANHAMENTO
+===================================================== */
+
+#qrcodeAcompanhamento {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: 25px auto;
+
+    padding: 15px;
+
+    background: white;
+
+    border-radius: 12px;
+
+    width: fit-content;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,0.10);
+
+}
+
+#qrcodeAcompanhamento img {
+
+    display: block;
+
+}
+
+.texto-qr {
+
+    color: #666;
+
+    font-size: 14px;
 
 }
 
@@ -831,13 +880,15 @@ header p {
 
     .opcoes-pagamento {
 
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+            1fr 1fr;
 
     }
 
     .opcao-pagamento {
 
-        padding: 15px 10px;
+        padding:
+            15px 10px;
 
     }
 
@@ -878,31 +929,33 @@ header p {
 
 <header>
 
-<h1>🍔 BRICKA</h1>
+    <h1>🍔 BRICKA</h1>
 
-<p>Monte seu lanche do seu jeito!</p>
+    <p>
+        Monte seu lanche do seu jeito!
+    </p>
 
 </header>
 
 
 <div class="tabs">
 
-<button
-class="tab-button active"
-onclick="abrirAba('lanches', this)">
+    <button
+        class="tab-button active"
+        onclick="abrirAba('lanches', this)">
 
-🍔 LANCHES
+        🍔 LANCHES
 
-</button>
+    </button>
 
 
-<button
-class="tab-button"
-onclick="abrirAba('bebidas', this)">
+    <button
+        class="tab-button"
+        onclick="abrirAba('bebidas', this)">
 
-🥤 BEBIDAS
+        🥤 BEBIDAS
 
-</button>
+    </button>
 
 </div>
 
@@ -910,61 +963,81 @@ onclick="abrirAba('bebidas', this)">
 <div class="container">
 
 
-<div
-id="lanches"
-class="tab-content active">
+    <!-- =================================================
+         LANCHES
+    ================================================== -->
 
-<div
-id="listaLanches"
-class="grid">
-</div>
+    <div
+        id="lanches"
+        class="tab-content active">
 
-</div>
+        <div
+            id="listaLanches"
+            class="grid">
+        </div>
 
-
-<div
-id="bebidas"
-class="tab-content">
-
-<div
-id="listaBebidas"
-class="grid">
-</div>
-
-</div>
+    </div>
 
 
-<div class="carrinho">
+    <!-- =================================================
+         BEBIDAS
+    ================================================== -->
 
-<h2>🛒 Seu pedido</h2>
+    <div
+        id="bebidas"
+        class="tab-content">
 
-<div id="listaCarrinho">
+        <div
+            id="listaBebidas"
+            class="grid">
+        </div>
 
-<p>Nenhum item adicionado.</p>
-
-</div>
-
-
-<div class="total">
-
-<span>Total</span>
-
-<span id="valorTotal">
-R$ 0,00
-</span>
-
-</div>
+    </div>
 
 
-<button
-class="btn finalizar"
-onclick="abrirPagamento()">
+    <!-- =================================================
+         CARRINHO
+    ================================================== -->
 
-💳 FINALIZAR E PAGAR
+    <div class="carrinho">
 
-</button>
+        <h2>
+            🛒 Seu pedido
+        </h2>
 
-</div>
+
+        <div id="listaCarrinho">
+
+            <p>
+                Nenhum item adicionado.
+            </p>
+
+        </div>
+
+
+        <div class="total">
+
+            <span>
+                Total
+            </span>
+
+            <span id="valorTotal">
+                R$ 0,00
+            </span>
+
+        </div>
+
+
+        <button
+            class="btn btn-finalizar"
+            onclick="abrirPagamento()">
+
+            💳 FINALIZAR E PAGAR
+
+        </button>
+
+    </div>
+
 
 </div>
 
@@ -972,297 +1045,331 @@ onclick="abrirPagamento()">
 
 
 <!-- =====================================================
-     PAGAMENTO
+     TELA DE PAGAMENTO
 ===================================================== -->
 
 <div id="telaPagamento">
 
-<div class="pagamento-container">
+    <div class="pagamento-container">
 
 
-<div class="pagamento-header">
+        <div class="pagamento-header">
 
-<h1>💳 Pagamento</h1>
+            <h1>
+                💳 Pagamento
+            </h1>
 
-<p>Total do pedido</p>
+            <p>
+                Total do pedido
+            </p>
 
-<div
-class="valor-pagamento"
-id="totalPagamento">
+            <div
+                class="valor-pagamento"
+                id="totalPagamento">
 
-R$ 0,00
+                R$ 0,00
 
-</div>
+            </div>
 
-</div>
+        </div>
 
 
-<h2>Escolha a forma de pagamento</h2>
+        <h2>
+            Escolha a forma de pagamento
+        </h2>
 
 
-<div class="opcoes-pagamento">
+        <div class="opcoes-pagamento">
 
 
-<div
-class="opcao-pagamento"
-id="opcaoDebito"
-onclick="selecionarPagamento('debito')">
+            <div
+                class="opcao-pagamento"
+                id="opcaoDebito"
+                onclick="selecionarPagamento('debito')">
 
-<div class="opcao-icone">💳</div>
+                <div class="opcao-icone">
+                    💳
+                </div>
 
-<div class="opcao-nome">
-Cartão de débito
-</div>
+                <div class="opcao-nome">
+                    Cartão de débito
+                </div>
 
-</div>
+            </div>
 
 
-<div
-class="opcao-pagamento"
-id="opcaoCredito"
-onclick="selecionarPagamento('credito')">
+            <div
+                class="opcao-pagamento"
+                id="opcaoCredito"
+                onclick="selecionarPagamento('credito')">
 
-<div class="opcao-icone">💳</div>
+                <div class="opcao-icone">
+                    💳
+                </div>
 
-<div class="opcao-nome">
-Cartão de crédito
-</div>
+                <div class="opcao-nome">
+                    Cartão de crédito
+                </div>
 
-</div>
+            </div>
 
 
-<div
-class="opcao-pagamento"
-id="opcaoPix"
-onclick="selecionarPagamento('pix')">
+            <div
+                class="opcao-pagamento"
+                id="opcaoPix"
+                onclick="selecionarPagamento('pix')">
 
-<div class="opcao-icone">📱</div>
+                <div class="opcao-icone">
+                    📱
+                </div>
 
-<div class="opcao-nome">
-PIX
-</div>
+                <div class="opcao-nome">
+                    PIX
+                </div>
 
-</div>
+            </div>
 
 
-<div
-class="opcao-pagamento"
-id="opcaoDinheiro"
-onclick="selecionarPagamento('dinheiro')">
+            <div
+                class="opcao-pagamento"
+                id="opcaoDinheiro"
+                onclick="selecionarPagamento('dinheiro')">
 
-<div class="opcao-icone">💵</div>
+                <div class="opcao-icone">
+                    💵
+                </div>
 
-<div class="opcao-nome">
-Dinheiro
-</div>
+                <div class="opcao-nome">
+                    Dinheiro
+                </div>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
 
-<!-- CARTÃO -->
+        <!-- =================================================
+             CARTÃO
+        ================================================== -->
 
-<div
-id="areaCartao"
-class="area-pagamento">
+        <div
+            id="areaCartao"
+            class="area-pagamento">
 
-<div class="cartao-info">
+            <div class="cartao-info">
 
-<div class="icone">💳</div>
+                <div class="icone">
+                    💳
+                </div>
 
-<h2 id="tituloCartao">
-Pagamento no cartão
-</h2>
+                <h2 id="tituloCartao">
+                    Pagamento no cartão
+                </h2>
 
-<p>
-Realize o pagamento na máquina de cartão.
-</p>
+                <p>
+                    Realize o pagamento
+                    na máquina de cartão.
+                </p>
 
-</div>
+            </div>
 
-</div>
+        </div>
 
 
-<!-- PIX -->
+        <!-- =================================================
+             PIX
+        ================================================== -->
 
-<div
-id="areaPix"
-class="area-pagamento">
+        <div
+            id="areaPix"
+            class="area-pagamento">
 
-<div class="pix-container">
+            <div class="pix-container">
 
-<h2>📱 Pague com PIX</h2>
+                <h2>
+                    📱 Pague com PIX
+                </h2>
 
-<p>
-Escaneie o QR Code com o aplicativo do banco.
-</p>
+                <p>
+                    Escaneie o QR Code
+                    com o aplicativo do banco.
+                </p>
 
 
-<div id="qrcode"></div>
+                <div id="qrcode"></div>
 
 
-<p>
-<strong>Chave PIX</strong>
-</p>
+                <p>
+                    <strong>
+                        Chave PIX
+                    </strong>
+                </p>
 
 
-<div class="chave-pix">
-+55 12 98172-2340
-</div>
+                <div class="chave-pix">
 
+                    +55 12 98172-2340
 
-<p>
-<strong>PIX Copia e Cola</strong>
-</p>
+                </div>
 
 
-<textarea
-id="pixCopiaCola"
-class="pix-copia-cola"
-readonly>
-</textarea>
+                <p>
+                    <strong>
+                        PIX Copia e Cola
+                    </strong>
+                </p>
 
 
-<button
-class="btn btn-principal"
-onclick="copiarPix()">
+                <textarea
+                    id="pixCopiaCola"
+                    class="pix-copia-cola"
+                    readonly>
+                </textarea>
 
-📋 COPIAR PIX
 
-</button>
+                <button
+                    class="btn btn-principal"
+                    onclick="copiarPix()">
 
+                    📋 COPIAR PIX
 
-<p class="pix-aviso">
-O QR Code contém o valor exato do pedido.
-</p>
+                </button>
 
-</div>
 
-</div>
+                <p class="pix-aviso">
 
+                    O QR Code contém
+                    o valor exato do pedido.
 
-<!-- DINHEIRO -->
+                </p>
 
-<div
-id="areaDinheiro"
-class="area-pagamento">
+            </div>
 
-<div class="dinheiro-info">
+        </div>
 
-<h2>💵 Pagamento em dinheiro</h2>
 
-<p>
-Informe quanto o cliente irá entregar.
-</p>
+        <!-- =================================================
+             DINHEIRO
+        ================================================== -->
 
+        <div
+            id="areaDinheiro"
+            class="area-pagamento">
 
-<input
-id="valorRecebido"
-class="campo-dinheiro"
-type="number"
-step="0.01"
-min="0"
-placeholder="Ex.: 50,00"
-oninput="calcularTroco()">
+            <div class="dinheiro-info">
 
+                <h2>
+                    💵 Pagamento em dinheiro
+                </h2>
 
-<div
-id="troco"
-class="troco">
+                <p>
+                    Informe quanto o cliente
+                    irá entregar.
+                </p>
 
-Informe o valor recebido.
 
-</div>
+                <input
+                    id="valorRecebido"
+                    class="campo-dinheiro"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="Ex.: 50,00"
+                    oninput="calcularTroco()">
 
-</div>
 
-</div>
+                <div
+                    id="troco"
+                    class="troco">
 
+                    Informe o valor recebido.
 
-<button
-class="btn"
-style="background:#0a8f3d;color:white"
-onclick="confirmarPagamento()">
+                </div>
 
-✅ CONFIRMAR PAGAMENTO
+            </div>
 
-</button>
+        </div>
 
 
-<button
-class="btn btn-secundario"
-onclick="voltarParaPedido()">
+        <button
+            class="btn"
+            style="
+                background:#0a8f3d;
+                color:white;
+            "
+            onclick="confirmarPagamento()">
 
-← VOLTAR E ALTERAR PEDIDO
+            ✅ CONFIRMAR PAGAMENTO
 
-</button>
+        </button>
 
 
-</div>
+        <button
+            class="btn btn-secundario"
+            onclick="voltarParaPedido()">
+
+            ← VOLTAR E ALTERAR PEDIDO
+
+        </button>
+
+
+    </div>
 
 </div>
 
 
 <!-- =====================================================
-     SUCESSO
+     TELA FINAL
 ===================================================== -->
 
 <div id="telaSucesso">
 
-<div class="sucesso-container">
-
-<div class="sucesso-icone">
-✅
-</div>
+    <div class="sucesso-container">
 
 
-<h1>
-Pedido enviado!
-</h1>
+        <div class="sucesso-icone">
+            ✅
+        </div>
 
 
-<p>
-Seu número de pedido é:
-</p>
+        <h1>
+            Pedido enviado!
+        </h1>
 
 
-<div
-id="numeroPedidoSucesso"
-class="numero-pedido">
-
-#00000000
-
-</div>
+        <p>
+            Seu pedido foi recebido.
+        </p>
 
 
-<p id="resumoPagamento">
-</p>
+        <div
+            id="numeroPedidoSucesso"
+            class="numero-pedido">
+
+            #00000000
+
+        </div>
 
 
-<p>
-Acompanhe o andamento do seu pedido.
-</p>
+        <p>
+            📱 Escaneie o QR Code
+            para acompanhar seu pedido.
+        </p>
 
 
-<button
-class="btn btn-principal"
-onclick="acompanharPedido()">
-
-📱 ACOMPANHAR PEDIDO
-
-</button>
+        <div id="qrcodeAcompanhamento">
+        </div>
 
 
-<button
-class="btn btn-secundario"
-onclick="novoPedido()">
+        <p class="texto-qr">
 
-🍔 FAZER NOVO PEDIDO
+            Acompanhe o andamento
+            do pedido pelo seu celular.
 
-</button>
+        </p>
 
-</div>
+
+    </div>
 
 </div>
 
@@ -1270,46 +1377,26 @@ onclick="novoPedido()">
 <script>
 
 /* =====================================================
-   FIREBASE
+   CONFIGURAÇÃO
 ===================================================== */
 
-const firebaseConfig = {
+/*
+   Usamos o Realtime Database diretamente.
 
-    apiKey: "SUA_API_KEY",
+   Assim não é necessário colocar API KEY
+   ou APP ID neste arquivo.
+*/
 
-    authDomain:
-        "bricka-96d91.firebaseapp.com",
-
-    databaseURL:
-        "https://bricka-96d91-default-rtdb.firebaseio.com",
-
-    projectId:
-        "bricka-96d91",
-
-    storageBucket:
-        "bricka-96d91.firebasestorage.app",
-
-    messagingSenderId:
-        "503488792733",
-
-    appId:
-        "SEU_APP_ID"
-
-};
+const FIREBASE_URL =
+    "https://bricka-96d91-default-rtdb.firebaseio.com";
 
 
-firebase.initializeApp(
-    firebaseConfig
-);
+/*
+   CHAVE PIX
 
-
-const database =
-    firebase.database();
-
-
-/* =====================================================
-   PIX
-===================================================== */
+   Formato utilizado no QR Code:
+   +55 12 98172-2340
+*/
 
 const CHAVE_PIX =
     "+5512981722340";
@@ -1321,184 +1408,195 @@ const CHAVE_PIX =
 
 const lanches = [
 
-{
-    chave: "x-salada",
-    nome: "X-SALADA",
-    emoji: "🍔",
-    preco: 15,
-    ingredientes: [
-        "Pão",
-        "Hambúrguer",
-        "Queijo",
-        "Presunto",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
+    {
+        chave: "x-salada",
+        nome: "X-SALADA",
+        emoji: "🍔",
+        preco: 15,
 
-{
-    chave: "x-bacon",
-    nome: "X-BACON",
-    emoji: "🥓",
-    preco: 18,
-    ingredientes: [
-        "Pão",
-        "Hambúrguer",
-        "Queijo",
-        "Bacon",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
+        ingredientes: [
+            "Pão",
+            "Hambúrguer",
+            "Queijo",
+            "Presunto",
+            "Alface",
+            "Tomate",
+            "Milho",
+            "Batata palha",
+            "Molho"
+        ]
+    },
 
-{
-    chave: "x-frango",
-    nome: "X-FRANGO",
-    emoji: "🍗",
-    preco: 16,
-    ingredientes: [
-        "Pão",
-        "Frango",
-        "Queijo",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
 
-{
-    chave: "x-egg",
-    nome: "X-EGG",
-    emoji: "🍳",
-    preco: 17,
-    ingredientes: [
-        "Pão",
-        "Hambúrguer",
-        "Ovo",
-        "Queijo",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
+    {
+        chave: "x-bacon",
+        nome: "X-BACON",
+        emoji: "🥓",
+        preco: 18,
 
-{
-    chave: "x-calabresa",
-    nome: "X-CALABRESA",
-    emoji: "🌭",
-    preco: 18,
-    ingredientes: [
-        "Pão",
-        "Calabresa",
-        "Queijo",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
+        ingredientes: [
+            "Pão",
+            "Hambúrguer",
+            "Queijo",
+            "Bacon",
+            "Alface",
+            "Tomate",
+            "Milho",
+            "Batata palha",
+            "Molho"
+        ]
+    },
 
-{
-    chave: "x-tudo",
-    nome: "X-TUDO",
-    emoji: "🍔",
-    preco: 22,
-    ingredientes: [
-        "Pão",
-        "Hambúrguer",
-        "Bacon",
-        "Presunto",
-        "Ovo",
-        "Queijo",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-}
+
+    {
+        chave: "x-frango",
+        nome: "X-FRANGO",
+        emoji: "🍗",
+        preco: 16,
+
+        ingredientes: [
+            "Pão",
+            "Frango",
+            "Queijo",
+            "Alface",
+            "Tomate",
+            "Milho",
+            "Batata palha",
+            "Molho"
+        ]
+    },
+
+
+    {
+        chave: "x-egg",
+        nome: "X-EGG",
+        emoji: "🍳",
+        preco: 17,
+
+        ingredientes: [
+            "Pão",
+            "Hambúrguer",
+            "Ovo",
+            "Queijo",
+            "Alface",
+            "Tomate",
+            "Milho",
+            "Batata palha",
+            "Molho"
+        ]
+    },
+
+
+    {
+        chave: "x-calabresa",
+        nome: "X-CALABRESA",
+        emoji: "🌭",
+        preco: 18,
+
+        ingredientes: [
+            "Pão",
+            "Calabresa",
+            "Queijo",
+            "Alface",
+            "Tomate",
+            "Milho",
+            "Batata palha",
+            "Molho"
+        ]
+    },
+
+
+    {
+        chave: "x-tudo",
+        nome: "X-TUDO",
+        emoji: "🍔",
+        preco: 22,
+
+        ingredientes: [
+            "Pão",
+            "Hambúrguer",
+            "Bacon",
+            "Presunto",
+            "Ovo",
+            "Queijo",
+            "Alface",
+            "Tomate",
+            "Milho",
+            "Batata palha",
+            "Molho"
+        ]
+    }
 
 ];
 
 
 const bebidas = [
 
-{
-    nome: "Coca-Cola",
-    emoji: "🥤",
-    preco: 6
-},
+    {
+        nome: "Coca-Cola",
+        emoji: "🥤",
+        preco: 6
+    },
 
-{
-    nome: "Coca-Cola Zero",
-    emoji: "🥤",
-    preco: 6
-},
+    {
+        nome: "Coca-Cola Zero",
+        emoji: "🥤",
+        preco: 6
+    },
 
-{
-    nome: "Guaraná",
-    emoji: "🥤",
-    preco: 6
-},
+    {
+        nome: "Guaraná",
+        emoji: "🥤",
+        preco: 6
+    },
 
-{
-    nome: "Fanta Laranja",
-    emoji: "🥤",
-    preco: 6
-},
+    {
+        nome: "Fanta Laranja",
+        emoji: "🥤",
+        preco: 6
+    },
 
-{
-    nome: "Sprite",
-    emoji: "🥤",
-    preco: 6
-},
+    {
+        nome: "Sprite",
+        emoji: "🥤",
+        preco: 6
+    },
 
-{
-    nome: "Suco de Laranja",
-    emoji: "🍊",
-    preco: 7
-},
+    {
+        nome: "Suco de Laranja",
+        emoji: "🍊",
+        preco: 7
+    },
 
-{
-    nome: "Suco de Maracujá",
-    emoji: "🥭",
-    preco: 7
-},
+    {
+        nome: "Suco de Maracujá",
+        emoji: "🥭",
+        preco: 7
+    },
 
-{
-    nome: "Suco de Morango",
-    emoji: "🍓",
-    preco: 7
-},
+    {
+        nome: "Suco de Morango",
+        emoji: "🍓",
+        preco: 7
+    },
 
-{
-    nome: "Suco de Uva",
-    emoji: "🍇",
-    preco: 7
-},
+    {
+        nome: "Suco de Uva",
+        emoji: "🍇",
+        preco: 7
+    },
 
-{
-    nome: "Água Mineral",
-    emoji: "💧",
-    preco: 4
-},
+    {
+        nome: "Água Mineral",
+        emoji: "💧",
+        preco: 4
+    },
 
-{
-    nome: "Água com Gás",
-    emoji: "💧",
-    preco: 4.5
-}
+    {
+        nome: "Água com Gás",
+        emoji: "💧",
+        preco: 4.50
+    }
 
 ];
 
@@ -1515,12 +1613,12 @@ let numeroPedido = null;
 
 
 /* =====================================================
-   PREÇO
+   FORMATAÇÃO
 ===================================================== */
 
 function formatarPreco(valor) {
 
-    return valor.toLocaleString(
+    return Number(valor).toLocaleString(
         "pt-BR",
         {
             style: "currency",
@@ -1537,7 +1635,7 @@ function formatarPreco(valor) {
 
 function removerAcentos(texto) {
 
-    return texto
+    return String(texto)
         .normalize("NFD")
         .replace(
             /[\u0300-\u036f]/g,
@@ -1548,27 +1646,35 @@ function removerAcentos(texto) {
 
 
 /* =====================================================
-   NÚMERO DO PEDIDO
+   GERAR NÚMERO DO PEDIDO
 ===================================================== */
 
 function gerarNumeroPedido() {
 
-    const agora = new Date();
+    const agora =
+        new Date();
+
 
     const hora =
-        agora.getHours()
-        .toString()
-        .padStart(2, "0");
+        agora
+            .getHours()
+            .toString()
+            .padStart(2, "0");
+
 
     const minuto =
-        agora.getMinutes()
-        .toString()
-        .padStart(2, "0");
+        agora
+            .getMinutes()
+            .toString()
+            .padStart(2, "0");
+
 
     const segundo =
-        agora.getSeconds()
-        .toString()
-        .padStart(2, "0");
+        agora
+            .getSeconds()
+            .toString()
+            .padStart(2, "0");
+
 
     const aleatorio =
         Math.floor(
@@ -1576,6 +1682,7 @@ function gerarNumeroPedido() {
         )
         .toString()
         .padStart(2, "0");
+
 
     return (
         hora +
@@ -1588,7 +1695,7 @@ function gerarNumeroPedido() {
 
 
 /* =====================================================
-   PREÇO ADICIONAL
+   PREÇO DOS ADICIONAIS
 ===================================================== */
 
 function precoAdicional(ingrediente) {
@@ -1614,20 +1721,31 @@ function precoAdicional(ingrediente) {
 
 function calcularAdicionais(item) {
 
-    if (!item.adicionais) {
+    if (
+        !item.adicionais
+    ) {
 
         return 0;
 
     }
 
-    return item.adicionais.reduce(
-        (total, adicional) => {
 
-            return total +
-                precoAdicional(
-                    adicional.nome
-                ) *
-                adicional.quantidade;
+    return item.adicionais.reduce(
+        (
+            total,
+            adicional
+        ) => {
+
+            return (
+                total +
+                (
+                    precoAdicional(
+                        adicional.nome
+                    )
+                    *
+                    adicional.quantidade
+                )
+            );
 
         },
         0
@@ -1637,13 +1755,13 @@ function calcularAdicionais(item) {
 
 
 /* =====================================================
-   PREÇO ITEM
+   PREÇO DO ITEM
 ===================================================== */
 
 function calcularPrecoItem(item) {
 
     return (
-        item.precoBase +
+        Number(item.precoBase) +
         calcularAdicionais(item)
     );
 
@@ -1657,10 +1775,15 @@ function calcularPrecoItem(item) {
 function calcularTotal() {
 
     return carrinho.reduce(
-        (total, item) => {
+        (
+            total,
+            item
+        ) => {
 
-            return total +
-                calcularPrecoItem(item);
+            return (
+                total +
+                calcularPrecoItem(item)
+            );
 
         },
         0
@@ -1670,35 +1793,72 @@ function calcularTotal() {
 
 
 /* =====================================================
-   ABAS
+   ABRIR ABA
 ===================================================== */
 
-function abrirAba(nome, botao) {
+function abrirAba(
+    nome,
+    botao
+) {
 
     document
-        .querySelectorAll(".tab-content")
-        .forEach(tab => {
+        .querySelectorAll(
+            ".tab-content"
+        )
+        .forEach(
+            elemento => {
 
-            tab.classList.remove("active");
+                elemento
+                    .classList
+                    .remove("active");
 
-        });
+            }
+        );
 
 
     document
-        .querySelectorAll(".tab-button")
-        .forEach(btn => {
+        .querySelectorAll(
+            ".tab-button"
+        )
+        .forEach(
+            elemento => {
 
-            btn.classList.remove("active");
+                elemento
+                    .classList
+                    .remove("active");
 
-        });
+            }
+        );
 
 
     document
         .getElementById(nome)
-        .classList.add("active");
+        .classList
+        .add("active");
 
 
-    botao.classList.add("active");
+    botao
+        .classList
+        .add("active");
+
+}
+
+
+/* =====================================================
+   CRIAR ID SEGURO
+===================================================== */
+
+function criarIdIngrediente(
+    chave,
+    indice
+) {
+
+    return (
+        "ing-" +
+        chave +
+        "-" +
+        indice
+    );
 
 }
 
@@ -1714,124 +1874,163 @@ function renderizarLanches() {
             "listaLanches"
         );
 
+
     lista.innerHTML = "";
 
 
-    lanches.forEach(lanche => {
-
-        const card =
-            document.createElement("div");
-
-        card.className = "card";
-
-
-        let ingredientesHTML = "";
+    lanches.forEach(
+        (
+            lanche,
+            indiceLanche
+        ) => {
 
 
-        lanche.ingredientes.forEach(
-            ingrediente => {
-
-                ingredientesHTML += `
-
-                <div class="ingrediente">
-
-                    <div
-                    class="ingrediente-esquerda">
-
-                        <input
-                        type="checkbox"
-                        id="${lanche.chave}-${ingrediente}"
-                        checked>
-
-                        <label>
-                        ${ingrediente}
-                        </label>
-
-                    </div>
+            const card =
+                document.createElement(
+                    "div"
+                );
 
 
-                    <div
-                    class="adicional-controle">
-
-                        <button
-                        class="menos"
-                        onclick="alterarAdicional(
-                            '${lanche.chave}',
-                            '${ingrediente}',
-                            -1
-                        )">
-
-                        −
-
-                        </button>
+            card.className =
+                "card";
 
 
-                        <span
-                        class="qtd-adicional"
-                        id="qtd-${lanche.chave}-${ingrediente}">
-
-                        0
-
-                        </span>
+            let ingredientesHTML =
+                "";
 
 
-                        <button
-                        class="mais"
-                        onclick="alterarAdicional(
-                            '${lanche.chave}',
-                            '${ingrediente}',
-                            1
-                        )">
+            lanche.ingredientes
+                .forEach(
+                    (
+                        ingrediente,
+                        indiceIngrediente
+                    ) => {
 
-                        +
+                        const id =
+                            criarIdIngrediente(
+                                lanche.chave,
+                                indiceIngrediente
+                            );
 
-                        </button>
 
-                    </div>
+                        ingredientesHTML += `
+
+                        <div class="ingrediente">
+
+                            <div
+                                class="ingrediente-esquerda">
+
+                                <input
+                                    type="checkbox"
+                                    id="${id}"
+                                    checked>
+
+                                <label
+                                    for="${id}">
+
+                                    ${ingrediente}
+
+                                </label>
+
+                            </div>
+
+
+                            <div
+                                class="adicional-controle">
+
+                                <button
+                                    class="menos"
+                                    onclick="alterarAdicional(
+                                        '${lanche.chave}',
+                                        ${indiceIngrediente},
+                                        -1
+                                    )">
+
+                                    −
+
+                                </button>
+
+
+                                <span
+                                    class="qtd-adicional"
+                                    id="qtd-${lanche.chave}-${indiceIngrediente}">
+
+                                    0
+
+                                </span>
+
+
+                                <button
+                                    class="mais"
+                                    onclick="alterarAdicional(
+                                        '${lanche.chave}',
+                                        ${indiceIngrediente},
+                                        1
+                                    )">
+
+                                    +
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        `;
+
+                    }
+                );
+
+
+            card.innerHTML = `
+
+                <h2>
+
+                    ${lanche.emoji}
+
+                    ${lanche.nome}
+
+                </h2>
+
+
+                <div class="preco">
+
+                    ${formatarPreco(
+                        lanche.preco
+                    )}
 
                 </div>
 
-                `;
 
-            }
-        );
-
-
-        card.innerHTML = `
-
-        <h2>
-            ${lanche.emoji}
-            ${lanche.nome}
-        </h2>
-
-        <div class="preco">
-            ${formatarPreco(lanche.preco)}
-        </div>
-
-        <p>
-            Escolha os ingredientes:
-        </p>
-
-        <div class="ingredientes">
-            ${ingredientesHTML}
-        </div>
-
-        <button
-        class="btn btn-principal"
-        onclick="adicionarLanche(
-            '${lanche.chave}'
-        )">
-
-            ➕ ADICIONAR COMPLETO
-
-        </button>
-
-        `;
+                <p>
+                    Escolha os ingredientes:
+                </p>
 
 
-        lista.appendChild(card);
+                <div class="ingredientes">
 
-    });
+                    ${ingredientesHTML}
+
+                </div>
+
+
+                <button
+                    class="btn btn-principal"
+                    onclick="adicionarLanche(
+                        ${indiceLanche}
+                    )">
+
+                    ➕ ADICIONAR COMPLETO
+
+                </button>
+
+            `;
+
+
+            lista.appendChild(card);
+
+        }
+    );
 
 }
 
@@ -1842,13 +2041,13 @@ function renderizarLanches() {
 
 function alterarAdicional(
     chave,
-    ingrediente,
+    indiceIngrediente,
     variacao
 ) {
 
     const elemento =
         document.getElementById(
-            `qtd-${chave}-${ingrediente}`
+            `qtd-${chave}-${indiceIngrediente}`
         );
 
 
@@ -1858,10 +2057,13 @@ function alterarAdicional(
         ) || 0;
 
 
-    quantidade += variacao;
+    quantidade +=
+        variacao;
 
 
-    if (quantidade < 0) {
+    if (
+        quantidade < 0
+    ) {
 
         quantidade = 0;
 
@@ -1878,73 +2080,82 @@ function alterarAdicional(
    ADICIONAR LANCHE
 ===================================================== */
 
-function adicionarLanche(chave) {
+function adicionarLanche(
+    indiceLanche
+) {
 
     const lanche =
-        lanches.find(
-            item =>
-                item.chave === chave
+        lanches[indiceLanche];
+
+
+    const ingredientesSelecionados =
+        [];
+
+
+    const adicionais =
+        [];
+
+
+    lanche.ingredientes
+        .forEach(
+            (
+                ingrediente,
+                indiceIngrediente
+            ) => {
+
+
+                const checkbox =
+                    document.getElementById(
+                        criarIdIngrediente(
+                            lanche.chave,
+                            indiceIngrediente
+                        )
+                    );
+
+
+                if (
+                    checkbox &&
+                    checkbox.checked
+                ) {
+
+                    ingredientesSelecionados
+                        .push(
+                            ingrediente
+                        );
+
+                }
+
+
+                const quantidadeElemento =
+                    document.getElementById(
+                        `qtd-${lanche.chave}-${indiceIngrediente}`
+                    );
+
+
+                const quantidade =
+                    parseInt(
+                        quantidadeElemento.innerText
+                    ) || 0;
+
+
+                if (
+                    quantidade > 0
+                ) {
+
+                    adicionais.push({
+
+                        nome:
+                            ingrediente,
+
+                        quantidade:
+                            quantidade
+
+                    });
+
+                }
+
+            }
         );
-
-
-    const ingredientesSelecionados = [];
-
-
-    lanche.ingredientes.forEach(
-        ingrediente => {
-
-            const checkbox =
-                document.getElementById(
-                    `${chave}-${ingrediente}`
-                );
-
-
-            if (
-                checkbox &&
-                checkbox.checked
-            ) {
-
-                ingredientesSelecionados
-                    .push(ingrediente);
-
-            }
-
-        }
-    );
-
-
-    const adicionais = [];
-
-
-    lanche.ingredientes.forEach(
-        ingrediente => {
-
-            const elemento =
-                document.getElementById(
-                    `qtd-${chave}-${ingrediente}`
-                );
-
-
-            const quantidade =
-                parseInt(
-                    elemento.innerText
-                ) || 0;
-
-
-            if (quantidade > 0) {
-
-                adicionais.push({
-
-                    nome: ingrediente,
-
-                    quantidade: quantidade
-
-                });
-
-            }
-
-        }
-    );
 
 
     carrinho.push({
@@ -1953,13 +2164,17 @@ function adicionarLanche(chave) {
             Date.now() +
             Math.random(),
 
-        tipo: "lanche",
+        tipo:
+            "lanche",
 
-        chave: lanche.chave,
+        chave:
+            lanche.chave,
 
-        produto: lanche.nome,
+        produto:
+            lanche.nome,
 
-        precoBase: lanche.preco,
+        precoBase:
+            lanche.preco,
 
         ingredientes:
             ingredientesSelecionados,
@@ -1976,7 +2191,7 @@ function adicionarLanche(chave) {
 
 
 /* =====================================================
-   BEBIDAS
+   RENDERIZAR BEBIDAS
 ===================================================== */
 
 function renderizarBebidas() {
@@ -1991,35 +2206,51 @@ function renderizarBebidas() {
 
 
     bebidas.forEach(
-        (bebida, indice) => {
+        (
+            bebida,
+            indice
+        ) => {
+
 
             const card =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
-            card.className = "card";
+            card.className =
+                "card";
 
 
             card.innerHTML = `
 
-            <h2>
-                ${bebida.emoji}
-                ${bebida.nome}
-            </h2>
+                <h2>
 
-            <div class="preco">
-                ${formatarPreco(bebida.preco)}
-            </div>
+                    ${bebida.emoji}
 
-            <button
-            class="btn btn-principal"
-            onclick="adicionarBebida(
-                ${indice}
-            )">
+                    ${bebida.nome}
 
-                ➕ ADICIONAR
+                </h2>
 
-            </button>
+
+                <div class="preco">
+
+                    ${formatarPreco(
+                        bebida.preco
+                    )}
+
+                </div>
+
+
+                <button
+                    class="btn btn-principal"
+                    onclick="adicionarBebida(
+                        ${indice}
+                    )">
+
+                    ➕ ADICIONAR
+
+                </button>
 
             `;
 
@@ -2036,7 +2267,9 @@ function renderizarBebidas() {
    ADICIONAR BEBIDA
 ===================================================== */
 
-function adicionarBebida(indice) {
+function adicionarBebida(
+    indice
+) {
 
     const bebida =
         bebidas[indice];
@@ -2048,15 +2281,20 @@ function adicionarBebida(indice) {
             Date.now() +
             Math.random(),
 
-        tipo: "bebida",
+        tipo:
+            "bebida",
 
-        produto: bebida.nome,
+        produto:
+            bebida.nome,
 
-        precoBase: bebida.preco,
+        precoBase:
+            bebida.preco,
 
-        ingredientes: [],
+        ingredientes:
+            [],
 
-        adicionais: []
+        adicionais:
+            []
 
     });
 
@@ -2102,10 +2340,16 @@ function atualizarCarrinho() {
 
 
     carrinho.forEach(
-        (item, indice) => {
+        (
+            item,
+            indice
+        ) => {
+
 
             const div =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             div.className =
@@ -2114,10 +2358,12 @@ function atualizarCarrinho() {
 
             const ingredientes =
                 item.ingredientes
-                    ?.join(", ") || "";
+                    ?.join(", ") ||
+                "";
 
 
-            let adicionaisHTML = "";
+            let adicionaisHTML =
+                "";
 
 
             if (
@@ -2131,8 +2377,16 @@ function atualizarCarrinho() {
                             adicional => {
 
                                 return `
-                                ${adicional.quantidade}x
-                                ${adicional.nome}
+                                    ${adicional.quantidade}x
+                                    ${adicional.nome}
+                                    -
+                                    ${formatarPreco(
+                                        precoAdicional(
+                                            adicional.nome
+                                        )
+                                        *
+                                        adicional.quantidade
+                                    )}
                                 `;
 
                             }
@@ -2144,106 +2398,109 @@ function atualizarCarrinho() {
 
             div.innerHTML = `
 
-            <div class="item-topo">
-
-                <strong>
-                    ${item.produto}
-                </strong>
-
-                <span class="item-preco">
-
-                    ${formatarPreco(
-                        calcularPrecoItem(item)
-                    )}
-
-                </span>
-
-            </div>
-
-
-            ${
-                ingredientes
-                ?
-                `
-                <div class="item-ingredientes">
+                <div class="item-topo">
 
                     <strong>
-                    Ingredientes:
+                        ${item.produto}
                     </strong>
 
-                    ${ingredientes}
+
+                    <span class="item-preco">
+
+                        ${formatarPreco(
+                            calcularPrecoItem(item)
+                        )}
+
+                    </span>
 
                 </div>
-                `
-                :
-                ""
-            }
-
-
-            ${
-                adicionaisHTML
-                ?
-                `
-                <div class="item-adicionais">
-
-                    <strong>
-                    Adicionais:
-                    </strong>
-
-                    <br>
-
-                    ${adicionaisHTML}
-
-                </div>
-                `
-                :
-                ""
-            }
-
-
-            <div class="acoes-item">
-
-                <button
-                class="duplicar"
-                onclick="duplicarItem(
-                    ${indice}
-                )">
-
-                    ➕
-
-                </button>
 
 
                 ${
-                    item.tipo === "lanche"
+                    ingredientes
                     ?
                     `
-                    <button
-                    class="editar"
-                    onclick="editarItem(
-                        ${indice}
-                    )">
+                    <div
+                        class="item-ingredientes">
 
-                        ✏ EDITAR
+                        <strong>
+                            Ingredientes:
+                        </strong>
 
-                    </button>
+                        ${ingredientes}
+
+                    </div>
                     `
                     :
                     ""
                 }
 
 
-                <button
-                class="remover"
-                onclick="removerItem(
-                    ${indice}
-                )">
+                ${
+                    adicionaisHTML
+                    ?
+                    `
+                    <div
+                        class="item-adicionais">
 
-                    🗑 REMOVER
+                        <strong>
+                            Adicionais:
+                        </strong>
 
-                </button>
+                        <br>
 
-            </div>
+                        ${adicionaisHTML}
+
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+
+                <div class="acoes-item">
+
+                    <button
+                        class="duplicar"
+                        onclick="duplicarItem(
+                            ${indice}
+                        )">
+
+                        ➕
+
+                    </button>
+
+
+                    ${
+                        item.tipo === "lanche"
+                        ?
+                        `
+                        <button
+                            class="editar"
+                            onclick="editarItem(
+                                ${indice}
+                            )">
+
+                            ✏ EDITAR
+
+                        </button>
+                        `
+                        :
+                        ""
+                    }
+
+
+                    <button
+                        class="remover"
+                        onclick="removerItem(
+                            ${indice}
+                        )">
+
+                        🗑 REMOVER
+
+                    </button>
+
+                </div>
 
             `;
 
@@ -2260,7 +2517,9 @@ function atualizarCarrinho() {
    DUPLICAR
 ===================================================== */
 
-function duplicarItem(indice) {
+function duplicarItem(
+    indice
+) {
 
     const copia =
         JSON.parse(
@@ -2275,7 +2534,10 @@ function duplicarItem(indice) {
         Math.random();
 
 
-    carrinho.push(copia);
+    carrinho.push(
+        copia
+    );
+
 
     atualizarCarrinho();
 
@@ -2286,12 +2548,15 @@ function duplicarItem(indice) {
    REMOVER
 ===================================================== */
 
-function removerItem(indice) {
+function removerItem(
+    indice
+) {
 
     carrinho.splice(
         indice,
         1
     );
+
 
     atualizarCarrinho();
 
@@ -2302,7 +2567,9 @@ function removerItem(indice) {
    EDITAR
 ===================================================== */
 
-function editarItem(indice) {
+function editarItem(
+    indice
+) {
 
     const item =
         carrinho[indice];
@@ -2332,57 +2599,65 @@ function editarItem(indice) {
     }
 
 
-    lanche.ingredientes.forEach(
-        ingrediente => {
+    lanche.ingredientes
+        .forEach(
+            (
+                ingrediente,
+                indiceIngrediente
+            ) => {
 
-            const checkbox =
-                document.getElementById(
-                    `${lanche.chave}-${ingrediente}`
-                );
+
+                const checkbox =
+                    document.getElementById(
+                        criarIdIngrediente(
+                            lanche.chave,
+                            indiceIngrediente
+                        )
+                    );
 
 
-            if (checkbox) {
+                if (checkbox) {
 
-                checkbox.checked =
-                    item.ingredientes
-                        .includes(
+                    checkbox.checked =
+                        item.ingredientes
+                            .includes(
+                                ingrediente
+                            );
+
+                }
+
+
+                const adicional =
+                    item.adicionais?.find(
+                        adicional =>
+                            adicional.nome ===
                             ingrediente
-                        );
+                    );
+
+
+                const quantidade =
+                    adicional
+                    ?
+                    adicional.quantidade
+                    :
+                    0;
+
+
+                const elemento =
+                    document.getElementById(
+                        `qtd-${lanche.chave}-${indiceIngrediente}`
+                    );
+
+
+                if (elemento) {
+
+                    elemento.innerText =
+                        quantidade;
+
+                }
 
             }
-
-
-            const adicional =
-                item.adicionais?.find(
-                    a =>
-                        a.nome ===
-                        ingrediente
-                );
-
-
-            const qtd =
-                adicional
-                ?
-                adicional.quantidade
-                :
-                0;
-
-
-            const elemento =
-                document.getElementById(
-                    `qtd-${lanche.chave}-${ingrediente}`
-                );
-
-
-            if (elemento) {
-
-                elemento.innerText =
-                    qtd;
-
-            }
-
-        }
-    );
+        );
 
 
     carrinho.splice(
@@ -2395,15 +2670,18 @@ function editarItem(indice) {
 
 
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
 
 }
 
 
 /* =====================================================
-   PAGAMENTO
+   ABRIR PAGAMENTO
 ===================================================== */
 
 function abrirPagamento() {
@@ -2442,15 +2720,18 @@ function abrirPagamento() {
 
 
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
 
 }
 
 
 /* =====================================================
-   VOLTAR
+   VOLTAR PARA O PEDIDO
 ===================================================== */
 
 function voltarParaPedido() {
@@ -2466,6 +2747,15 @@ function voltarParaPedido() {
     ).style.display =
         "block";
 
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
 }
 
 
@@ -2473,7 +2763,9 @@ function voltarParaPedido() {
    SELECIONAR PAGAMENTO
 ===================================================== */
 
-function selecionarPagamento(tipo) {
+function selecionarPagamento(
+    tipo
+) {
 
     pagamentoSelecionado =
         tipo;
@@ -2486,7 +2778,8 @@ function selecionarPagamento(tipo) {
         .forEach(
             elemento => {
 
-                elemento.classList
+                elemento
+                    .classList
                     .remove(
                         "selecionada"
                     );
@@ -2495,26 +2788,31 @@ function selecionarPagamento(tipo) {
         );
 
 
-    const nomes = {
+    const mapa = {
 
-        debito: "Debito",
+        debito:
+            "opcaoDebito",
 
-        credito: "Credito",
+        credito:
+            "opcaoCredito",
 
-        pix: "Pix",
+        pix:
+            "opcaoPix",
 
-        dinheiro: "Dinheiro"
+        dinheiro:
+            "opcaoDinheiro"
 
     };
 
 
     document
         .getElementById(
-            "opcao" +
-            nomes[tipo]
+            mapa[tipo]
         )
         .classList
-        .add("selecionada");
+        .add(
+            "selecionada"
+        );
 
 
     document
@@ -2524,8 +2822,11 @@ function selecionarPagamento(tipo) {
         .forEach(
             area => {
 
-                area.classList
-                    .remove("active");
+                area
+                    .classList
+                    .remove(
+                        "active"
+                    );
 
             }
         );
@@ -2541,12 +2842,16 @@ function selecionarPagamento(tipo) {
                 "areaCartao"
             )
             .classList
-            .add("active");
+            .add(
+                "active"
+            );
 
 
-        document.getElementById(
-            "tituloCartao"
-        ).innerText =
+        document
+            .getElementById(
+                "tituloCartao"
+            )
+            .innerText =
 
             tipo === "debito"
 
@@ -2559,29 +2864,37 @@ function selecionarPagamento(tipo) {
     }
 
 
-    if (tipo === "pix") {
+    if (
+        tipo === "pix"
+    ) {
 
         document
             .getElementById(
                 "areaPix"
             )
             .classList
-            .add("active");
+            .add(
+                "active"
+            );
 
 
-        gerarQRCode();
+        gerarQRCodePix();
 
     }
 
 
-    if (tipo === "dinheiro") {
+    if (
+        tipo === "dinheiro"
+    ) {
 
         document
             .getElementById(
                 "areaDinheiro"
             )
             .classList
-            .add("active");
+            .add(
+                "active"
+            );
 
     }
 
@@ -2589,24 +2902,39 @@ function selecionarPagamento(tipo) {
 
 
 /* =====================================================
-   PIX
+   PIX - CAMPO
 ===================================================== */
 
-function campoPix(id, valor) {
+function campoPix(
+    id,
+    valor
+) {
 
     return (
         id +
-        String(valor.length)
-            .padStart(2, "0") +
+        String(
+            valor.length
+        )
+        .padStart(
+            2,
+            "0"
+        ) +
         valor
     );
 
 }
 
 
-function crc16(payload) {
+/* =====================================================
+   PIX - CRC16
+===================================================== */
 
-    let crc = 0xFFFF;
+function crc16(
+    payload
+) {
+
+    let crc =
+        0xFFFF;
 
 
     for (
@@ -2627,7 +2955,8 @@ function crc16(payload) {
         ) {
 
             if (
-                (crc & 0x8000) !== 0
+                (crc & 0x8000)
+                !== 0
             ) {
 
                 crc =
@@ -2640,6 +2969,7 @@ function crc16(payload) {
                     0xFFFF;
 
             }
+
             else {
 
                 crc =
@@ -2657,10 +2987,17 @@ function crc16(payload) {
     return crc
         .toString(16)
         .toUpperCase()
-        .padStart(4, "0");
+        .padStart(
+            4,
+            "0"
+        );
 
 }
 
+
+/* =====================================================
+   PIX - PAYLOAD
+===================================================== */
 
 function gerarPayloadPix(
     chave,
@@ -2760,11 +3097,14 @@ function gerarPayloadPix(
         );
 
 
-    payload += "6304";
+    payload +=
+        "6304";
 
 
     payload +=
-        crc16(payload);
+        crc16(
+            payload
+        );
 
 
     return payload;
@@ -2772,7 +3112,11 @@ function gerarPayloadPix(
 }
 
 
-function gerarQRCode() {
+/* =====================================================
+   PIX - QR CODE
+===================================================== */
+
+function gerarQRCodePix() {
 
     const elemento =
         document.getElementById(
@@ -2780,10 +3124,11 @@ function gerarQRCode() {
         );
 
 
-    elemento.innerHTML = "";
+    elemento.innerHTML =
+        "";
 
 
-    const codigoPix =
+    const payload =
         gerarPayloadPix(
             CHAVE_PIX,
             calcularTotal()
@@ -2793,11 +3138,19 @@ function gerarQRCode() {
     new QRCode(
         elemento,
         {
-            text: codigoPix,
-            width: 220,
-            height: 220,
+
+            text:
+                payload,
+
+            width:
+                220,
+
+            height:
+                220,
+
             correctLevel:
                 QRCode.CorrectLevel.M
+
         }
     );
 
@@ -2805,12 +3158,60 @@ function gerarQRCode() {
     document.getElementById(
         "pixCopiaCola"
     ).value =
-        codigoPix;
+        payload;
 
 }
 
 
+/* =====================================================
+   COPIAR PIX
+===================================================== */
+
 function copiarPix() {
+
+    const campo =
+        document.getElementById(
+            "pixCopiaCola"
+        );
+
+
+    if (
+        navigator.clipboard
+    ) {
+
+        navigator.clipboard
+            .writeText(
+                campo.value
+            )
+            .then(
+                () => {
+
+                    alert(
+                        "✅ PIX Copia e Cola copiado!"
+                    );
+
+                }
+            )
+            .catch(
+                () => {
+
+                    copiarPixAlternativo();
+
+                }
+            );
+
+    }
+
+    else {
+
+        copiarPixAlternativo();
+
+    }
+
+}
+
+
+function copiarPixAlternativo() {
 
     const campo =
         document.getElementById(
@@ -2821,32 +3222,20 @@ function copiarPix() {
     campo.select();
 
 
-    navigator.clipboard
-        .writeText(
-            campo.value
-        )
-        .then(() => {
+    document.execCommand(
+        "copy"
+    );
 
-            alert(
-                "✅ PIX Copia e Cola copiado!"
-            );
 
-        })
-        .catch(() => {
-
-            document.execCommand("copy");
-
-            alert(
-                "✅ PIX Copia e Cola copiado!"
-            );
-
-        });
+    alert(
+        "✅ PIX Copia e Cola copiado!"
+    );
 
 }
 
 
 /* =====================================================
-   DINHEIRO
+   TROCO
 ===================================================== */
 
 function calcularTroco() {
@@ -2869,34 +3258,48 @@ function calcularTroco() {
         );
 
 
-    if (recebido === 0) {
+    if (
+        recebido <= 0
+    ) {
 
         elemento.innerText =
             "Informe o valor recebido.";
 
-        elemento.classList
-            .remove("erro");
+        elemento
+            .classList
+            .remove(
+                "erro"
+            );
 
         return;
 
     }
 
 
-    if (recebido < total) {
+    if (
+        recebido < total
+    ) {
 
         elemento.innerText =
             "Valor insuficiente.";
 
-        elemento.classList
-            .add("erro");
+
+        elemento
+            .classList
+            .add(
+                "erro"
+            );
 
         return;
 
     }
 
 
-    elemento.classList
-        .remove("erro");
+    elemento
+        .classList
+        .remove(
+            "erro"
+        );
 
 
     elemento.innerText =
@@ -2912,9 +3315,11 @@ function calcularTroco() {
    CONFIRMAR PAGAMENTO
 ===================================================== */
 
-function confirmarPagamento() {
+async function confirmarPagamento() {
 
-    if (!pagamentoSelecionado) {
+    if (
+        !pagamentoSelecionado
+    ) {
 
         alert(
             "Selecione uma forma de pagamento."
@@ -2929,14 +3334,30 @@ function confirmarPagamento() {
         calcularTotal();
 
 
-    numeroPedido =
-        gerarNumeroPedido();
+    if (
+        total <= 0
+    ) {
+
+        alert(
+            "O pedido está vazio."
+        );
+
+        return;
+
+    }
 
 
-    let valorRecebido = null;
+    let valorRecebido =
+        null;
 
-    let troco = null;
 
+    let troco =
+        null;
+
+
+    /*
+       DINHEIRO
+    */
 
     if (
         pagamentoSelecionado ===
@@ -2971,7 +3392,20 @@ function confirmarPagamento() {
     }
 
 
-    let nomePagamento = "";
+    /*
+       GERA NÚMERO
+    */
+
+    numeroPedido =
+        gerarNumeroPedido();
+
+
+    /*
+       NOME DO PAGAMENTO
+    */
+
+    let nomePagamento =
+        "";
 
 
     switch (
@@ -3012,14 +3446,88 @@ function confirmarPagamento() {
     }
 
 
-    /* =================================================
-       CRIA PEDIDO
-    ================================================= */
+    /*
+       MONTA ITENS
+    */
 
+    const itens =
+        carrinho.map(
+            item => {
+
+                return {
+
+                    tipo:
+                        item.tipo,
+
+                    produto:
+                        removerAcentos(
+                            item.produto
+                        ),
+
+                    precoBase:
+                        item.precoBase,
+
+                    precoTotal:
+                        calcularPrecoItem(
+                            item
+                        ),
+
+                    ingredientes:
+                        item.ingredientes
+                            .map(
+                                ingrediente =>
+                                    removerAcentos(
+                                        ingrediente
+                                    )
+                            ),
+
+                    adicionais:
+                        item.adicionais
+                            .map(
+                                adicional => {
+
+                                    const preco =
+                                        precoAdicional(
+                                            adicional.nome
+                                        );
+
+
+                                    return {
+
+                                        ingrediente:
+                                            removerAcentos(
+                                                adicional.nome
+                                            ),
+
+                                        quantidade:
+                                            adicional.quantidade,
+
+                                        precoUnitario:
+                                            preco,
+
+                                        subtotal:
+                                            preco *
+                                            adicional.quantidade
+
+                                    };
+
+                                }
+                            )
+
+                };
+
+            }
+        );
+
+
+    /*
+       PEDIDO PRINCIPAL
+    */
 
     const pedido = {
 
-        ativo: true,
+        ativo:
+            true,
 
         numero:
             numeroPedido,
@@ -3044,70 +3552,14 @@ function confirmarPagamento() {
         },
 
         itens:
-
-            carrinho.map(
-                item => ({
-
-                    tipo:
-                        item.tipo,
-
-                    produto:
-                        removerAcentos(
-                            item.produto
-                        ),
-
-                    precoBase:
-                        item.precoBase,
-
-                    precoTotal:
-                        calcularPrecoItem(
-                            item
-                        ),
-
-                    ingredientes:
-
-                        item.ingredientes
-                            .map(
-                                ingrediente =>
-                                    removerAcentos(
-                                        ingrediente
-                                    )
-                            ),
-
-                    adicionais:
-
-                        item.adicionais
-                            .map(
-                                adicional => ({
-
-                                    ingrediente:
-                                        removerAcentos(
-                                            adicional.nome
-                                        ),
-
-                                    quantidade:
-                                        adicional.quantidade,
-
-                                    precoUnitario:
-                                        precoAdicional(
-                                            adicional.nome
-                                        ),
-
-                                    subtotal:
-                                        precoAdicional(
-                                            adicional.nome
-                                        )
-                                        *
-                                        adicional.quantidade
-
-                                })
-                            )
-
-                })
-            )
+            itens
 
     };
 
+
+    /*
+       DADOS EXTRAS DO PAGAMENTO
+    */
 
     if (
         pagamentoSelecionado ===
@@ -3138,137 +3590,258 @@ function confirmarPagamento() {
     }
 
 
-    /* =================================================
-       ENVIA PARA /PEDIDOS
-    ================================================= */
+    try {
 
+        /*
+           =================================================
+           1. SALVA O PEDIDO PRINCIPAL
+           =================================================
+        */
 
-    database
-        .ref("pedidos")
-        .child(numeroPedido)
-        .set(pedido)
+        const resposta =
+            await fetch(
+                FIREBASE_URL +
+                "/pedidos/" +
+                encodeURIComponent(
+                    numeroPedido
+                ) +
+                ".json",
+                {
 
-        .then(() => {
+                    method:
+                        "PUT",
 
+                    headers: {
 
-            document.getElementById(
-                "numeroPedidoSucesso"
-            ).innerText =
-                "#" +
-                numeroPedido;
+                        "Content-Type":
+                            "application/json"
 
+                    },
 
-            let mensagem =
-                "Pagamento: " +
-                nomePagamento;
+                    body:
+                        JSON.stringify(
+                            pedido
+                        )
 
-
-            if (
-                pagamentoSelecionado ===
-                "dinheiro"
-            ) {
-
-                mensagem +=
-                    "<br><br>" +
-
-                    "Total: " +
-                    formatarPreco(total) +
-
-                    "<br>" +
-
-                    "Troco: " +
-                    formatarPreco(troco);
-
-            }
-
-
-            document.getElementById(
-                "resumoPagamento"
-            ).innerHTML =
-                mensagem;
-
-
-            document.getElementById(
-                "telaPagamento"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "telaSucesso"
-            ).style.display =
-                "flex";
-
-        })
-
-        .catch(erro => {
-
-            console.error(erro);
-
-            alert(
-                "❌ Erro ao enviar o pedido."
+                }
             );
 
+
+        if (
+            !resposta.ok
+        ) {
+
+            throw new Error(
+                "Erro ao salvar pedido."
+            );
+
+        }
+
+
+        /*
+           =================================================
+           2. MANTÉM COMPATIBILIDADE
+              COM O ESP32
+           =================================================
+
+           O ESP32 que você já possui
+           pode continuar lendo /pedido.
+        */
+
+        const respostaESP =
+            await fetch(
+                FIREBASE_URL +
+                "/pedido.json",
+                {
+
+                    method:
+                        "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            pedido
+                        )
+
+                }
+            );
+
+
+        if (
+            !respostaESP.ok
+        ) {
+
+            console.warn(
+                "Pedido salvo em /pedidos, mas não foi possível atualizar /pedido."
+            );
+
+        }
+
+
+        /*
+           =================================================
+           3. MOSTRA NÚMERO
+           =================================================
+        */
+
+        document.getElementById(
+            "numeroPedidoSucesso"
+        ).innerText =
+            "#" +
+            numeroPedido;
+
+
+        /*
+           =================================================
+           4. GERA QR CODE DE ACOMPANHAMENTO
+           =================================================
+        */
+
+        gerarQRCodeAcompanhamento(
+            numeroPedido
+        );
+
+
+        /*
+           =================================================
+           5. TROCA DE TELA
+           =================================================
+        */
+
+        document.getElementById(
+            "telaPagamento"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "telaSucesso"
+        ).style.display =
+            "flex";
+
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
         });
+
+
+    }
+
+    catch (
+        erro
+    ) {
+
+        console.error(
+            erro
+        );
+
+
+        alert(
+            "❌ Não foi possível enviar o pedido. Verifique sua conexão e tente novamente."
+        );
+
+    }
 
 }
 
 
 /* =====================================================
-   ACOMPANHAR PEDIDO
+   QR CODE DE ACOMPANHAMENTO
 ===================================================== */
 
-function acompanharPedido() {
+function gerarQRCodeAcompanhamento(
+    numero
+) {
 
-    if (!numeroPedido) {
+    const elemento =
+        document.getElementById(
+            "qrcodeAcompanhamento"
+        );
+
+
+    if (!elemento) {
 
         return;
 
     }
 
 
-    window.location.href =
-        "acompanhar.html?pedido=" +
-        encodeURIComponent(
-            numeroPedido
+    elemento.innerHTML =
+        "";
+
+
+    /*
+       Pega automaticamente o endereço
+       atual do GitHub Pages.
+
+       Exemplo:
+
+       https://usuario.github.io/BRICKA/
+
+       vira:
+
+       https://usuario.github.io/BRICKA/
+       acompanhar.html?pedido=123
+    */
+
+    const caminho =
+        window.location.pathname;
+
+
+    const indiceBarra =
+        caminho.lastIndexOf("/");
+
+
+    const pasta =
+        caminho.substring(
+            0,
+            indiceBarra + 1
         );
 
-}
+
+    const link =
+        window.location.origin +
+        pasta +
+        "acompanhar.html?pedido=" +
+        encodeURIComponent(
+            numero
+        );
 
 
-/* =====================================================
-   NOVO PEDIDO
-===================================================== */
-
-function novoPedido() {
-
-    carrinho = [];
-
-    pagamentoSelecionado =
-        null;
-
-    numeroPedido = null;
+    console.log(
+        "QR Code de acompanhamento:",
+        link
+    );
 
 
-    atualizarCarrinho();
+    new QRCode(
+        elemento,
+        {
 
+            text:
+                link,
 
-    document.getElementById(
-        "telaSucesso"
-    ).style.display =
-        "none";
+            width:
+                230,
 
+            height:
+                230,
 
-    document.getElementById(
-        "telaPrincipal"
-    ).style.display =
-        "block";
+            correctLevel:
+                QRCode.CorrectLevel.M
 
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+        }
+    );
 
 }
 
@@ -3285,2063 +3858,7 @@ atualizarCarrinho();
 
 </script>
 
-</body>
-
-</html>
-```
-
----
-
-# 2. `acompanhar.html`
-
-Agora crie **um segundo arquivo** chamado exatamente:
-
-```text
-acompanhar.html
-```
-
-Cole todo este código nele:
-
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>BRICKA - Acompanhar Pedido</title>
-
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-
-    margin: 0;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #f3f3f3;
-
-    color: #222;
-
-}
-
-
-header {
-
-    background: #111;
-
-    color: white;
-
-    text-align: center;
-
-    padding: 25px;
-
-}
-
-header h1 {
-
-    margin: 0;
-
-    font-size: 30px;
-
-}
-
-
-.container {
-
-    max-width: 650px;
-
-    margin: auto;
-
-    padding: 20px;
-
-}
-
-
-.busca {
-
-    background: white;
-
-    padding: 25px;
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,0.10);
-
-    text-align: center;
-
-}
-
-
-.busca input {
-
-    width: 100%;
-
-    padding: 15px;
-
-    border:
-        2px solid #ddd;
-
-    border-radius: 10px;
-
-    font-size: 20px;
-
-    text-align: center;
-
-    margin-top: 10px;
-
-}
-
-
-button {
-
-    width: 100%;
-
-    padding: 15px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    margin-top: 10px;
-
-    background: #111;
-
-    color: white;
-
-    font-size: 17px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-}
-
-
-#pedido {
-
-    display: none;
-
-    margin-top: 20px;
-
-}
-
-
-.card {
-
-    background: white;
-
-    border-radius: 18px;
-
-    padding: 25px;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,0.10);
-
-}
-
-
-.numero {
-
-    text-align: center;
-
-    font-size: 26px;
-
-    font-weight: bold;
-
-}
-
-
-.status-atual {
-
-    text-align: center;
-
-    margin: 25px 0;
-
-}
-
-
-.status-icone {
-
-    font-size: 70px;
-
-}
-
-
-.status-titulo {
-
-    font-size: 26px;
-
-    font-weight: bold;
-
-    margin-top: 10px;
-
-}
-
-
-.status-descricao {
-
-    color: #666;
-
-    margin-top: 8px;
-
-}
-
-
-/* =====================================================
-   PROGRESSO
-===================================================== */
-
-.progresso {
-
-    margin-top: 30px;
-
-}
-
-
-.etapa {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    padding: 15px 0;
-
-    color: #999;
-
-}
-
-
-.etapa.ativa {
-
-    color: #111;
-
-    font-weight: bold;
-
-}
-
-
-.etapa.concluida {
-
-    color: #0a8f3d;
-
-}
-
-
-.circulo {
-
-    width: 45px;
-
-    height: 45px;
-
-    min-width: 45px;
-
-    border-radius: 50%;
-
-    background: #ddd;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 22px;
-
-}
-
-
-.etapa.ativa .circulo {
-
-    background: #111;
-
-    color: white;
-
-}
-
-
-.etapa.concluida .circulo {
-
-    background: #0a8f3d;
-
-    color: white;
-
-}
-
-
-.linha {
-
-    height: 25px;
-
-    width: 3px;
-
-    background: #ddd;
-
-    margin-left: 21px;
-
-}
-
-
-.itens {
-
-    border-top:
-        1px solid #ddd;
-
-    margin-top: 20px;
-
-    padding-top: 20px;
-
-}
-
-
-.item {
-
-    padding: 10px 0;
-
-    border-bottom:
-        1px solid #eee;
-
-}
-
-
-.total {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    margin-top: 20px;
-
-}
-
-
-.erro {
-
-    background: #ffe5e5;
-
-    color: #b00000;
-
-    padding: 15px;
-
-    border-radius: 10px;
-
-    margin-top: 20px;
-
-    text-align: center;
-
-}
-
-
-@media(max-width:600px) {
-
-    .container {
-
-        padding: 15px;
-
-    }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<header>
-
-<h1>🍔 BRICKA</h1>
-
-<p>Acompanhe seu pedido</p>
-
-</header>
-
-
-<div class="container">
-
-
-<div class="busca">
-
-<h2>
-🔎 Encontrar pedido
-</h2>
-
-<p>
-Digite o número do seu pedido:
-</p>
-
-
-<input
-id="numeroPedido"
-type="text"
-inputmode="numeric"
-placeholder="Ex.: 0835274105">
-
-
-<button
-onclick="buscarPedido()">
-
-ACOMPANHAR PEDIDO
-
-</button>
-
-</div>
-
-
-<div id="mensagemErro"></div>
-
-
-<div id="pedido">
-
-<div class="card">
-
-
-<div
-class="numero"
-id="numeroExibido">
-#00000000
-</div>
-
-
-<div class="status-atual">
-
-
-<div
-class="status-icone"
-id="statusIcone">
-🕐
-</div>
-
-
-<div
-class="status-titulo"
-id="statusTitulo">
-Aguardando
-</div>
-
-
-<div
-class="status-descricao"
-id="statusDescricao">
-Aguarde a atualização do seu pedido.
-</div>
-
-
-</div>
-
-
-<div class="progresso">
-
-
-<!-- APROVADO -->
-
-<div
-id="etapaAprovado"
-class="etapa">
-
-<div class="circulo">
-✓
-</div>
-
-<div>
-Pedido aprovado
-</div>
-
-</div>
-
-
-<div class="linha"></div>
-
-
-<!-- PREPARANDO -->
-
-<div
-id="etapaPreparando"
-class="etapa">
-
-<div class="circulo">
-👨‍🍳
-</div>
-
-<div>
-Em preparação
-</div>
-
-</div>
-
-
-<div class="linha"></div>
-
-
-<!-- PRONTO -->
-
-<div
-id="etapaPronto"
-class="etapa">
-
-<div class="circulo">
-🛍️
-</div>
-
-<div>
-Pronto para retirada
-</div>
-
-</div>
-
-</div>
-
-
-<div class="itens">
-
-<h3>
-🛒 Seu pedido
-</h3>
-
-
-<div id="listaItens"></div>
-
-
-<div class="total">
-
-<span>
-Total
-</span>
-
-<span id="totalPedido">
-R$ 0,00
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<script>
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
-const firebaseConfig = {
-
-    apiKey: "SUA_API_KEY",
-
-    authDomain:
-        "bricka-96d91.firebaseapp.com",
-
-    databaseURL:
-        "https://bricka-96d91-default-rtdb.firebaseio.com",
-
-    projectId:
-        "bricka-96d91",
-
-    storageBucket:
-        "bricka-96d91.firebasestorage.app",
-
-    messagingSenderId:
-        "503488792733",
-
-    appId:
-        "SEU_APP_ID"
-
-};
-
-
-firebase.initializeApp(
-    firebaseConfig
-);
-
-
-const database =
-    firebase.database();
-
-
-let referenciaPedido = null;
-
-
-/* =====================================================
-   FORMATAÇÃO
-===================================================== */
-
-function formatarPreco(valor) {
-
-    return Number(valor)
-        .toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
-
-}
-
-
-/* =====================================================
-   BUSCAR PEDIDO
-===================================================== */
-
-function buscarPedido() {
-
-    const numero =
-        document.getElementById(
-            "numeroPedido"
-        ).value.trim();
-
-
-    if (!numero) {
-
-        mostrarErro(
-            "Digite o número do pedido."
-        );
-
-        return;
-
-    }
-
-
-    if (referenciaPedido) {
-
-        referenciaPedido.off();
-
-    }
-
-
-    const referencia =
-        database
-            .ref("pedidos")
-            .child(numero);
-
-
-    referenciaPedido =
-        referencia;
-
-
-    referencia.once("value")
-        .then(snapshot => {
-
-            if (!snapshot.exists()) {
-
-                mostrarErro(
-                    "Pedido não encontrado."
-                );
-
-                return;
-
-            }
-
-
-            esconderErro();
-
-
-            document.getElementById(
-                "pedido"
-            ).style.display =
-                "block";
-
-
-            atualizarPedido(
-                snapshot.val()
-            );
-
-
-            /*
-               Depois da primeira leitura,
-               fica acompanhando em tempo real.
-            */
-
-            referencia.on(
-                "value",
-                snapshot => {
-
-                    if (
-                        snapshot.exists()
-                    ) {
-
-                        atualizarPedido(
-                            snapshot.val()
-                        );
-
-                    }
-
-                }
-            );
-
-        })
-
-        .catch(erro => {
-
-            console.error(erro);
-
-            mostrarErro(
-                "Não foi possível consultar o pedido."
-            );
-
-        });
-
-}
-
-
-/* =====================================================
-   ATUALIZAR PEDIDO
-===================================================== */
-
-function atualizarPedido(pedido) {
-
-    document.getElementById(
-        "numeroExibido"
-    ).innerText =
-        "#" +
-        pedido.numero;
-
-
-    document.getElementById(
-        "totalPedido"
-    ).innerText =
-        formatarPreco(
-            pedido.total
-        );
-
-
-    atualizarStatus(
-        pedido.status
-    );
-
-
-    atualizarItens(
-        pedido.itens || []
-    );
-
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-function atualizarStatus(status) {
-
-    const icone =
-        document.getElementById(
-            "statusIcone"
-        );
-
-    const titulo =
-        document.getElementById(
-            "statusTitulo"
-        );
-
-    const descricao =
-        document.getElementById(
-            "statusDescricao"
-        );
-
-
-    const etapas = [
-
-        "etapaAprovado",
-
-        "etapaPreparando",
-
-        "etapaPronto"
-
-    ];
-
-
-    etapas.forEach(
-        id => {
-
-            document
-                .getElementById(id)
-                .classList
-                .remove(
-                    "ativa",
-                    "concluida"
-                );
-
-        }
-    );
-
-
-    if (
-        status === "aprovado"
-    ) {
-
-        icone.innerText =
-            "✅";
-
-        titulo.innerText =
-            "Pedido aprovado";
-
-        descricao.innerText =
-            "Seu pedido foi aprovado e está aguardando preparação.";
-
-
-        document
-            .getElementById(
-                "etapaAprovado"
-            )
-            .classList
-            .add("ativa");
-
-    }
-
-
-    else if (
-        status === "preparando"
-    ) {
-
-        icone.innerText =
-            "👨‍🍳";
-
-        titulo.innerText =
-            "Em preparação";
-
-        descricao.innerText =
-            "Seu pedido está sendo preparado.";
-
-
-        document
-            .getElementById(
-                "etapaAprovado"
-            )
-            .classList
-            .add("concluida");
-
-
-        document
-            .getElementById(
-                "etapaPreparando"
-            )
-            .classList
-            .add("ativa");
-
-    }
-
-
-    else if (
-        status === "pronto"
-    ) {
-
-        icone.innerText =
-            "🛍️";
-
-        titulo.innerText =
-            "Pronto para retirada!";
-
-        descricao.innerText =
-            "Seu pedido está pronto. Pode vir retirar!";
-
-
-        document
-            .getElementById(
-                "etapaAprovado"
-            )
-            .classList
-            .add("concluida");
-
-
-        document
-            .getElementById(
-                "etapaPreparando"
-            )
-            .classList
-            .add("concluida");
-
-
-        document
-            .getElementById(
-                "etapaPronto"
-            )
-            .classList
-            .add("ativa");
-
-    }
-
-
-    else {
-
-        icone.innerText =
-            "🕐";
-
-        titulo.innerText =
-            "Aguardando";
-
-        descricao.innerText =
-            "Aguardando atualização do pedido.";
-
-    }
-
-}
-
-
-/* =====================================================
-   ITENS
-===================================================== */
-
-function atualizarItens(itens) {
-
-    const lista =
-        document.getElementById(
-            "listaItens"
-        );
-
-
-    lista.innerHTML = "";
-
-
-    itens.forEach(item => {
-
-        const div =
-            document.createElement(
-                "div"
-            );
-
-
-        div.className =
-            "item";
-
-
-        let adicionais = "";
-
-
-        if (
-            item.adicionais &&
-            item.adicionais.length
-        ) {
-
-            adicionais =
-                item.adicionais
-                    .map(
-                        adicional =>
-                            `${adicional.quantidade}x ${adicional.ingrediente}`
-                    )
-                    .join(", ");
-
-        }
-
-
-        div.innerHTML = `
-
-            <strong>
-                ${item.produto}
-            </strong>
-
-            <br>
-
-            ${
-                item.ingredientes &&
-                item.ingredientes.length
-                ?
-                `
-                <small>
-                    Ingredientes:
-                    ${item.ingredientes.join(", ")}
-                </small>
-                `
-                :
-                ""
-            }
-
-            ${
-                adicionais
-                ?
-                `
-                <br>
-
-                <small>
-                    Adicionais:
-                    ${adicionais}
-                </small>
-                `
-                :
-                ""
-            }
-
-        `;
-
-
-        lista.appendChild(div);
-
-    });
-
-}
-
-
-/* =====================================================
-   ERRO
-===================================================== */
-
-function mostrarErro(mensagem) {
-
-    document.getElementById(
-        "mensagemErro"
-    ).innerHTML = `
-
-        <div class="erro">
-            ❌ ${mensagem}
-        </div>
-
-    `;
-
-
-    document.getElementById(
-        "pedido"
-    ).style.display =
-        "none";
-
-}
-
-
-function esconderErro() {
-
-    document.getElementById(
-        "mensagemErro"
-    ).innerHTML =
-        "";
-
-}
-
-
-/* =====================================================
-   ABRIR AUTOMATICAMENTE
-   SE VEIO DO index.html
-===================================================== */
-
-const parametros =
-    new URLSearchParams(
-        window.location.search
-    );
-
-
-const pedidoURL =
-    parametros.get("pedido");
-
-
-if (pedidoURL) {
-
-    document.getElementById(
-        "numeroPedido"
-    ).value =
-        pedidoURL;
-
-
-    buscarPedido();
-
-}
-
-</script>
 
 </body>
 
 </html>
-```
-
----
-
-# 3. `cozinha.html`
-
-Agora crie o terceiro arquivo:
-
-```text
-cozinha.html
-```
-
-Essa será a página que você usa para controlar os pedidos.
-
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>BRICKA - Cozinha</title>
-
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-
-    margin: 0;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #eee;
-
-}
-
-
-header {
-
-    background: #111;
-
-    color: white;
-
-    padding: 20px;
-
-    text-align: center;
-
-}
-
-header h1 {
-
-    margin: 0;
-
-}
-
-
-.container {
-
-    max-width: 1100px;
-
-    margin: auto;
-
-    padding: 20px;
-
-}
-
-
-.pedidos {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(300px, 1fr)
-        );
-
-    gap: 20px;
-
-}
-
-
-.pedido {
-
-    background: white;
-
-    border-radius: 15px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,0.10);
-
-}
-
-
-.numero {
-
-    font-size: 25px;
-
-    font-weight: bold;
-
-}
-
-
-.status {
-
-    display: inline-block;
-
-    padding: 8px 12px;
-
-    border-radius: 20px;
-
-    background: #eee;
-
-    margin: 10px 0;
-
-    font-weight: bold;
-
-}
-
-
-.item {
-
-    border-top:
-        1px solid #eee;
-
-    padding: 10px 0;
-
-}
-
-
-.total {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    margin-top: 15px;
-
-}
-
-
-button {
-
-    width: 100%;
-
-    border: none;
-
-    border-radius: 10px;
-
-    padding: 13px;
-
-    margin-top: 8px;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-}
-
-
-.aprovar {
-
-    background: #ddd;
-
-}
-
-
-.preparar {
-
-    background: #ff9800;
-
-    color: white;
-
-}
-
-
-.pronto {
-
-    background: #0a8f3d;
-
-    color: white;
-
-}
-
-
-.finalizado {
-
-    background: #ddd;
-
-    color: #777;
-
-}
-
-
-.vazio {
-
-    background: white;
-
-    padding: 30px;
-
-    border-radius: 15px;
-
-    text-align: center;
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<header>
-
-<h1>🍔 BRICKA - COZINHA</h1>
-
-<p>Controle dos pedidos</p>
-
-</header>
-
-
-<div class="container">
-
-<div
-id="listaPedidos"
-class="pedidos">
-
-</div>
-
-</div>
-
-
-<script>
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
-const firebaseConfig = {
-
-    apiKey: "SUA_API_KEY",
-
-    authDomain:
-        "bricka-96d91.firebaseapp.com",
-
-    databaseURL:
-        "https://bricka-96d91-default-rtdb.firebaseio.com",
-
-    projectId:
-        "bricka-96d91",
-
-    storageBucket:
-        "bricka-96d91.firebasestorage.app",
-
-    messagingSenderId:
-        "503488792733",
-
-    appId:
-        "SEU_APP_ID"
-
-};
-
-
-firebase.initializeApp(
-    firebaseConfig
-);
-
-
-const database =
-    firebase.database();
-
-
-/* =====================================================
-   PREÇO
-===================================================== */
-
-function formatarPreco(valor) {
-
-    return Number(valor)
-        .toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
-
-}
-
-
-/* =====================================================
-   CARREGAR PEDIDOS
-===================================================== */
-
-database
-    .ref("pedidos")
-    .on(
-        "value",
-        snapshot => {
-
-            const lista =
-                document.getElementById(
-                    "listaPedidos"
-                );
-
-
-            lista.innerHTML = "";
-
-
-            if (
-                !snapshot.exists()
-            ) {
-
-                lista.innerHTML = `
-
-                    <div class="vazio">
-
-                        <h2>
-                            🕐 Nenhum pedido
-                        </h2>
-
-                        <p>
-                            Aguardando novos pedidos.
-                        </p>
-
-                    </div>
-
-                `;
-
-                return;
-
-            }
-
-
-            const pedidos =
-                snapshot.val();
-
-
-            const array =
-                Object.entries(
-                    pedidos
-                );
-
-
-            /*
-               Mais novos primeiro
-            */
-
-            array.sort(
-                (
-                    a,
-                    b
-                ) => {
-
-                    return (
-                        (b[1].criadoEm || 0)
-                        -
-                        (a[1].criadoEm || 0)
-                    );
-
-                }
-            );
-
-
-            array.forEach(
-                (
-                    [numero, pedido]
-                ) => {
-
-                    /*
-                       Não mostrar finalizados
-                    */
-
-                    if (
-                        pedido.status ===
-                        "finalizado"
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    criarCard(
-                        numero,
-                        pedido
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-/* =====================================================
-   CRIAR CARD
-===================================================== */
-
-function criarCard(
-    numero,
-    pedido
-) {
-
-    const lista =
-        document.getElementById(
-            "listaPedidos"
-        );
-
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-
-    card.className =
-        "pedido";
-
-
-    let itensHTML = "";
-
-
-    (pedido.itens || [])
-        .forEach(
-            item => {
-
-                let adicionais = "";
-
-
-                if (
-                    item.adicionais &&
-                    item.adicionais.length
-                ) {
-
-                    adicionais =
-                        item.adicionais
-                            .map(
-                                adicional =>
-                                    `${adicional.quantidade}x ${adicional.ingrediente}`
-                            )
-                            .join(", ");
-
-                }
-
-
-                itensHTML += `
-
-                    <div class="item">
-
-                        <strong>
-                            ${item.produto}
-                        </strong>
-
-                        <br>
-
-                        ${
-                            item.ingredientes &&
-                            item.ingredientes.length
-                            ?
-                            `
-                            <small>
-                                ${item.ingredientes.join(", ")}
-                            </small>
-                            `
-                            :
-                            ""
-                        }
-
-                        ${
-                            adicionais
-                            ?
-                            `
-                            <br>
-
-                            <small>
-                                Adicionais:
-                                ${adicionais}
-                            </small>
-                            `
-                            :
-                            ""
-                        }
-
-                        <br>
-
-                        <strong>
-                            ${formatarPreco(
-                                item.precoTotal
-                            )}
-                        </strong>
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-
-    let statusTexto =
-        "";
-
-
-    switch (
-        pedido.status
-    ) {
-
-        case "aprovado":
-
-            statusTexto =
-                "✅ APROVADO";
-
-            break;
-
-
-        case "preparando":
-
-            statusTexto =
-                "👨‍🍳 PREPARANDO";
-
-            break;
-
-
-        case "pronto":
-
-            statusTexto =
-                "🛍️ PRONTO";
-
-            break;
-
-
-        default:
-
-            statusTexto =
-                pedido.status;
-
-    }
-
-
-    card.innerHTML = `
-
-        <div class="numero">
-
-            #${numero}
-
-        </div>
-
-
-        <div class="status">
-
-            ${statusTexto}
-
-        </div>
-
-
-        ${itensHTML}
-
-
-        <div class="total">
-
-            <span>
-                Total
-            </span>
-
-            <span>
-                ${formatarPreco(
-                    pedido.total
-                )}
-            </span>
-
-        </div>
-
-
-        ${
-            pedido.status ===
-            "aprovado"
-            ?
-            `
-            <button
-            class="preparar"
-            onclick="alterarStatus(
-                '${numero}',
-                'preparando'
-            )">
-
-                👨‍🍳 COMEÇAR PREPARO
-
-            </button>
-            `
-            :
-            ""
-        }
-
-
-        ${
-            pedido.status ===
-            "preparando"
-            ?
-            `
-            <button
-            class="pronto"
-            onclick="alterarStatus(
-                '${numero}',
-                'pronto'
-            )">
-
-                🛍️ MARCAR COMO PRONTO
-
-            </button>
-            `
-            :
-            ""
-        }
-
-
-        ${
-            pedido.status ===
-            "pronto"
-            ?
-            `
-            <button
-            class="finalizado"
-            onclick="alterarStatus(
-                '${numero}',
-                'finalizado'
-            )">
-
-                ✅ FINALIZAR PEDIDO
-
-            </button>
-            `
-            :
-            ""
-        }
-
-    `;
-
-
-    lista.appendChild(
-        card
-    );
-
-}
-
-
-/* =====================================================
-   ALTERAR STATUS
-===================================================== */
-
-function alterarStatus(
-    numero,
-    novoStatus
-) {
-
-    database
-        .ref("pedidos")
-        .child(numero)
-        .update({
-
-            status:
-                novoStatus
-
-        })
-
-        .then(() => {
-
-            console.log(
-                "Status atualizado:",
-                numero,
-                novoStatus
-            );
-
-        })
-
-        .catch(erro => {
-
-            console.error(
-                erro
-            );
-
-            alert(
-                "Erro ao alterar o status."
-            );
-
-        });
-
-}
-
-</script>
-
-</body>
-
-</html>
-```
-
----
-
-# 4. Agora seu GitHub ficará assim
-
-No mesmo repositório onde está o site:
-
-```text
-BRICKA
-│
-├── index.html
-│
-├── acompanhar.html
-│
-└── cozinha.html
-```
-
-Os três arquivos usam o mesmo Firebase:
-
-```text
-https://bricka-96d91-default-rtdb.firebaseio.com
-```
-
----
-
-# 5. O fluxo completo
-
-Agora o funcionamento será:
-
-```text
-                 CLIENTE
-                    │
-                    ▼
-             ┌─────────────┐
-             │ index.html  │
-             │             │
-             │ Faz pedido  │
-             │ e paga      │
-             └──────┬──────┘
-                    │
-                    ▼
-               FIREBASE
-                    │
-             /pedidos/1025
-                    │
-                    ├── status
-                    │
-                    ├── itens
-                    │
-                    ├── total
-                    │
-                    └── pagamento
-                    │
-          ┌─────────┴──────────┐
-          │                    │
-          ▼                    ▼
-   cozinha.html          acompanhar.html
-          │                    │
-          │                    │
-          ▼                    ▼
-     ALTERA STATUS       CLIENTE VISUALIZA
-          │                    │
-          └──── FIREBASE ──────┘
-```
-
-### Exemplo real
-
-O cliente faz um pedido.
-
-O Firebase recebe:
-
-```text
-pedidos
-└── 0835274105
-    ├── numero: 0835274105
-    ├── status: aprovado
-    ├── total: 35
-    ├── pagamento
-    └── itens
-```
-
-Na cozinha aparece:
-
-```text
-#0835274105
-
-✅ APROVADO
-
-X-SALADA
-R$ 15,00
-
-Coca-Cola
-R$ 6,00
-
-[ 👨‍🍳 COMEÇAR PREPARO ]
-```
-
-Você clica.
-
-O Firebase muda:
-
-```text
-status: preparando
-```
-
-O cliente, **sem atualizar a página**, passa a ver:
-
-```text
-👨‍🍳
-
-EM PREPARAÇÃO
-
-Seu pedido está sendo preparado.
-```
-
-Depois você clica:
-
-```text
-🛍️ MARCAR COMO PRONTO
-```
-
-E imediatamente o celular mostra:
-
-```text
-🛍️
-
-PRONTO PARA RETIRADA!
-
-Seu pedido está pronto.
-Pode vir retirar!
-```
-
----
-
-## 6. Uma mudança importante no seu Firebase
-
-Antes você tinha:
-
-```text
-pedido
-├── ativo
-├── itens
-├── pagamento
-└── total
-```
-
-O novo sistema passará a utilizar:
-
-```text
-pedidos
-├── 0835274105
-├── 0835282371
-├── 0835304418
-└── ...
-```
-
-**Não apague o `/pedido` antigo agora.** Ele simplesmente ficará lá e o novo sistema passará a utilizar `/pedidos`.
-
----
-
-## 7. Teste na ordem correta
-
-Depois de colocar os três arquivos no GitHub:
-
-### Teste 1
-
-Abra:
-
-```text
-index.html
-```
-
-Faça um pedido.
-
-### Teste 2
-
-Finalize o pagamento.
-
-Você deverá receber algo como:
-
-```text
-Pedido enviado!
-
-Número do pedido:
-
-#0835274105
-
-[ 📱 ACOMPANHAR PEDIDO ]
-```
-
-### Teste 3
-
-Clique em:
-
-**ACOMPANHAR PEDIDO**
-
-Ele abrirá:
-
-```text
-acompanhar.html?pedido=0835274105
-```
-
-e mostrará:
-
-```text
-#0835274105
-
-✅
-PEDIDO APROVADO
-```
-
-### Teste 4
-
-Abra:
-
-```text
-cozinha.html
-```
-
-Você deverá encontrar o mesmo pedido.
-
-Clique:
-
-**👨‍🍳 COMEÇAR PREPARO**
-
-### Teste 5
-
-Volte para o celular.
-
-Sem atualizar a página, deverá aparecer:
-
-```text
-👨‍🍳
-EM PREPARAÇÃO
-```
-
-### Teste 6
-
-Na cozinha clique:
-
-**🛍️ MARCAR COMO PRONTO**
-
-O celular deverá mudar automaticamente para:
-
-```text
-🛍️
-PRONTO PARA RETIRADA!
-```
-
----
-
-### ⚠️ Sobre o aviso que aparece no seu Firebase
-
-Na imagem que você mandou, o Firebase informa que as **regras estão públicas**. Para esse teste, o sistema pode funcionar, mas **não deixe essas regras públicas quando for colocar o BRICKA para uso real**, porque qualquer pessoa poderia potencialmente alterar os pedidos.
-
-Primeiro vamos fazer todo o sistema funcionar. Depois podemos configurar as **Rules** corretamente para que o cliente consiga acompanhar o próprio pedido sem ter permissão para modificar pedidos.
