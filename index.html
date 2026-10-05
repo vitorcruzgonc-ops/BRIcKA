@@ -1,484 +1,484 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>BRICKA - Pedidos</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<!-- Biblioteca para gerar QR Code -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f2f2f2;
-  color: #222;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f3f3;
+    color: #222;
 }
 
 header {
-  background: #111;
-  color: white;
-  padding: 20px;
-  text-align: center;
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 20px;
 }
 
 header h1 {
-  margin: 0;
-  font-size: 32px;
+    margin: 0;
+    font-size: 28px;
 }
 
 header p {
-  margin: 8px 0 0;
-  color: #ccc;
-}
-
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 25px;
+    margin: 8px 0 0;
+    color: #ddd;
 }
 
 /* =========================
    ABAS
-   ========================= */
+========================= */
 
-.abas {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-  justify-content: center;
-  flex-wrap: wrap;
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-.aba {
-  border: none;
-  border-radius: 10px;
-  padding: 14px 25px;
-  font-size: 17px;
-  font-weight: bold;
-  background: #ddd;
-  color: #222;
-  cursor: pointer;
+.tab-button {
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #ddd;
 }
 
-.aba.ativa {
-  background: #111;
-  color: white;
-}
-
-.conteudo-aba {
-  display: none;
-}
-
-.conteudo-aba.ativo {
-  display: block;
+.tab-button.active {
+    background: #111;
+    color: white;
 }
 
 /* =========================
-   LANCHES
-   ========================= */
+   CONTEÚDO
+========================= */
 
-.lanches {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
 }
 
-.lanche {
-  background: white;
-  border-radius: 15px;
-  padding: 25px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+.tab-content {
+    display: none;
 }
 
-.lanche h2 {
-  margin-top: 0;
-  text-align: center;
-  font-size: 26px;
+.tab-content.active {
+    display: block;
 }
 
-.preco-lanche {
-  text-align: center;
-  font-size: 23px;
-  font-weight: bold;
-  color: #16803c;
-  margin: 10px 0 20px;
-}
-
-.botoes-lanche {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-button {
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-completo,
-.btn-personalizar,
-.btn-adicionar {
-  border: none;
-  border-radius: 8px;
-  padding: 13px;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.btn-completo {
-  background: #16803c;
-  color: white;
-}
-
-.btn-personalizar {
-  background: #e8e8e8;
-  color: #222;
-}
-
-.btn-adicionar {
-  background: #1769aa;
-  color: white;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
 }
 
 /* =========================
-   INGREDIENTES
-   ========================= */
+   PRODUTO
+========================= */
+
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.preco {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+}
 
 .ingredientes {
-  margin-top: 20px;
+    display: grid;
+    gap: 8px;
+    margin: 15px 0;
 }
 
 .ingrediente {
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  background: #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f5f5;
+    padding: 8px;
+    border-radius: 8px;
 }
 
-.ingrediente-topo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+.ingrediente-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.ingrediente.ativo {
-  background: #d8f5d8;
+.ingrediente input {
+    width: 18px;
+    height: 18px;
 }
 
-.ingrediente.removido {
-  background: #ffdada;
-  color: #777;
-  text-decoration: line-through;
+.adicional-controle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.ingrediente-nome {
-  font-size: 16px;
-  font-weight: bold;
+.adicional-controle button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-.status {
-  font-size: 13px;
-  font-weight: bold;
+.adicional-controle .menos {
+    background: #ddd;
 }
 
-.ativo .status {
-  color: green;
+.adicional-controle .mais {
+    background: #111;
+    color: white;
 }
 
-.removido .status {
-  color: red;
+.qtd-adicional {
+    min-width: 20px;
+    text-align: center;
+    font-weight: bold;
 }
 
-/* =========================
-   ADICIONAL
-   ========================= */
-
-.adicional-area {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #ccc;
+.btn {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8px;
 }
 
-.adicional-info {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 8px;
+.btn-principal {
+    background: #111;
+    color: white;
 }
 
-.controle-adicional {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-extra {
-  border: none;
-  border-radius: 6px;
-  padding: 7px 12px;
-  background: #1769aa;
-  color: white;
-  font-weight: bold;
-}
-
-.btn-extra:hover {
-  background: #0d4f82;
-}
-
-.qtd-extra {
-  min-width: 35px;
-  text-align: center;
-  font-size: 17px;
-  font-weight: bold;
+.btn-secundario {
+    background: #ddd;
+    color: #111;
 }
 
 /* =========================
-   BEBIDAS
-   ========================= */
+   CARRINHO
+========================= */
 
-.categoria-bebida {
-  margin-bottom: 35px;
+.carrinho {
+    margin-top: 30px;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.10);
 }
 
-.categoria-bebida h2 {
-  background: #111;
-  color: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  text-align: center;
+.item-carrinho {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
 }
 
-.bebidas {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
+.item-carrinho:last-child {
+    border-bottom: none;
 }
 
-.bebida {
-  background: white;
-  border-radius: 15px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+.item-topo {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-.bebida .emoji {
-  font-size: 45px;
+.item-preco {
+    font-weight: bold;
 }
 
-.bebida h3 {
-  margin: 5px 0;
+.item-ingredientes {
+    color: #555;
+    font-size: 14px;
+    margin: 8px 0;
 }
 
-.bebida .preco {
-  font-size: 21px;
-  font-weight: bold;
-  color: #16803c;
-  margin: 10px 0 15px;
+.item-adicionais {
+    color: #333;
+    font-size: 14px;
 }
 
-.btn-bebida {
-  width: 100%;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  background: #1769aa;
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
+.acoes-item {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
 }
 
-/* =========================
-   RESUMO
-   ========================= */
-
-.resumo {
-  background: white;
-  margin-top: 35px;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+.acoes-item button {
+    border: none;
+    padding: 7px 10px;
+    border-radius: 7px;
+    cursor: pointer;
 }
 
-.resumo h2 {
-  margin-top: 0;
+.editar {
+    background: #ddd;
 }
 
-.item-pedido {
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 15px;
+.remover {
+    background: #ffdddd;
 }
 
-.item-pedido h3 {
-  margin: 0 0 5px;
-  font-size: 18px;
+.duplicar {
+    background: #ddffdd;
 }
 
-.tipo-item {
-  font-size: 13px;
-  color: #666;
-  font-weight: bold;
+.total {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #111;
+    display: flex;
+    justify-content: space-between;
+    font-size: 22px;
+    font-weight: bold;
 }
 
-.preco-item {
-  font-size: 19px;
-  font-weight: bold;
-  color: #16803c;
-  margin: 8px 0 12px;
-}
-
-.adicionais-resumo {
-  margin-top: 8px;
-  padding: 10px;
-  background: #fff3cd;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.controles {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-
-.btn-controle {
-  border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 18px;
-  font-weight: bold;
-  background: #ddd;
-}
-
-.btn-remover {
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  background: #c62828;
-  color: white;
-  font-weight: bold;
-}
-
-.btn-editar {
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  background: #1769aa;
-  color: white;
-  font-weight: bold;
+.finalizar {
+    background: #0a8f3d;
+    color: white;
+    margin-top: 15px;
 }
 
 /* =========================
-   TOTAL
-   ========================= */
+   TELA DE PAGAMENTO
+========================= */
 
-.total-pedido {
-  margin-top: 25px;
-  padding: 20px;
-  border-radius: 12px;
-  background: #111;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+#telaPagamento {
+    display: none;
+    min-height: 100vh;
+    background: #f3f3f3;
 }
 
-#valorTotal {
-  font-size: 28px;
-  font-weight: bold;
-  color: #7cff9b;
+.pagamento-container {
+    max-width: 650px;
+    margin: auto;
+    padding: 25px 20px 40px;
+}
+
+.pagamento-header {
+    background: #111;
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.pagamento-header h1 {
+    margin: 0 0 10px;
+}
+
+.valor-pagamento {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.opcoes-pagamento {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.opcao-pagamento {
+    background: white;
+    border: 3px solid transparent;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: 0.2s;
+}
+
+.opcao-pagamento:hover {
+    transform: translateY(-2px);
+}
+
+.opcao-pagamento.selecionada {
+    border-color: #111;
+    background: #f0f0f0;
+}
+
+.opcao-icone {
+    font-size: 40px;
+}
+
+.opcao-nome {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.area-pagamento {
+    display: none;
+    background: white;
+    border-radius: 15px;
+    margin-top: 20px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.area-pagamento.active {
+    display: block;
 }
 
 /* =========================
-   ENVIO
-   ========================= */
+   CARTÃO
+========================= */
 
-.area-envio {
-  margin-top: 35px;
-  text-align: center;
+.cartao-info {
+    text-align: center;
 }
 
-#enviarPedido {
-  width: 100%;
-  max-width: 500px;
-  padding: 18px;
-  border: none;
-  border-radius: 10px;
-  background: #16803c;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
+.cartao-info .icone {
+    font-size: 60px;
 }
 
-#enviarPedido:disabled {
-  background: #999;
+.cartao-info h2 {
+    margin-bottom: 5px;
 }
 
-#mensagem {
-  margin-top: 20px;
-  padding: 15px;
-  text-align: center;
-  border-radius: 10px;
-  display: none;
+.cartao-info p {
+    color: #666;
 }
 
-.sucesso {
-  display: block !important;
-  background: #d8f5d8;
-  color: #146b14;
+/* =========================
+   PIX
+========================= */
+
+.pix-container {
+    text-align: center;
 }
 
-.erro {
-  display: block !important;
-  background: #ffdada;
-  color: #8a1111;
+#qrcode {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
 }
 
-.aviso {
-  display: block !important;
-  background: #fff3cd;
-  color: #856404;
+.chave-pix {
+    background: #f0f0f0;
+    border-radius: 8px;
+    padding: 12px;
+    word-break: break-all;
+    font-weight: bold;
 }
 
-.contador {
-  text-align: center;
-  font-weight: bold;
-  color: #555;
-  margin-bottom: 20px;
+.pix-aviso {
+    color: #777;
+    font-size: 13px;
+    margin-top: 15px;
 }
+
+/* =========================
+   DINHEIRO
+========================= */
+
+.dinheiro-info {
+    text-align: center;
+}
+
+.campo-dinheiro {
+    width: 100%;
+    padding: 14px;
+    font-size: 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.troco {
+    margin-top: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.troco.erro {
+    color: #c00;
+}
+
+/* =========================
+   BOTÕES PAGAMENTO
+========================= */
+
+.botoes-pagamento {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.confirmar-pagamento {
+    background: #0a8f3d;
+    color: white;
+}
+
+.voltar-pedido {
+    background: #ddd;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
 
 @media (max-width: 600px) {
 
-  .container {
-    padding: 15px;
-  }
+    .opcoes-pagamento {
+        grid-template-columns: 1fr 1fr;
+    }
 
-  header h1 {
-    font-size: 26px;
-  }
+    .opcao-pagamento {
+        padding: 15px 10px;
+    }
 
-  .lanche {
-    padding: 20px;
-  }
+    .opcao-icone {
+        font-size: 32px;
+    }
 
-  .total-pedido {
-    flex-direction: column;
-    text-align: center;
-  }
-
+    .opcao-nome {
+        font-size: 15px;
+    }
 }
 
 </style>
@@ -486,103 +486,79 @@ button {
 
 <body>
 
+<!-- =====================================================
+     TELA PRINCIPAL
+===================================================== -->
+
+<div id="telaPrincipal">
+
 <header>
 
-<h1>BRICKA</h1>
+<h1>🍔 BRICKA</h1>
 
 <p>Monte seu lanche do seu jeito!</p>
 
 </header>
 
 
-<main class="container">
+<div class="tabs">
 
-<div class="contador" id="contadorCarrinho">
-🛒 Itens no pedido: 0
-</div>
-
-
-<!-- =========================
-     ABAS
-     ========================= -->
-
-<div class="abas">
-
-<button class="aba ativa" data-aba="lanches">
+<button
+class="tab-button active"
+onclick="abrirAba('lanches', this)">
 🍔 LANCHES
 </button>
 
-<button class="aba" data-aba="bebidas">
+<button
+class="tab-button"
+onclick="abrirAba('bebidas', this)">
 🥤 BEBIDAS
 </button>
 
 </div>
 
 
+<div class="container">
+
 <!-- =========================
      LANCHES
-     ========================= -->
+========================= -->
 
-<div id="aba-lanches" class="conteudo-aba ativo">
+<div id="lanches" class="tab-content active">
 
-<div class="lanches" id="listaLanches"></div>
+<div id="listaLanches" class="grid"></div>
 
 </div>
 
 
 <!-- =========================
      BEBIDAS
-     ========================= -->
+========================= -->
 
-<div id="aba-bebidas" class="conteudo-aba">
+<div id="bebidas" class="tab-content">
 
-<div class="categoria-bebida">
-
-<h2>🥤 REFRIGERANTES</h2>
-
-<div class="bebidas" id="listaRefrigerantes"></div>
-
-</div>
-
-
-<div class="categoria-bebida">
-
-<h2>🧃 SUCOS</h2>
-
-<div class="bebidas" id="listaSucos"></div>
-
-</div>
-
-
-<div class="categoria-bebida">
-
-<h2>💧 ÁGUAS</h2>
-
-<div class="bebidas" id="listaAguas"></div>
-
-</div>
+<div id="listaBebidas" class="grid"></div>
 
 </div>
 
 
 <!-- =========================
-     RESUMO
-     ========================= -->
+     CARRINHO
+========================= -->
 
-<div class="resumo">
+<div class="carrinho">
 
-<h2>📝 Resumo do pedido</h2>
+<h2>🛒 Seu pedido</h2>
 
-<div id="listaResumo">
-Nenhum item adicionado.
+<div id="listaCarrinho">
+
+<p>Nenhum item adicionado.</p>
+
 </div>
 
+<div class="total">
 
-<div class="total-pedido">
-
-<span>
-💰 TOTAL DO PEDIDO
-</span>
+<span>Total</span>
 
 <span id="valorTotal">
 R$ 0,00
@@ -590,1929 +566,1811 @@ R$ 0,00
 
 </div>
 
-</div>
+<button
+class="btn finalizar"
+onclick="abrirPagamento()">
 
+💳 FINALIZAR E PAGAR
 
-<div class="area-envio">
-
-<button id="enviarPedido" disabled>
-ENVIAR PEDIDO
 </button>
 
-<div id="mensagem"></div>
+</div>
 
 </div>
 
-</main>
+</div>
 
 
-<script type="module">
+<!-- =====================================================
+     TELA DE PAGAMENTO
+===================================================== -->
 
-// ==========================================
-// FIREBASE
-// ==========================================
+<div id="telaPagamento">
 
-import {
-initializeApp
-} from
-"https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+<div class="pagamento-container">
 
-import {
-getDatabase,
-ref,
-set
-} from
-"https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+<div class="pagamento-header">
 
+<h1>💳 Pagamento</h1>
+
+<p>Total do pedido</p>
+
+<div
+class="valor-pagamento"
+id="totalPagamento">
+
+R$ 0,00
+
+</div>
+
+</div>
+
+
+<h2>Escolha a forma de pagamento</h2>
+
+
+<div class="opcoes-pagamento">
+
+<div
+class="opcao-pagamento"
+id="opcaoDebito"
+onclick="selecionarPagamento('debito')">
+
+<div class="opcao-icone">
+💳
+</div>
+
+<div class="opcao-nome">
+Cartão de débito
+</div>
+
+</div>
+
+
+<div
+class="opcao-pagamento"
+id="opcaoCredito"
+onclick="selecionarPagamento('credito')">
+
+<div class="opcao-icone">
+💳
+</div>
+
+<div class="opcao-nome">
+Cartão de crédito
+</div>
+
+</div>
+
+
+<div
+class="opcao-pagamento"
+id="opcaoPix"
+onclick="selecionarPagamento('pix')">
+
+<div class="opcao-icone">
+📱
+</div>
+
+<div class="opcao-nome">
+PIX
+</div>
+
+</div>
+
+
+<div
+class="opcao-pagamento"
+id="opcaoDinheiro"
+onclick="selecionarPagamento('dinheiro')">
+
+<div class="opcao-icone">
+💵
+</div>
+
+<div class="opcao-nome">
+Dinheiro
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     CARTÃO
+========================= -->
+
+<div
+id="areaCartao"
+class="area-pagamento">
+
+<div class="cartao-info">
+
+<div class="icone">
+💳
+</div>
+
+<h2 id="tituloCartao">
+Pagamento no cartão
+</h2>
+
+<p>
+O pagamento será realizado na máquina de cartão.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     PIX
+========================= -->
+
+<div
+id="areaPix"
+class="area-pagamento">
+
+<div class="pix-container">
+
+<h2>📱 Pague com PIX</h2>
+
+<p>
+Escaneie o QR Code abaixo.
+</p>
+
+<div id="qrcode"></div>
+
+<p>
+Chave PIX:
+</p>
+
+<div class="chave-pix">
+
+bricka.demo.pix.2026@exemplo.com
+
+</div>
+
+<p class="pix-aviso">
+
+⚠️ Esta chave e este QR Code são apenas para demonstração.
+
+</p>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     DINHEIRO
+========================= -->
+
+<div
+id="areaDinheiro"
+class="area-pagamento">
+
+<div class="dinheiro-info">
+
+<h2>💵 Pagamento em dinheiro</h2>
+
+<p>
+Informe quanto o cliente irá entregar.
+</p>
+
+<input
+id="valorRecebido"
+class="campo-dinheiro"
+type="number"
+step="0.01"
+min="0"
+placeholder="Ex.: 50,00"
+oninput="calcularTroco()">
+
+<div
+id="troco"
+class="troco">
+
+Informe o valor recebido.
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     BOTÕES
+========================= -->
+
+<div class="botoes-pagamento">
+
+<button
+id="confirmarPagamento"
+class="btn confirmar-pagamento"
+onclick="confirmarPagamento()">
+
+✅ CONFIRMAR PAGAMENTO
+
+</button>
+
+<button
+class="btn voltar-pedido"
+onclick="voltarParaPedido()">
+
+← VOLTAR E ALTERAR PEDIDO
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   FIREBASE
+===================================================== */
 
 const firebaseConfig = {
 
-apiKey: "SUA_API_KEY",
+    apiKey: "SUA_API_KEY",
 
-authDomain:
-"bricka-96d91.firebaseapp.com",
+    authDomain:
+        "bricka-96d91.firebaseapp.com",
 
-databaseURL:
-"https://bricka-96d91-default-rtdb.firebaseio.com",
+    databaseURL:
+        "https://bricka-96d91-default-rtdb.firebaseio.com",
 
-projectId:
-"bricka-96d91",
+    projectId:
+        "bricka-96d91",
 
-storageBucket:
-"bricka-96d91.firebasestorage.app",
+    storageBucket:
+        "bricka-96d91.firebasestorage.app",
 
-messagingSenderId:
-"503488792733",
+    messagingSenderId:
+        "503488792733",
 
-appId: "SEU_APP_ID"
+    appId:
+        "SEU_APP_ID"
 
 };
 
+firebase.initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
-
-const database = getDatabase(app);
+const database = firebase.database();
 
 
-// ==========================================
-// LANCHES
-// ==========================================
+/* =====================================================
+   PRODUTOS
+===================================================== */
 
-const lanches = {
+const lanches = [
 
-"x-salada": {
-
-nome: "X-SALADA",
-
-emoji: "🍔",
-
-preco: 15.00,
-
-ingredientes: [
-
-"Pão",
-"Hambúrguer",
-"Queijo",
-"Presunto",
-"Alface",
-"Tomate",
-"Milho",
-"Batata palha",
-"Molho"
-
-]
-
+{
+    chave: "x-salada",
+    nome: "X-SALADA",
+    emoji: "🍔",
+    preco: 15,
+    ingredientes: [
+        "Pão",
+        "Hambúrguer",
+        "Queijo",
+        "Presunto",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
 },
 
-
-"x-bacon": {
-
-nome: "X-BACON",
-
-emoji: "🥓",
-
-preco: 18.00,
-
-ingredientes: [
-
-"Pão",
-"Hambúrguer",
-"Queijo",
-"Bacon",
-"Alface",
-"Tomate",
-"Milho",
-"Batata palha",
-"Molho"
-
-]
-
+{
+    chave: "x-bacon",
+    nome: "X-BACON",
+    emoji: "🥓",
+    preco: 18,
+    ingredientes: [
+        "Pão",
+        "Hambúrguer",
+        "Queijo",
+        "Bacon",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
 },
 
-
-"x-frango": {
-
-nome: "X-FRANGO",
-
-emoji: "🍗",
-
-preco: 16.00,
-
-ingredientes: [
-
-"Pão",
-"Frango",
-"Queijo",
-"Alface",
-"Tomate",
-"Milho",
-"Batata palha",
-"Molho"
-
-]
-
+{
+    chave: "x-frango",
+    nome: "X-FRANGO",
+    emoji: "🍗",
+    preco: 16,
+    ingredientes: [
+        "Pão",
+        "Frango",
+        "Queijo",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
 },
 
-
-"x-egg": {
-
-nome: "X-EGG",
-
-emoji: "🍳",
-
-preco: 17.00,
-
-ingredientes: [
-
-"Pão",
-"Hambúrguer",
-"Ovo",
-"Queijo",
-"Alface",
-"Tomate",
-"Milho",
-"Batata palha",
-"Molho"
-
-]
-
+{
+    chave: "x-egg",
+    nome: "X-EGG",
+    emoji: "🍳",
+    preco: 17,
+    ingredientes: [
+        "Pão",
+        "Hambúrguer",
+        "Ovo",
+        "Queijo",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
 },
 
-
-"x-calabresa": {
-
-nome: "X-CALABRESA",
-
-emoji: "🌭",
-
-preco: 18.00,
-
-ingredientes: [
-
-"Pão",
-"Calabresa",
-"Queijo",
-"Alface",
-"Tomate",
-"Milho",
-"Batata palha",
-"Molho"
-
-]
-
+{
+    chave: "x-calabresa",
+    nome: "X-CALABRESA",
+    emoji: "🌭",
+    preco: 18,
+    ingredientes: [
+        "Pão",
+        "Calabresa",
+        "Queijo",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
 },
 
-
-"x-tudo": {
-
-nome: "X-TUDO",
-
-emoji: "🍔",
-
-preco: 22.00,
-
-ingredientes: [
-
-"Pão",
-"Hambúrguer",
-"Bacon",
-"Presunto",
-"Ovo",
-"Queijo",
-"Alface",
-"Tomate",
-"Milho",
-"Batata palha",
-"Molho"
-
-]
-
+{
+    chave: "x-tudo",
+    nome: "X-TUDO",
+    emoji: "🍔",
+    preco: 22,
+    ingredientes: [
+        "Pão",
+        "Hambúrguer",
+        "Bacon",
+        "Presunto",
+        "Ovo",
+        "Queijo",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
 }
 
-};
+];
 
 
-// ==========================================
-// BEBIDAS
-// ==========================================
-
-const bebidas = {
-
-refrigerantes: [
+const bebidas = [
 
 {
-nome: "Coca-Cola",
-emoji: "🥤",
-preco: 6.00
+    nome: "Coca-Cola",
+    emoji: "🥤",
+    preco: 6
 },
 
 {
-nome: "Coca-Cola Zero",
-emoji: "🥤",
-preco: 6.00
+    nome: "Coca-Cola Zero",
+    emoji: "🥤",
+    preco: 6
 },
 
 {
-nome: "Guaraná",
-emoji: "🥤",
-preco: 6.00
+    nome: "Guaraná",
+    emoji: "🥤",
+    preco: 6
 },
 
 {
-nome: "Fanta Laranja",
-emoji: "🥤",
-preco: 6.00
+    nome: "Fanta Laranja",
+    emoji: "🥤",
+    preco: 6
 },
 
 {
-nome: "Sprite",
-emoji: "🥤",
-preco: 6.00
+    nome: "Sprite",
+    emoji: "🥤",
+    preco: 6
+},
+
+{
+    nome: "Suco de Laranja",
+    emoji: "🍊",
+    preco: 7
+},
+
+{
+    nome: "Suco de Maracujá",
+    emoji: "🥭",
+    preco: 7
+},
+
+{
+    nome: "Suco de Morango",
+    emoji: "🍓",
+    preco: 7
+},
+
+{
+    nome: "Suco de Uva",
+    emoji: "🍇",
+    preco: 7
+},
+
+{
+    nome: "Água Mineral",
+    emoji: "💧",
+    preco: 4
+},
+
+{
+    nome: "Água com Gás",
+    emoji: "💧",
+    preco: 4.5
 }
 
-],
+];
 
 
-sucos: [
-
-{
-nome: "Suco de Laranja",
-emoji: "🧃",
-preco: 7.00
-},
-
-{
-nome: "Suco de Maracujá",
-emoji: "🧃",
-preco: 7.00
-},
-
-{
-nome: "Suco de Morango",
-emoji: "🧃",
-preco: 7.00
-},
-
-{
-nome: "Suco de Uva",
-emoji: "🧃",
-preco: 7.00
-}
-
-],
-
-
-aguas: [
-
-{
-nome: "Água Mineral",
-emoji: "💧",
-preco: 4.00
-},
-
-{
-nome: "Água com Gás",
-emoji: "💧",
-preco: 4.50
-}
-
-]
-
-};
-
-
-// ==========================================
-// ESTADO
-// ==========================================
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
 
 let carrinho = [];
 
-let lancheEmEdicao = null;
+let itemEditando = null;
+
+let pagamentoSelecionado = null;
 
 
-// ==========================================
-// ELEMENTOS
-// ==========================================
-
-const listaLanches =
-document.getElementById("listaLanches");
-
-const listaResumo =
-document.getElementById("listaResumo");
-
-const contadorCarrinho =
-document.getElementById("contadorCarrinho");
-
-const enviarButton =
-document.getElementById("enviarPedido");
-
-const mensagem =
-document.getElementById("mensagem");
-
-const valorTotal =
-document.getElementById("valorTotal");
-
-
-// ==========================================
-// PREÇO
-// ==========================================
+/* =====================================================
+   FORMATAÇÃO
+===================================================== */
 
 function formatarPreco(valor) {
 
-return valor.toLocaleString("pt-BR", {
-
-style: "currency",
-
-currency: "BRL"
-
-});
+    return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
 
 }
 
-
-// ==========================================
-// REMOVER ACENTOS
-// ==========================================
 
 function removerAcentos(texto) {
 
-return texto
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "");
+    return texto
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
 
 }
 
 
-// ==========================================
-// PREÇO DE UM ADICIONAL
-// ==========================================
+/* =====================================================
+   PREÇO DOS ADICIONAIS
+===================================================== */
 
 function precoAdicional(ingrediente) {
 
-if (
-ingrediente.toLowerCase() === "hambúrguer"
-) {
+    if (
+        ingrediente
+        .toLowerCase()
+        .includes("hambúrguer")
+    ) {
 
-return 3.00;
+        return 3;
+
+    }
+
+    return 1;
 
 }
 
-return 1.00;
 
-}
-
-
-// ==========================================
-// CALCULAR PREÇO DOS ADICIONAIS
-// ==========================================
+/* =====================================================
+   CALCULAR ADICIONAIS
+===================================================== */
 
 function calcularAdicionais(item) {
 
-if (!item.adicionais) {
+    if (!item.adicionais) {
+        return 0;
+    }
 
-return 0;
+    return item.adicionais.reduce(
+        (total, adicional) => {
 
-}
+            return total +
+                precoAdicional(adicional.nome)
+                *
+                adicional.quantidade;
 
-return item.adicionais.reduce(
-(total, adicional) => {
-
-return total +
-(
-precoAdicional(adicional.nome) *
-adicional.quantidade
-);
-
-},
-0
-);
+        },
+        0
+    );
 
 }
 
 
-// ==========================================
-// PREÇO TOTAL DO ITEM
-// ==========================================
+/* =====================================================
+   PREÇO ITEM
+===================================================== */
 
 function calcularPrecoItem(item) {
 
-return item.precoBase +
-calcularAdicionais(item);
+    return item.precoBase +
+        calcularAdicionais(item);
 
 }
 
 
-// ==========================================
-// TOTAL DO PEDIDO
-// ==========================================
+/* =====================================================
+   TOTAL
+===================================================== */
 
 function calcularTotal() {
 
-return carrinho.reduce(
-(total, item) => {
+    return carrinho.reduce(
+        (total, item) => {
 
-return total +
-calcularPrecoItem(item);
+            return total +
+                calcularPrecoItem(item);
 
-},
-0
-);
-
-}
-
-
-// ==========================================
-// ATUALIZAR TOTAL
-// ==========================================
-
-function atualizarTotal() {
-
-valorTotal.textContent =
-formatarPreco(calcularTotal());
+        },
+        0
+    );
 
 }
 
 
-// ==========================================
-// ABAS
-// ==========================================
+/* =====================================================
+   ABRIR ABA
+===================================================== */
 
-document.querySelectorAll(".aba").forEach(botao => {
+function abrirAba(nome, botao) {
 
-botao.addEventListener("click", () => {
+    document
+        .querySelectorAll(".tab-content")
+        .forEach(tab => {
 
-const aba =
-botao.dataset.aba;
+            tab.classList.remove("active");
 
+        });
 
-document.querySelectorAll(".aba")
-.forEach(aba => {
+    document
+        .querySelectorAll(".tab-button")
+        .forEach(btn => {
 
-aba.classList.remove("ativa");
+            btn.classList.remove("active");
 
-});
+        });
 
+    document
+        .getElementById(nome)
+        .classList.add("active");
 
-document.querySelectorAll(".conteudo-aba")
-.forEach(conteudo => {
-
-conteudo.classList.remove("ativo");
-
-});
-
-
-botao.classList.add("ativa");
-
-
-document
-.getElementById(`aba-${aba}`)
-.classList.add("ativo");
-
-});
-
-});
-
-
-// ==========================================
-// CRIAR CARDS
-// ==========================================
-
-function criarCards() {
-
-listaLanches.innerHTML = "";
-
-
-Object.keys(lanches).forEach(chave => {
-
-const lanche =
-lanches[chave];
-
-
-const card =
-document.createElement("div");
-
-card.className =
-"lanche";
-
-
-const titulo =
-document.createElement("h2");
-
-titulo.textContent =
-`${lanche.emoji} ${lanche.nome}`;
-
-card.appendChild(titulo);
-
-
-const preco =
-document.createElement("div");
-
-preco.className =
-"preco-lanche";
-
-preco.textContent =
-formatarPreco(lanche.preco);
-
-card.appendChild(preco);
-
-
-const botoes =
-document.createElement("div");
-
-botoes.className =
-"botoes-lanche";
-
-
-const completo =
-document.createElement("button");
-
-completo.className =
-"btn-completo";
-
-completo.textContent =
-"✓ ADICIONAR COMPLETO";
-
-
-completo.addEventListener("click", () => {
-
-adicionarLanche(
-chave,
-[...lanche.ingredientes]
-);
-
-});
-
-
-const personalizar =
-document.createElement("button");
-
-personalizar.className =
-"btn-personalizar";
-
-personalizar.textContent =
-"⚙ PERSONALIZAR LANCHE";
-
-
-personalizar.addEventListener("click", () => {
-
-iniciarPersonalizacao(chave);
-
-});
-
-
-botoes.appendChild(completo);
-
-botoes.appendChild(personalizar);
-
-card.appendChild(botoes);
-
-
-const ingredientes =
-document.createElement("div");
-
-ingredientes.className =
-"ingredientes";
-
-ingredientes.id =
-`ingredientes-${chave}`;
-
-card.appendChild(ingredientes);
-
-
-listaLanches.appendChild(card);
-
-
-criarIngredientes(
-chave,
-ingredientes
-);
-
-});
+    botao.classList.add("active");
 
 }
 
 
-// ==========================================
-// CRIAR INGREDIENTES
-// ==========================================
+/* =====================================================
+   RENDERIZAR LANCHES
+===================================================== */
 
-function criarIngredientes(
-chave,
-elemento
+function renderizarLanches() {
+
+    const lista =
+        document.getElementById("listaLanches");
+
+    lista.innerHTML = "";
+
+    lanches.forEach(lanche => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "card";
+
+        let ingredientesHTML = "";
+
+        lanche.ingredientes.forEach(
+            ingrediente => {
+
+            ingredientesHTML += `
+
+            <div class="ingrediente">
+
+                <div class="ingrediente-esquerda">
+
+                    <input
+                    type="checkbox"
+                    id="${lanche.chave}-${ingrediente}"
+                    checked>
+
+                    <label>
+                    ${ingrediente}
+                    </label>
+
+                </div>
+
+                <div class="adicional-controle">
+
+                    <button
+                    class="menos"
+                    onclick="alterarAdicional(
+                        '${lanche.chave}',
+                        '${ingrediente}',
+                        -1
+                    )">
+
+                    −
+
+                    </button>
+
+                    <span
+                    class="qtd-adicional"
+                    id="qtd-${lanche.chave}-${ingrediente}">
+
+                    0
+
+                    </span>
+
+                    <button
+                    class="mais"
+                    onclick="alterarAdicional(
+                        '${lanche.chave}',
+                        '${ingrediente}',
+                        1
+                    )">
+
+                    +
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+
+        card.innerHTML = `
+
+        <h2>
+        ${lanche.emoji}
+        ${lanche.nome}
+        </h2>
+
+        <div class="preco">
+        ${formatarPreco(lanche.preco)}
+        </div>
+
+        <p>
+        Escolha os ingredientes:
+        </p>
+
+        <div class="ingredientes">
+
+        ${ingredientesHTML}
+
+        </div>
+
+        <button
+        class="btn btn-principal"
+        onclick="adicionarLanche(
+            '${lanche.chave}'
+        )">
+
+        ➕ ADICIONAR COMPLETO
+
+        </button>
+
+        `;
+
+        lista.appendChild(card);
+
+    });
+
+}
+
+
+/* =====================================================
+   ADICIONAR LANCHE
+===================================================== */
+
+function adicionarLanche(chave) {
+
+    const lanche =
+        lanches.find(
+            item => item.chave === chave
+        );
+
+    const ingredientesSelecionados = [];
+
+    lanche.ingredientes.forEach(
+        ingrediente => {
+
+        const checkbox =
+            document.getElementById(
+                `${chave}-${ingrediente}`
+            );
+
+        if (checkbox && checkbox.checked) {
+
+            ingredientesSelecionados.push(
+                ingrediente
+            );
+
+        }
+
+    });
+
+
+    const adicionais = [];
+
+    lanche.ingredientes.forEach(
+        ingrediente => {
+
+        const elemento =
+            document.getElementById(
+                `qtd-${chave}-${ingrediente}`
+            );
+
+        const quantidade =
+            parseInt(elemento.innerText) || 0;
+
+        if (quantidade > 0) {
+
+            adicionais.push({
+                nome: ingrediente,
+                quantidade: quantidade
+            });
+
+        }
+
+    });
+
+
+    const item = {
+
+        id:
+            Date.now() +
+            Math.random(),
+
+        tipo: "lanche",
+
+        chave: lanche.chave,
+
+        produto: lanche.nome,
+
+        precoBase: lanche.preco,
+
+        ingredientes:
+            ingredientesSelecionados,
+
+        adicionais:
+            adicionais
+
+    };
+
+
+    carrinho.push(item);
+
+    atualizarCarrinho();
+
+}
+
+
+/* =====================================================
+   ALTERAR ADICIONAL
+===================================================== */
+
+function alterarAdicional(
+    chave,
+    ingrediente,
+    variacao
 ) {
 
-elemento.innerHTML = "";
+    const elemento =
+        document.getElementById(
+            `qtd-${chave}-${ingrediente}`
+        );
 
+    let quantidade =
+        parseInt(elemento.innerText) || 0;
 
-lanches[chave].ingredientes
-.forEach(ingrediente => {
+    quantidade += variacao;
 
-const div =
-document.createElement("div");
+    if (quantidade < 0) {
+        quantidade = 0;
+    }
 
-div.className =
-"ingrediente";
-
-div.dataset.lanche =
-chave;
-
-div.dataset.ingrediente =
-ingrediente;
-
-
-div.innerHTML = `
-
-<div class="ingrediente-topo">
-
-<span class="ingrediente-nome">
-${ingrediente}
-</span>
-
-<span class="status">
-NÃO SELECIONADO
-</span>
-
-</div>
-
-<div class="adicional-area">
-
-<div class="adicional-info">
-
-Extra:
-<strong>
-${formatarPreco(
-precoAdicional(ingrediente)
-)}
-</strong>
-
-</div>
-
-<div class="controle-adicional">
-
-<button
-class="btn-extra btn-menos"
-type="button">
-−
-</button>
-
-<span class="qtd-extra">
-0
-</span>
-
-<button
-class="btn-extra btn-mais"
-type="button">
-+
-</button>
-
-</div>
-
-</div>
-
-`;
-
-
-div.querySelector(".btn-menos")
-.addEventListener("click", evento => {
-
-evento.stopPropagation();
-
-alterarAdicionalVisual(
-chave,
-ingrediente,
--1
-);
-
-});
-
-
-div.querySelector(".btn-mais")
-.addEventListener("click", evento => {
-
-evento.stopPropagation();
-
-alterarAdicionalVisual(
-chave,
-ingrediente,
-1
-);
-
-});
-
-
-div.addEventListener("click", () => {
-
-alternarIngredienteVisual(
-chave,
-ingrediente
-);
-
-});
-
-
-elemento.appendChild(div);
-
-});
+    elemento.innerText = quantidade;
 
 }
 
 
-// ==========================================
-// INICIAR PERSONALIZAÇÃO
-// ==========================================
+/* =====================================================
+   ADICIONAR BEBIDA
+===================================================== */
 
-function iniciarPersonalizacao(chave) {
+function adicionarBebida(indice) {
 
-lancheEmEdicao = {
+    const bebida = bebidas[indice];
 
-chave: chave,
+    carrinho.push({
 
-ingredientes:
-[...lanches[chave].ingredientes],
+        id:
+            Date.now() +
+            Math.random(),
 
-adicionais: []
+        tipo: "bebida",
 
-};
+        produto: bebida.nome,
 
+        precoBase: bebida.preco,
 
-atualizarVisualPersonalizacao(chave);
+        ingredientes: [],
 
+        adicionais: []
 
-mostrarMensagem(
-"Selecione os ingredientes e adicione extras usando +.",
-"aviso"
-);
+    });
 
-
-criarBotaoSalvarPersonalizacao(
-chave
-);
+    atualizarCarrinho();
 
 }
 
 
-// ==========================================
-// BOTÃO SALVAR PERSONALIZAÇÃO
-// ==========================================
+/* =====================================================
+   RENDERIZAR BEBIDAS
+===================================================== */
 
-function criarBotaoSalvarPersonalizacao(chave) {
+function renderizarBebidas() {
 
-const elemento =
-document.getElementById(
-`ingredientes-${chave}`
-);
+    const lista =
+        document.getElementById("listaBebidas");
 
+    lista.innerHTML = "";
 
-let antigo =
-elemento.querySelector(
-".btn-adicionar"
-);
+    bebidas.forEach(
+        (bebida, indice) => {
 
+        const card =
+            document.createElement("div");
 
-if (antigo) {
+        card.className = "card";
 
-antigo.remove();
+        card.innerHTML = `
 
-}
+        <h2>
+        ${bebida.emoji}
+        ${bebida.nome}
+        </h2>
 
+        <div class="preco">
 
-const botao =
-document.createElement("button");
+        ${formatarPreco(bebida.preco)}
 
-botao.className =
-"btn-adicionar";
+        </div>
 
-botao.textContent =
-"➕ ADICIONAR PERSONALIZADO";
+        <button
+        class="btn btn-principal"
+        onclick="adicionarBebida(${indice})">
 
-botao.style.width =
-"100%";
+        ➕ ADICIONAR
 
-botao.style.marginTop =
-"10px";
+        </button>
 
+        `;
 
-botao.addEventListener(
-"click",
-() => {
+        lista.appendChild(card);
 
-if (!lancheEmEdicao) {
-return;
-}
-
-
-adicionarLanche(
-
-lancheEmEdicao.chave,
-
-[...lancheEmEdicao.ingredientes],
-
-[...lancheEmEdicao.adicionais]
-
-);
-
-
-lancheEmEdicao = null;
-
-botao.remove();
-
-mensagem.className = "";
-
-mensagem.textContent = "";
-
-});
-
-elemento.appendChild(botao);
+    });
 
 }
 
 
-// ==========================================
-// ALTERNAR INGREDIENTE
-// ==========================================
+/* =====================================================
+   ATUALIZAR CARRINHO
+===================================================== */
 
-function alternarIngredienteVisual(
-chave,
-ingrediente
-) {
+function atualizarCarrinho() {
 
-if (
-!lancheEmEdicao ||
-lancheEmEdicao.chave !== chave
-) {
+    const lista =
+        document.getElementById(
+            "listaCarrinho"
+        );
 
-iniciarPersonalizacao(chave);
+    const total =
+        calcularTotal();
 
-}
-
-
-const indice =
-lancheEmEdicao.ingredientes.indexOf(
-ingrediente
-);
+    document.getElementById(
+        "valorTotal"
+    ).innerText =
+        formatarPreco(total);
 
 
-if (indice >= 0) {
+    if (carrinho.length === 0) {
 
-lancheEmEdicao.ingredientes.splice(
-indice,
-1
-);
+        lista.innerHTML =
+            "<p>Nenhum item adicionado.</p>";
 
-} else {
+        return;
 
-lancheEmEdicao.ingredientes.push(
-ingrediente
-);
-
-}
+    }
 
 
-atualizarVisualPersonalizacao(chave);
-
-}
+    lista.innerHTML = "";
 
 
-// ==========================================
-// ADICIONAR / REMOVER EXTRA
-// ==========================================
+    carrinho.forEach(
+        (item, indice) => {
 
-function alterarAdicionalVisual(
-chave,
-ingrediente,
-quantidade
-) {
+        const div =
+            document.createElement("div");
 
-if (
-!lancheEmEdicao ||
-lancheEmEdicao.chave !== chave
-) {
-
-iniciarPersonalizacao(chave);
-
-}
+        div.className =
+            "item-carrinho";
 
 
-let adicional =
-lancheEmEdicao.adicionais.find(
-item =>
-item.nome === ingrediente
-);
+        let ingredientes = "";
+
+        if (
+            item.ingredientes &&
+            item.ingredientes.length
+        ) {
+
+            ingredientes =
+                item.ingredientes.join(", ");
+
+        }
 
 
-if (!adicional) {
+        let adicionaisHTML = "";
 
-adicional = {
+        if (
+            item.adicionais &&
+            item.adicionais.length
+        ) {
 
-nome: ingrediente,
+            adicionaisHTML =
+                item.adicionais.map(
+                    adicional => {
 
-quantidade: 0
+                    return `
+                    ${adicional.quantidade}x
+                    ${adicional.nome}
+                    (+${formatarPreco(
+                        precoAdicional(
+                            adicional.nome
+                        )
+                    )})
+                    `;
 
-};
+                }
+                ).join("<br>");
 
-lancheEmEdicao.adicionais.push(
-adicional
-);
-
-}
-
-
-adicional.quantidade +=
-quantidade;
-
-
-if (adicional.quantidade < 0) {
-
-adicional.quantidade = 0;
-
-}
-
-
-lancheEmEdicao.adicionais =
-lancheEmEdicao.adicionais.filter(
-item =>
-item.quantidade > 0
-);
+        }
 
 
-atualizarVisualPersonalizacao(chave);
+        div.innerHTML = `
 
-}
+        <div class="item-topo">
 
+            <strong>
+            ${item.produto}
+            </strong>
 
-// ==========================================
-// ATUALIZAR VISUAL
-// ==========================================
+            <span class="item-preco">
 
-function atualizarVisualPersonalizacao(chave) {
+            ${formatarPreco(
+                calcularPrecoItem(item)
+            )}
 
-document
-.querySelectorAll(
-`.ingrediente[data-lanche="${chave}"]`
-)
-.forEach(item => {
+            </span>
 
-const ingrediente =
-item.dataset.ingrediente;
+        </div>
 
 
-const selecionado =
-lancheEmEdicao &&
-lancheEmEdicao.chave === chave &&
-lancheEmEdicao.ingredientes.includes(
-ingrediente
-);
+        ${
+            ingredientes
+            ?
+            `
+            <div class="item-ingredientes">
+
+            <strong>Ingredientes:</strong>
+            ${ingredientes}
+
+            </div>
+            `
+            :
+            ""
+        }
 
 
-item.classList.toggle(
-"ativo",
-selecionado
-);
+        ${
+            adicionaisHTML
+            ?
+            `
+            <div class="item-adicionais">
 
-item.classList.toggle(
-"removido",
-!selecionado
-);
+            <strong>Adicionais:</strong><br>
 
+            ${adicionaisHTML}
 
-const status =
-item.querySelector(".status");
-
-
-status.textContent =
-selecionado
-? "✓ INCLUÍDO"
-: "✕ REMOVIDO";
+            </div>
+            `
+            :
+            ""
+        }
 
 
-const adicional =
-lancheEmEdicao &&
-lancheEmEdicao.adicionais.find(
-item =>
-item.nome === ingrediente
-);
+        <div class="acoes-item">
 
+            <button
+            class="duplicar"
+            onclick="duplicarItem(${indice})">
 
-const quantidade =
-adicional
-? adicional.quantidade
-: 0;
+            ➕
 
+            </button>
 
-item.querySelector(
-".qtd-extra"
-).textContent =
-quantidade;
+            ${
+                item.tipo === "lanche"
+                ?
+                `
+                <button
+                class="editar"
+                onclick="editarItem(${indice})">
 
-});
+                ✏ EDITAR
+
+                </button>
+                `
+                :
+                ""
+            }
+
+            <button
+            class="remover"
+            onclick="removerItem(${indice})">
+
+            🗑 REMOVER
+
+            </button>
+
+        </div>
+
+        `;
+
+        lista.appendChild(div);
+
+    });
 
 }
 
 
-// ==========================================
-// ADICIONAR LANCHE
-// ==========================================
+/* =====================================================
+   DUPLICAR
+===================================================== */
 
-function adicionarLanche(
-chave,
-ingredientes,
-adicionais = []
-) {
+function duplicarItem(indice) {
 
-const item = {
+    const original =
+        carrinho[indice];
 
-id:
-Date.now() + Math.random(),
+    const copia =
+        JSON.parse(
+            JSON.stringify(original)
+        );
 
-tipo:
-"lanche",
+    copia.id =
+        Date.now() +
+        Math.random();
 
-chave:
-chave,
+    carrinho.push(copia);
 
-produto:
-lanches[chave].nome,
-
-precoBase:
-lanches[chave].preco,
-
-ingredientes:
-ingredientes,
-
-adicionais:
-adicionais
-
-};
-
-
-carrinho.push(item);
-
-
-atualizarResumo();
-
-atualizarContador();
-
-atualizarTotal();
+    atualizarCarrinho();
 
 }
 
 
-// ==========================================
-// BEBIDAS
-// ==========================================
+/* =====================================================
+   REMOVER
+===================================================== */
 
-function criarBebidas(
-lista,
-elementoId
-) {
+function removerItem(indice) {
 
-const elemento =
-document.getElementById(elementoId);
+    carrinho.splice(indice, 1);
 
-
-elemento.innerHTML = "";
-
-
-lista.forEach(bebida => {
-
-const card =
-document.createElement("div");
-
-card.className =
-"bebida";
-
-
-card.innerHTML = `
-
-<div class="emoji">
-${bebida.emoji}
-</div>
-
-<h3>
-${bebida.nome}
-</h3>
-
-<div class="preco">
-${formatarPreco(bebida.preco)}
-</div>
-
-`;
-
-
-const botao =
-document.createElement("button");
-
-botao.className =
-"btn-bebida";
-
-botao.textContent =
-"➕ ADICIONAR";
-
-
-botao.addEventListener(
-"click",
-() => {
-
-adicionarBebida(bebida);
-
-});
-
-
-card.appendChild(botao);
-
-elemento.appendChild(card);
-
-});
+    atualizarCarrinho();
 
 }
 
 
-// ==========================================
-// ADICIONAR BEBIDA
-// ==========================================
+/* =====================================================
+   EDITAR
+===================================================== */
 
-function adicionarBebida(bebida) {
+function editarItem(indice) {
 
-const item = {
+    const item =
+        carrinho[indice];
 
-id:
-Date.now() + Math.random(),
+    if (item.tipo !== "lanche") {
+        return;
+    }
 
-tipo:
-"bebida",
+    const lanche =
+        lanches.find(
+            l => l.chave === item.chave
+        );
 
-produto:
-bebida.nome,
-
-precoBase:
-bebida.preco,
-
-ingredientes: [],
-
-adicionais: []
-
-};
+    if (!lanche) {
+        return;
+    }
 
 
-carrinho.push(item);
+    lanche.ingredientes.forEach(
+        ingrediente => {
+
+        const checkbox =
+            document.getElementById(
+                `${lanche.chave}-${ingrediente}`
+            );
+
+        if (checkbox) {
+
+            checkbox.checked =
+                item.ingredientes
+                .includes(ingrediente);
+
+        }
 
 
-atualizarResumo();
-
-atualizarContador();
-
-atualizarTotal();
-
-}
+        const qtd =
+            item.adicionais?.find(
+                a =>
+                    a.nome === ingrediente
+            )?.quantidade || 0;
 
 
-// ==========================================
-// REMOVER ITEM
-// ==========================================
+        const elemento =
+            document.getElementById(
+                `qtd-${lanche.chave}-${ingrediente}`
+            );
 
-function removerItem(id) {
+        if (elemento) {
 
-carrinho =
-carrinho.filter(
-item =>
-item.id !== id
-);
+            elemento.innerText = qtd;
 
+        }
 
-atualizarResumo();
-
-atualizarContador();
-
-atualizarTotal();
-
-}
+    });
 
 
-// ==========================================
-// DUPLICAR
-// ==========================================
+    carrinho.splice(indice, 1);
 
-function duplicarItem(id) {
+    atualizarCarrinho();
 
-const original =
-carrinho.find(
-item =>
-item.id === id
-);
-
-
-if (!original) {
-return;
-}
-
-
-const copia = {
-
-id:
-Date.now() + Math.random(),
-
-tipo:
-original.tipo,
-
-chave:
-original.chave,
-
-produto:
-original.produto,
-
-precoBase:
-original.precoBase,
-
-ingredientes:
-[...original.ingredientes],
-
-adicionais:
-original.adicionais.map(
-adicional => ({
-
-nome:
-adicional.nome,
-
-quantidade:
-adicional.quantidade
-
-})
-)
-
-};
-
-
-carrinho.push(copia);
-
-
-atualizarResumo();
-
-atualizarContador();
-
-atualizarTotal();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 
 
-// ==========================================
-// EDITAR ITEM
-// ==========================================
+/* =====================================================
+   ABRIR PAGAMENTO
+===================================================== */
 
-function editarItem(id) {
+function abrirPagamento() {
 
-const item =
-carrinho.find(
-item =>
-item.id === id
-);
+    if (carrinho.length === 0) {
 
+        alert(
+            "Adicione pelo menos um item ao pedido."
+        );
 
-if (!item || item.tipo !== "lanche") {
+        return;
 
-return;
-
-}
+    }
 
 
-lancheEmEdicao = {
-
-chave:
-item.chave,
-
-ingredientes:
-[...item.ingredientes],
-
-adicionais:
-item.adicionais.map(
-adicional => ({
-
-nome:
-adicional.nome,
-
-quantidade:
-adicional.quantidade
-
-})
-)
-
-};
+    const total =
+        calcularTotal();
 
 
-atualizarVisualPersonalizacao(
-item.chave
-);
+    document.getElementById(
+        "totalPagamento"
+    ).innerText =
+        formatarPreco(total);
 
 
-criarBotaoSalvarEdicao(
-item.id
-);
+    document.getElementById(
+        "telaPrincipal"
+    ).style.display = "none";
 
 
-window.scrollTo({
+    document.getElementById(
+        "telaPagamento"
+    ).style.display = "block";
 
-top:
-document.getElementById(
-`ingredientes-${item.chave}`
-).offsetTop - 100,
 
-behavior:
-"smooth"
-
-});
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 
 
-// ==========================================
-// SALVAR EDIÇÃO
-// ==========================================
+/* =====================================================
+   VOLTAR
+===================================================== */
 
-function criarBotaoSalvarEdicao(id) {
+function voltarParaPedido() {
 
-const chave =
-carrinho.find(
-item =>
-item.id === id
-).chave;
+    document.getElementById(
+        "telaPagamento"
+    ).style.display = "none";
 
 
-const elemento =
-document.getElementById(
-`ingredientes-${chave}`
-);
+    document.getElementById(
+        "telaPrincipal"
+    ).style.display = "block";
 
 
-let antigo =
-elemento.querySelector(
-".btn-adicionar"
-);
-
-
-if (antigo) {
-antigo.remove();
-}
-
-
-const botao =
-document.createElement("button");
-
-botao.className =
-"btn-adicionar";
-
-botao.textContent =
-"✓ SALVAR ALTERAÇÕES";
-
-botao.style.width =
-"100%";
-
-botao.style.marginTop =
-"10px";
-
-
-botao.addEventListener(
-"click",
-() => {
-
-const indice =
-carrinho.findIndex(
-item =>
-item.id === id
-);
-
-
-if (indice >= 0) {
-
-carrinho[indice].ingredientes =
-[...lancheEmEdicao.ingredientes];
-
-carrinho[indice].adicionais =
-[...lancheEmEdicao.adicionais];
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 
 
-lancheEmEdicao = null;
+/* =====================================================
+   SELECIONAR PAGAMENTO
+===================================================== */
 
-botao.remove();
+function selecionarPagamento(tipo) {
 
-atualizarResumo();
-
-atualizarContador();
-
-atualizarTotal();
-
-mensagem.className = "";
-
-mensagem.textContent = "";
-
-});
+    pagamentoSelecionado =
+        tipo;
 
 
-elemento.appendChild(botao);
+    document
+        .querySelectorAll(
+            ".opcao-pagamento"
+        )
+        .forEach(
+            elemento => {
+
+            elemento.classList.remove(
+                "selecionada"
+            );
+
+        }
+    );
+
+
+    document
+        .getElementById(
+            "opcao" +
+            tipo.charAt(0).toUpperCase() +
+            tipo.slice(1)
+        )
+        .classList.add(
+            "selecionada"
+        );
+
+
+    document
+        .querySelectorAll(
+            ".area-pagamento"
+        )
+        .forEach(
+            area => {
+
+            area.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    if (
+        tipo === "debito" ||
+        tipo === "credito"
+    ) {
+
+        document
+            .getElementById(
+                "areaCartao"
+            )
+            .classList.add("active");
+
+
+        document
+            .getElementById(
+                "tituloCartao"
+            )
+            .innerText =
+                tipo === "debito"
+                ?
+                "Pagamento no débito"
+                :
+                "Pagamento no crédito";
+
+    }
+
+
+    if (tipo === "pix") {
+
+        document
+            .getElementById(
+                "areaPix"
+            )
+            .classList.add("active");
+
+
+        gerarQRCode();
+
+    }
+
+
+    if (tipo === "dinheiro") {
+
+        document
+            .getElementById(
+                "areaDinheiro"
+            )
+            .classList.add("active");
+
+    }
 
 }
 
 
-// ==========================================
-// CONTADOR
-// ==========================================
+/* =====================================================
+   GERAR QR CODE
+===================================================== */
 
-function atualizarContador() {
+function gerarQRCode() {
 
-contadorCarrinho.textContent =
-`🛒 Itens no pedido: ${carrinho.length}`;
+    const elemento =
+        document.getElementById(
+            "qrcode"
+        );
 
-}
-
-
-// ==========================================
-// RESUMO
-// ==========================================
-
-function atualizarResumo() {
-
-listaResumo.innerHTML = "";
+    elemento.innerHTML = "";
 
 
-if (carrinho.length === 0) {
-
-listaResumo.textContent =
-"Nenhum item adicionado.";
-
-enviarButton.disabled =
-true;
-
-atualizarTotal();
-
-return;
-
-}
+    const total =
+        calcularTotal();
 
 
-carrinho.forEach(
-(item, indice) => {
+    /*
+       QR CODE DE DEMONSTRAÇÃO
 
-const div =
-document.createElement("div");
+       Não é um PIX real.
 
-div.className =
-"item-pedido";
+       A chave é fictícia.
+    */
 
-
-const titulo =
-document.createElement("h3");
-
-titulo.textContent =
-`${indice + 1}. ${item.produto}`;
-
-div.appendChild(titulo);
+    const chavePix =
+        "bricka.demo.pix.2026@exemplo.com";
 
 
-const tipo =
-document.createElement("div");
-
-tipo.className =
-"tipo-item";
-
-tipo.textContent =
-item.tipo === "bebida"
-? "🥤 BEBIDA"
-: "🍔 LANCHE";
-
-div.appendChild(tipo);
+    const codigoPix =
+        `00020126580014BR.GOV.BCB.PIX` +
+        `0136${chavePix}` +
+        `520400005303986` +
+        `5802BR` +
+        `5906BRICKA` +
+        `6008DEMO` +
+        `540${total.toFixed(2)}` +
+        `6304DEMO`;
 
 
-const preco =
-calcularPrecoItem(item);
-
-
-const precoItem =
-document.createElement("div");
-
-precoItem.className =
-"preco-item";
-
-precoItem.textContent =
-formatarPreco(preco);
-
-div.appendChild(precoItem);
-
-
-// ====================================
-// INGREDIENTES
-// ====================================
-
-if (item.tipo === "lanche") {
-
-const ingredientes =
-document.createElement("p");
-
-ingredientes.innerHTML =
-"<strong>Ingredientes:</strong><br>" +
-
-(
-item.ingredientes.length > 0
-
-? item.ingredientes
-.map(
-ingrediente =>
-`✓ ${ingrediente}`
-)
-.join("<br>")
-
-: "Nenhum ingrediente"
-);
-
-
-div.appendChild(
-ingredientes
-);
-
-
-// ====================================
-// ADICIONAIS
-// ====================================
-
-if (
-item.adicionais &&
-item.adicionais.length > 0
-) {
-
-const adicionais =
-document.createElement("div");
-
-adicionais.className =
-"adicionais-resumo";
-
-adicionais.innerHTML =
-"<strong>➕ Adicionais:</strong><br>" +
-
-item.adicionais
-.map(adicional => {
-
-const valor =
-precoAdicional(
-adicional.nome
-);
-
-return `
-${adicional.quantidade}x
-${adicional.nome}
-(+${formatarPreco(
-valor *
-adicional.quantidade
-)})
-`;
-
-})
-.join("<br>");
-
-
-div.appendChild(
-adicionais
-);
-
-}
+    new QRCode(
+        elemento,
+        {
+            text: codigoPix,
+            width: 220,
+            height: 220
+        }
+    );
 
 }
 
 
-// ====================================
-// CONTROLES
-// ====================================
+/* =====================================================
+   TROCO
+===================================================== */
 
-const controles =
-document.createElement("div");
+function calcularTroco() {
 
-controles.className =
-"controles";
-
-
-// DUPLICAR
-
-const duplicar =
-document.createElement("button");
-
-duplicar.className =
-"btn-controle";
-
-duplicar.textContent =
-"➕";
-
-duplicar.title =
-"Adicionar outro igual";
+    const recebido =
+        parseFloat(
+            document.getElementById(
+                "valorRecebido"
+            ).value
+        ) || 0;
 
 
-duplicar.addEventListener(
-"click",
-() => {
-
-duplicarItem(
-item.id
-);
-
-});
+    const total =
+        calcularTotal();
 
 
-controles.appendChild(
-duplicar
-);
+    const elemento =
+        document.getElementById(
+            "troco"
+        );
 
 
-// EDITAR
+    if (recebido === 0) {
 
-if (item.tipo === "lanche") {
+        elemento.innerText =
+            "Informe o valor recebido.";
 
-const editar =
-document.createElement("button");
+        elemento.classList.remove(
+            "erro"
+        );
 
-editar.className =
-"btn-editar";
+        return;
 
-editar.textContent =
-"✏ EDITAR";
-
-
-editar.addEventListener(
-"click",
-() => {
-
-editarItem(
-item.id
-);
-
-});
+    }
 
 
-controles.appendChild(
-editar
-);
+    if (recebido < total) {
+
+        elemento.innerText =
+            "Valor insuficiente.";
+
+        elemento.classList.add(
+            "erro"
+        );
+
+        return;
+
+    }
+
+
+    const troco =
+        recebido - total;
+
+
+    elemento.classList.remove(
+        "erro"
+    );
+
+
+    elemento.innerText =
+        "Troco: " +
+        formatarPreco(troco);
 
 }
 
 
-// REMOVER
+/* =====================================================
+   CONFIRMAR PAGAMENTO
+===================================================== */
 
-const remover =
-document.createElement("button");
+function confirmarPagamento() {
 
-remover.className =
-"btn-remover";
+    if (!pagamentoSelecionado) {
 
-remover.textContent =
-"🗑 REMOVER";
+        alert(
+            "Selecione uma forma de pagamento."
+        );
 
+        return;
 
-remover.addEventListener(
-"click",
-() => {
-
-removerItem(
-item.id
-);
-
-});
+    }
 
 
-controles.appendChild(
-remover
-);
+    const total =
+        calcularTotal();
 
 
-div.appendChild(
-controles
-);
+    /* =========================
+       DINHEIRO
+    ========================= */
+
+    if (
+        pagamentoSelecionado ===
+        "dinheiro"
+    ) {
+
+        const recebido =
+            parseFloat(
+                document.getElementById(
+                    "valorRecebido"
+                ).value
+            ) || 0;
 
 
-listaResumo.appendChild(
-div
-);
+        if (recebido < total) {
 
-});
+            alert(
+                "O valor recebido é menor que o total."
+            );
+
+            return;
+
+        }
+
+    }
 
 
-enviarButton.disabled =
-false;
+    let nomePagamento = "";
 
 
-atualizarTotal();
+    switch (
+        pagamentoSelecionado
+    ) {
+
+        case "debito":
+            nomePagamento =
+                "Cartao de Debito";
+            break;
+
+        case "credito":
+            nomePagamento =
+                "Cartao de Credito";
+            break;
+
+        case "pix":
+            nomePagamento =
+                "PIX";
+            break;
+
+        case "dinheiro":
+            nomePagamento =
+                "Dinheiro";
+            break;
+
+    }
+
+
+    const pedido = {
+
+        ativo: true,
+
+        total: total,
+
+        pagamento: {
+
+            metodo:
+                nomePagamento,
+
+            codigo:
+                pagamentoSelecionado
+
+        },
+
+        itens:
+
+            carrinho.map(
+                item => ({
+
+                tipo:
+                    item.tipo,
+
+                produto:
+                    removerAcentos(
+                        item.produto
+                    ),
+
+                precoBase:
+                    item.precoBase,
+
+                adicionais:
+
+                    item.adicionais.map(
+                        adicional => ({
+
+                        ingrediente:
+                            removerAcentos(
+                                adicional.nome
+                            ),
+
+                        quantidade:
+                            adicional.quantidade,
+
+                        precoUnitario:
+                            precoAdicional(
+                                adicional.nome
+                            ),
+
+                        subtotal:
+                            precoAdicional(
+                                adicional.nome
+                            )
+                            *
+                            adicional.quantidade
+
+                    })),
+
+                precoTotal:
+                    calcularPrecoItem(item),
+
+                ingredientes:
+
+                    item.ingredientes.map(
+                        ingrediente =>
+                            removerAcentos(
+                                ingrediente
+                            )
+                    )
+
+            }))
+
+    };
+
+
+    /*
+       Se for dinheiro,
+       também salva o valor recebido
+       e o troco.
+    */
+
+    if (
+        pagamentoSelecionado ===
+        "dinheiro"
+    ) {
+
+        const recebido =
+            parseFloat(
+                document.getElementById(
+                    "valorRecebido"
+                ).value
+            );
+
+
+        pedido.pagamento
+            .valorRecebido =
+                recebido;
+
+
+        pedido.pagamento
+            .troco =
+                recebido - total;
+
+    }
+
+
+    /*
+       ENVIA PARA O FIREBASE
+    */
+
+    database
+        .ref("pedido")
+        .set(pedido)
+
+        .then(() => {
+
+            alert(
+                "✅ Pedido enviado com sucesso!"
+            );
+
+
+            carrinho = [];
+
+            pagamentoSelecionado =
+                null;
+
+
+            document.getElementById(
+                "valorRecebido"
+            ).value = "";
+
+
+            document.getElementById(
+                "troco"
+            ).innerText =
+                "Informe o valor recebido.";
+
+
+            document
+                .querySelectorAll(
+                    ".opcao-pagamento"
+                )
+                .forEach(
+                    elemento => {
+
+                    elemento.classList.remove(
+                        "selecionada"
+                    );
+
+                }
+            );
+
+
+            document
+                .querySelectorAll(
+                    ".area-pagamento"
+                )
+                .forEach(
+                    elemento => {
+
+                    elemento.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+
+            document.getElementById(
+                "telaPagamento"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "telaPrincipal"
+            ).style.display =
+                "block";
+
+
+            atualizarCarrinho();
+
+        })
+
+        .catch(
+            erro => {
+
+            console.error(
+                erro
+            );
+
+            alert(
+                "❌ Erro ao enviar o pedido."
+            );
+
+        });
 
 }
 
 
-// ==========================================
-// MENSAGEM
-// ==========================================
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
 
-function mostrarMensagem(
-texto,
-tipo
-) {
+renderizarLanches();
 
-mensagem.textContent =
-texto;
+renderizarBebidas();
 
-mensagem.className =
-tipo;
-
-}
-
-
-// ==========================================
-// ENVIAR PEDIDO
-// ==========================================
-
-enviarButton.addEventListener(
-"click",
-async () => {
-
-if (carrinho.length === 0) {
-return;
-}
-
-
-enviarButton.disabled =
-true;
-
-enviarButton.textContent =
-"ENVIANDO...";
-
-
-mostrarMensagem(
-"Enviando pedido...",
-""
-);
-
-
-const total =
-calcularTotal();
-
-
-const pedido = {
-
-ativo:
-true,
-
-total:
-total,
-
-itens:
-
-carrinho.map(item => ({
-
-tipo:
-item.tipo,
-
-produto:
-removerAcentos(
-item.produto
-),
-
-precoBase:
-item.precoBase,
-
-adicionais:
-
-item.adicionais.map(
-adicional => ({
-
-ingrediente:
-removerAcentos(
-adicional.nome
-),
-
-quantidade:
-adicional.quantidade,
-
-precoUnitario:
-precoAdicional(
-adicional.nome
-),
-
-subtotal:
-precoAdicional(
-adicional.nome
-) *
-adicional.quantidade
-
-})
-),
-
-precoTotal:
-calcularPrecoItem(item),
-
-ingredientes:
-
-item.ingredientes.map(
-ingrediente =>
-removerAcentos(
-ingrediente
-)
-)
-
-}))
-
-};
-
-
-console.log(
-"Pedido:",
-pedido
-);
-
-
-try {
-
-await set(
-ref(
-database,
-"pedido"
-),
-pedido
-);
-
-
-mostrarMensagem(
-"✓ Pedido enviado com sucesso!",
-"sucesso"
-);
-
-
-enviarButton.textContent =
-"PEDIDO ENVIADO";
-
-
-} catch (erro) {
-
-console.error(
-"Erro Firebase:",
-erro
-);
-
-
-mostrarMensagem(
-"✕ Erro ao enviar o pedido.",
-"erro"
-);
-
-
-enviarButton.disabled =
-false;
-
-enviarButton.textContent =
-"ENVIAR PEDIDO";
-
-}
-
-});
-
-
-// ==========================================
-// INICIALIZAR
-// ==========================================
-
-criarCards();
-
-criarBebidas(
-bebidas.refrigerantes,
-"listaRefrigerantes"
-);
-
-criarBebidas(
-bebidas.sucos,
-"listaSucos"
-);
-
-criarBebidas(
-bebidas.aguas,
-"listaAguas"
-);
-
-atualizarResumo();
-
-atualizarContador();
-
-atualizarTotal();
+atualizarCarrinho();
 
 </script>
 
