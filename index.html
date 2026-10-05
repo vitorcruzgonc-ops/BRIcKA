@@ -1,1 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BRICKA</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            color: #111;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 34px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 17px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 25px;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .botao {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            border-radius: 10px;
+            background: #111;
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .botao:hover {
+            transform: scale(1.02);
+            background: #222;
+        }
+
+        .botao.acompanhar {
+            background: #e0e0e0;
+            color: #111;
+        }
+
+        .botao.acompanhar:hover {
+            background: #d0d0d0;
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <h1>🍔 BRICKA</h1>
+
+        <p>Seu lanche do seu jeito!</p>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="card">
+
+            <h2>O que você deseja fazer?</h2>
+
+            <p>
+                Escolha uma das opções abaixo.
+            </p>
+
+
+            <div class="botoes">
+
+                <a
+                    href="pedido.html"
+                    class="botao">
+
+                    🍔 FAZER NOVO PEDIDO
+
+                </a>
+
+
+                <a
+                    href="acompanhar.html"
+                    class="botao acompanhar">
+
+                    🔎 ACOMPANHAR PEDIDO
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        BRICKA © 2026
+
+    </footer>
+
+</body>
+
+</html>
