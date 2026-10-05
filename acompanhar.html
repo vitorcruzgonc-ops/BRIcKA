@@ -1,1 +1,762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>BRICKA - Acompanhar Pedido</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            color: #111;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 28px 15px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 35px auto;
+            padding: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .descricao {
+            text-align: center;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #ccc;
+            border-radius: 9px;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 9px;
+            background: #111;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #222;
+        }
+
+        .resultado {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .numero-pedido {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .status {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .etapa {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 17px;
+            border-radius: 10px;
+            background: #e5e5e5;
+            color: #777;
+            font-weight: bold;
+        }
+
+        .icone {
+            font-size: 27px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .etapa.ativa {
+            background: #111;
+            color: white;
+        }
+
+        .etapa.concluida {
+            background: #ddd;
+            color: #111;
+        }
+
+        .mensagem {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            background: #f1f1f1;
+        }
+
+        .erro {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #ffe5e5;
+            color: #b00000;
+            text-align: center;
+            display: none;
+        }
+
+        .voltar {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #111;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .itens {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                margin: 20px auto;
+            }
+
+            .card {
+                padding: 22px 18px;
+            }
+
+            header h1 {
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🍔 BRICKA</h1>
+
+    <p>Acompanhe seu pedido</p>
+
+</header>
+
+
+<main class="container">
+
+
+    <div class="card">
+
+
+        <h2>🔎 Encontrar pedido</h2>
+
+
+        <p class="descricao">
+            Digite o número do seu pedido:
+        </p>
+
+
+        <input
+            type="text"
+            id="numeroPedido"
+            placeholder="Ex: 09083108"
+            inputmode="numeric"
+        >
+
+
+        <button onclick="acompanharPedido()">
+
+            ACOMPANHAR PEDIDO
+
+        </button>
+
+
+        <div
+            id="erro"
+            class="erro">
+        </div>
+
+
+        <div
+            id="resultado"
+            class="resultado">
+
+
+            <div
+                id="numeroPedidoExibido"
+                class="numero-pedido">
+            </div>
+
+
+            <div class="status">
+
+
+                <div
+                    id="statusRecebido"
+                    class="etapa">
+
+                    <div class="icone">📋</div>
+
+                    <div>
+                        PEDIDO APROVADO
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="statusPreparacao"
+                    class="etapa">
+
+                    <div class="icone">👨‍🍳</div>
+
+                    <div>
+                        EM PREPARAÇÃO
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="statusPronto"
+                    class="etapa">
+
+                    <div class="icone">✅</div>
+
+                    <div>
+                        PRONTO PARA RETIRADA
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                id="mensagem"
+                class="mensagem">
+            </div>
+
+
+            <div
+                id="itens"
+                class="itens">
+            </div>
+
+
+            <div
+                id="total"
+                class="total">
+            </div>
+
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="voltar">
+
+            ← Voltar para o início
+
+        </a>
+
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+const firebaseURL =
+    "https://bricka-96d91-default-rtdb.firebaseio.com";
+
+
+let numeroAtual = null;
+
+
+/*
+====================================================
+INICIAR
+====================================================
+*/
+
+window.onload = function() {
+
+    const parametros =
+        new URLSearchParams(window.location.search);
+
+    const pedidoURL =
+        parametros.get("pedido");
+
+    if (pedidoURL) {
+
+        document.getElementById(
+            "numeroPedido"
+        ).value = pedidoURL;
+
+        acompanharPedido();
+
+    }
+
+};
+
+
+/*
+====================================================
+ACOMPANHAR PEDIDO
+====================================================
+*/
+
+async function acompanharPedido() {
+
+    const numero =
+        document
+        .getElementById("numeroPedido")
+        .value
+        .trim();
+
+
+    if (!numero) {
+
+        mostrarErro(
+            "Digite o número do pedido."
+        );
+
+        return;
+
+    }
+
+
+    numeroAtual = numero;
+
+
+    esconderErro();
+
+
+    try {
+
+        const resposta =
+            await fetch(
+                firebaseURL +
+                "/pedidos/" +
+                encodeURIComponent(numero) +
+                ".json"
+            );
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                "Erro ao consultar o Firebase."
+            );
+
+        }
+
+
+        const pedido =
+            await resposta.json();
+
+
+        if (!pedido) {
+
+            mostrarErro(
+                "Pedido não encontrado. Confira o número digitado."
+            );
+
+            document
+                .getElementById("resultado")
+                .style.display = "none";
+
+            return;
+
+        }
+
+
+        mostrarPedido(
+            pedido,
+            numero
+        );
+
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        mostrarErro(
+            "Não foi possível consultar o pedido. Verifique sua conexão."
+        );
+
+    }
+
+}
+
+
+/*
+====================================================
+MOSTRAR PEDIDO
+====================================================
+*/
+
+function mostrarPedido(
+    pedido,
+    numero
+) {
+
+    document
+        .getElementById("resultado")
+        .style.display = "block";
+
+
+    document
+        .getElementById("numeroPedidoExibido")
+        .innerText =
+        "Pedido nº " + numero;
+
+
+    /*
+    ================================================
+    STATUS
+    ================================================
+    */
+
+    const status =
+        pedido.status || "aprovado";
+
+
+    const recebido =
+        document.getElementById(
+            "statusRecebido"
+        );
+
+    const preparacao =
+        document.getElementById(
+            "statusPreparacao"
+        );
+
+    const pronto =
+        document.getElementById(
+            "statusPronto"
+        );
+
+
+    recebido.className = "etapa";
+    preparacao.className = "etapa";
+    pronto.className = "etapa";
+
+
+    if (
+        status === "aprovado"
+    ) {
+
+        recebido.className =
+            "etapa ativa";
+
+        mostrarMensagem(
+            "📋 Seu pedido foi aprovado!"
+        );
+
+    }
+
+
+    else if (
+        status === "preparando"
+    ) {
+
+        recebido.className =
+            "etapa concluida";
+
+        preparacao.className =
+            "etapa ativa";
+
+        mostrarMensagem(
+            "👨‍🍳 Seu pedido está sendo preparado!"
+        );
+
+    }
+
+
+    else if (
+        status === "pronto"
+    ) {
+
+        recebido.className =
+            "etapa concluida";
+
+        preparacao.className =
+            "etapa concluida";
+
+        pronto.className =
+            "etapa ativa";
+
+        mostrarMensagem(
+            "✅ Seu pedido está pronto para retirada!"
+        );
+
+    }
+
+
+    /*
+    ================================================
+    ITENS
+    ================================================
+    */
+
+    mostrarItens(
+        pedido.itens
+    );
+
+
+    /*
+    ================================================
+    TOTAL
+    ================================================
+    */
+
+    if (
+        pedido.total !== undefined
+    ) {
+
+        document
+            .getElementById("total")
+            .innerText =
+            "Total: R$ " +
+            Number(pedido.total)
+                .toFixed(2)
+                .replace(".", ",");
+
+    }
+
+}
+
+
+/*
+====================================================
+MOSTRAR ITENS
+====================================================
+*/
+
+function mostrarItens(
+    itens
+) {
+
+    const elemento =
+        document.getElementById(
+            "itens"
+        );
+
+
+    elemento.innerHTML =
+        "<strong>🛒 Seu pedido:</strong>";
+
+
+    if (!itens) {
+
+        return;
+
+    }
+
+
+    Object.values(itens).forEach(
+        item => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.className =
+                "item";
+
+
+            let texto =
+                item.produto ||
+                "Produto";
+
+
+            if (
+                item.adicionais &&
+                Array.isArray(item.adicionais)
+            ) {
+
+                item.adicionais.forEach(
+                    adicional => {
+
+                        texto +=
+                            "<br><small>➕ " +
+                            adicional.ingrediente +
+                            " x" +
+                            adicional.quantidade +
+                            "</small>";
+
+                    }
+                );
+
+            }
+
+
+            div.innerHTML =
+                texto;
+
+
+            elemento.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/*
+====================================================
+MENSAGEM
+====================================================
+*/
+
+function mostrarMensagem(
+    texto
+) {
+
+    document
+        .getElementById("mensagem")
+        .innerText = texto;
+
+}
+
+
+/*
+====================================================
+ERRO
+====================================================
+*/
+
+function mostrarErro(
+    texto
+) {
+
+    const erro =
+        document.getElementById(
+            "erro"
+        );
+
+    erro.innerText = texto;
+
+    erro.style.display =
+        "block";
+
+}
+
+
+function esconderErro() {
+
+    document
+        .getElementById("erro")
+        .style.display = "none";
+
+}
+
+
+/*
+====================================================
+ATUALIZAÇÃO AUTOMÁTICA
+====================================================
+*/
+
+setInterval(
+    function() {
+
+        if (numeroAtual) {
+
+            acompanharPedido();
+
+        }
+
+    },
+    5000
+);
+
+</script>
+
+
+</body>
+
+</html>
