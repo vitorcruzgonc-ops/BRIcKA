@@ -1,75 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111827">
-  <title>BRICKA - Início</title>
-  <style>
-    :root { color-scheme: dark; --bg:#0b1020; --card:#151d30; --text:#f8fafc; --muted:#aab5c8; --accent:#f59e0b; }
-    * { box-sizing:border-box; }
-    body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; font-family:Arial,Helvetica,sans-serif; background:radial-gradient(circle at top,#26334d 0,#0b1020 55%); color:var(--text); }
-    main { width:100%; max-width:720px; }
-    .brand { text-align:center; margin-bottom:26px; }
-    .logo { display:inline-grid; place-items:center; width:76px; height:76px; border-radius:22px; background:var(--accent); color:#171717; font-size:42px; box-shadow:0 12px 35px #f59e0b33; }
-    h1 { margin:16px 0 8px; font-size:clamp(34px,7vw,52px); letter-spacing:2px; }
-    .brand p { margin:0; color:var(--muted); font-size:16px; }
-    .cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
-    .card { background:var(--card); border:1px solid #2b3851; border-radius:20px; padding:24px; }
-    .card .emoji { font-size:34px; }
-    h2 { margin:12px 0 8px; font-size:22px; }
-    .card p { color:var(--muted); line-height:1.5; min-height:48px; margin:0 0 18px; }
-    a, button { display:block; width:100%; border:0; border-radius:12px; padding:14px 16px; text-align:center; font-weight:700; font-size:15px; text-decoration:none; cursor:pointer; }
-    .primary { background:var(--accent); color:#171717; }
-    .secondary { background:#26334b; color:var(--text); border:1px solid #3a4964; }
-    .track { margin-top:18px; background:var(--card); border:1px solid #2b3851; border-radius:20px; padding:22px; }
-    .track h2 { margin-top:0; }
-    .track form { display:flex; gap:10px; }
-    input { flex:1; min-width:0; background:#0b1020; border:1px solid #3a4964; color:var(--text); border-radius:12px; padding:14px; font-size:16px; }
-    .track button { width:auto; background:#26334b; color:var(--text); border:1px solid #3a4964; }
-    footer { text-align:center; color:#7f8ba2; font-size:12px; margin-top:22px; }
-    @media(max-width:560px) { .cards { grid-template-columns:1fr; } .card p { min-height:0; } .track form { flex-direction:column; } .track button { width:100%; } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRICKA - Pedidos</title>
+    <script>
+        window.location.replace("pedido.html");
+    </script>
 </head>
 <body>
-  <main>
-    <header class="brand">
-      <div class="logo" aria-hidden="true">🍔</div>
-      <h1>BRICKA</h1>
-      <p>Monte seu lanche do seu jeito!</p>
-    </header>
-
-    <section class="cards" aria-label="Opções principais">
-      <article class="card">
-        <div class="emoji" aria-hidden="true">🍔</div>
-        <h2>Fazer um pedido</h2>
-        <p>Escolha seus lanches, personalize os ingredientes e confira o valor total.</p>
-        <a class="primary" href="pedido.html">VER CARDÁPIO</a>
-      </article>
-      <article class="card">
-        <div class="emoji" aria-hidden="true">📦</div>
-        <h2>Acompanhar pedido</h2>
-        <p>Consulte o andamento do pedido usando o número que recebeu ao finalizar.</p>
-        <a class="secondary" href="acompanhar.html">ACOMPANHAR PEDIDO</a>
-      </article>
-    </section>
-
-    <section class="track">
-      <h2>Já fez seu pedido?</h2>
-      <form id="formAcompanhar">
-        <input id="numeroPedido" type="text" inputmode="numeric" autocomplete="off" placeholder="Digite o número do pedido" aria-label="Número do pedido" required>
-        <button type="submit">CONSULTAR</button>
-      </form>
-    </section>
-    <footer>BRICKA · Sistema de pedidos</footer>
-  </main>
-  <script>
-    document.getElementById('formAcompanhar').addEventListener('submit', function (event) {
-      event.preventDefault();
-      const numero = document.getElementById('numeroPedido').value.trim();
-      if (!numero) return;
-      window.location.href = 'acompanhar.html?pedido=' + encodeURIComponent(numero);
-    });
-  </script>
+    <p>Abrindo o cardápio BRICKA...</p>
+    <noscript>
+        <a href="pedido.html">Clique aqui para fazer seu pedido.</a>
+    </noscript>
 </body>
 </html>
