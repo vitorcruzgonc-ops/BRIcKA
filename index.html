@@ -1,635 +1,176 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BRICKA - Pedidos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * { box-sizing: border-box; }
+    <title>BRICKA</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      color: #222;
-    }
+    <style>
 
-    header {
-      background: #111;
-      color: white;
-      padding: 22px;
-      text-align: center;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    header h1 { margin: 0; font-size: 32px; }
-    header p { color: #ccc; margin-bottom: 0; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            color: #111;
+        }
 
-    main {
-      max-width: 950px;
-      margin: auto;
-      padding: 20px;
-    }
+        header {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+        }
 
-    .etapas {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
+        header h1 {
+            margin: 0;
+            font-size: 34px;
+        }
 
-    .etapa {
-      flex: 1;
-      padding: 12px 5px;
-      text-align: center;
-      border-radius: 8px;
-      background: #ddd;
-      font-size: 13px;
-      font-weight: bold;
-    }
+        header p {
+            margin: 8px 0 0;
+            font-size: 17px;
+        }
 
-    .etapa.atual {
-      background: #16803c;
-      color: white;
-    }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 15px;
+        }
 
-    .painel, .resumo {
-      background: white;
-      padding: 22px;
-      border-radius: 14px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 14px #00000012;
-    }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+            text-align: center;
+        }
 
-    h2 { margin-top: 0; }
+        .card h2 {
+            margin-top: 0;
+            font-size: 25px;
+        }
 
-    .opcoes {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-    }
+        .card p {
+            color: #555;
+            margin-bottom: 30px;
+        }
 
-    .produto {
-      border: 2px solid #ddd;
-      background: white;
-      border-radius: 12px;
-      padding: 18px;
-      text-align: center;
-      cursor: pointer;
-    }
+        .botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-    .produto:hover, .produto.selecionado {
-      border-color: #16803c;
-      background: #eaf7ee;
-    }
+        .botao {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            border-radius: 10px;
+            background: #111;
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
 
-    .produto h3 { margin: 5px 0 10px; }
+        .botao:hover {
+            transform: scale(1.02);
+            background: #222;
+        }
 
-    .produto button {
-      margin-top: 10px;
-      width: 100%;
-    }
+        .botao.acompanhar {
+            background: #e0e0e0;
+            color: #111;
+        }
 
-    .lista-opcoes {
-      display: grid;
-      gap: 10px;
-    }
+        .botao.acompanhar:hover {
+            background: #d0d0d0;
+        }
 
-    .opcao {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #f3f3f3;
-      border-radius: 9px;
-      padding: 13px;
-      cursor: pointer;
-    }
+        footer {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+            font-size: 14px;
+        }
 
-    .opcao:has(input:checked) {
-      background: #e1f4e6;
-      outline: 1px solid #16803c;
-    }
+        @media (max-width: 600px) {
 
-    .opcao input {
-      width: 20px;
-      height: 20px;
-      accent-color: #16803c;
-    }
+            header h1 {
+                font-size: 28px;
+            }
 
-    .opcao span { flex: 1; }
+            .card {
+                padding: 25px 20px;
+            }
 
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 13px 17px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        }
 
-    button:disabled {
-      opacity: .5;
-      cursor: not-allowed;
-    }
+    </style>
 
-    .principal {
-      background: #16803c;
-      color: white;
-    }
-
-    .principal:hover { background: #0f632e; }
-
-    .secundario {
-      background: #e4e4e4;
-      color: #222;
-    }
-
-    .perigo {
-      background: #c62828;
-      color: white;
-    }
-
-    .acoes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 22px;
-    }
-
-    .acoes button { flex: 1; }
-
-    .oculto { display: none !important; }
-
-    .resumo-item {
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      background: #fafafa;
-    }
-
-    .resumo-item h3 { margin: 0 0 8px; }
-
-    .resumo-item p {
-      margin: 5px 0;
-      line-height: 1.5;
-    }
-
-    #mensagem {
-      display: none;
-      margin-top: 16px;
-      padding: 14px;
-      border-radius: 8px;
-      overflow-wrap: anywhere;
-    }
-
-    #mensagem.sucesso {
-      display: block;
-      background: #d8f5d8;
-      color: #146b14;
-    }
-
-    #mensagem.erro {
-      display: block;
-      background: #ffdada;
-      color: #8a1111;
-    }
-
-    #mensagem.aviso {
-      display: block;
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .contador {
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 18px;
-    }
-
-    @media (max-width: 550px) {
-      main { padding: 12px; }
-      .painel, .resumo { padding: 16px; }
-      .etapa { font-size: 11px; }
-    }
-  </style>
 </head>
 
 <body>
-<header>
-  <h1>BRICKA</h1>
-  <p>Monte seu lanche do seu jeito!</p>
-</header>
-
-<main>
-  <div class="etapas">
-    <div class="etapa atual" id="etapa1">1. LANCHE</div>
-    <div class="etapa" id="etapa2">2. INGREDIENTES</div>
-    <div class="etapa" id="etapa3">3. ADICIONAIS</div>
-  </div>
-
-  <!-- ETAPA 1: ESCOLHER O LANCHE -->
-  <section class="painel" id="passoLanche">
-    <h2>🍔 Escolha seu lanche</h2>
-    <p>Selecione uma opção para continuar.</p>
-    <div class="opcoes" id="listaProdutos"></div>
-  </section>
-
-  <!-- ETAPA 2: INGREDIENTES DO LANCHE -->
-  <section class="painel oculto" id="passoIngredientes">
-    <h2>🥬 Personalize os ingredientes</h2>
-    <p id="nomeLancheIngredientes"></p>
-    <p>Desmarque os ingredientes que você não deseja.</p>
-
-    <div class="lista-opcoes" id="listaIngredientes"></div>
-
-    <div class="acoes">
-      <button class="secundario" id="voltarLanche">VOLTAR</button>
-      <button class="principal" id="irAdicionais">CONTINUAR</button>
-    </div>
-  </section>
-
-  <!-- ETAPA 3: ADICIONAIS -->
-  <section class="painel oculto" id="passoAdicionais">
-    <h2>➕ Deseja algum adicional?</h2>
-    <p id="nomeLancheAdicionais"></p>
-    <p>Marque os extras que deseja acrescentar.</p>
-
-    <div class="lista-opcoes" id="listaAdicionais"></div>
-
-    <div class="acoes">
-      <button class="secundario" id="voltarIngredientes">VOLTAR</button>
-      <button class="principal" id="adicionarCarrinho">ADICIONAR AO PEDIDO</button>
-    </div>
-  </section>
-
-  <!-- CARRINHO -->
-  <section class="resumo">
-    <h2>🛒 Seu pedido</h2>
-    <div class="contador" id="contadorCarrinho">Lanches no pedido: 0</div>
-    <div id="listaResumo">Nenhum lanche adicionado.</div>
-
-    <div class="acoes">
-      <button class="principal" id="novoLanche">+ ESCOLHER OUTRO LANCHE</button>
-      <button class="principal" id="enviarPedido" disabled>ENVIAR PEDIDO</button>
-    </div>
-
-    <div id="mensagem"></div>
-  </section>
-</main>
-
-<script type="module">
-  import { initializeApp } from
-    "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-
-  import { getDatabase, ref, set } from
-    "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
-
-  // Mantenha aqui os dados do Firebase do seu projeto.
-  const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
-    authDomain: "bricka-96d91.firebaseapp.com",
-    databaseURL: "https://bricka-96d91-default-rtdb.firebaseio.com",
-    projectId: "bricka-96d91",
-    storageBucket: "bricka-96d91.firebasestorage.app",
-    messagingSenderId: "503488792733",
-    appId: "SEU_APP_ID"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
-
-  // Catálogo dos lanches e ingredientes padrão.
-  const lanches = {
-    "x-salada": {
-      nome: "X-SALADA",
-      emoji: "🍔",
-      ingredientes: [
-        "Pão", "Hambúrguer", "Queijo", "Presunto",
-        "Alface", "Tomate", "Milho", "Batata palha", "Molho"
-      ]
-    },
-    "x-bacon": {
-      nome: "X-BACON",
-      emoji: "🥓",
-      ingredientes: [
-        "Pão", "Hambúrguer", "Queijo", "Bacon",
-        "Alface", "Tomate", "Milho", "Batata palha", "Molho"
-      ]
-    },
-    "x-frango": {
-      nome: "X-FRANGO",
-      emoji: "🍗",
-      ingredientes: [
-        "Pão", "Frango", "Queijo", "Alface",
-        "Tomate", "Milho", "Batata palha", "Molho"
-      ]
-    },
-    "x-egg": {
-      nome: "X-EGG",
-      emoji: "🍳",
-      ingredientes: [
-        "Pão", "Hambúrguer", "Ovo", "Queijo",
-        "Alface", "Tomate", "Milho", "Batata palha", "Molho"
-      ]
-    },
-    "x-calabresa": {
-      nome: "X-CALABRESA",
-      emoji: "🌭",
-      ingredientes: [
-        "Pão", "Calabresa", "Queijo", "Alface",
-        "Tomate", "Milho", "Batata palha", "Molho"
-      ]
-    },
-    "x-tudo": {
-      nome: "X-TUDO",
-      emoji: "🍔",
-      ingredientes: [
-        "Pão", "Hambúrguer", "Bacon", "Presunto", "Ovo",
-        "Queijo", "Alface", "Tomate", "Milho",
-        "Batata palha", "Molho"
-      ]
-    }
-  };
-
-  // Lista de extras. Os preços podem ser configurados depois.
-  const adicionais = [
-    "Hambúrguer extra",
-    "Bacon extra",
-    "Queijo extra",
-    "Presunto extra",
-    "Ovo extra",
-    "Frango extra",
-    "Calabresa extra",
-    "Catupiry",
-    "Cheddar"
-  ];
-
-  let lancheSelecionado = null;
-  let ingredientesSelecionados = [];
-  let adicionaisSelecionados = [];
-  let carrinho = [];
-
-  const $ = id => document.getElementById(id);
-
-  function semAcentos(texto) {
-    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  }
-
-  function mensagem(texto, tipo = "aviso") {
-    $("mensagem").textContent = texto;
-    $("mensagem").className = tipo;
-  }
-
-  function limparMensagem() {
-    $("mensagem").textContent = "";
-    $("mensagem").className = "";
-  }
-
-  function mostrarEtapa(numero) {
-    $("passoLanche").classList.toggle("oculto", numero !== 1);
-    $("passoIngredientes").classList.toggle("oculto", numero !== 2);
-    $("passoAdicionais").classList.toggle("oculto", numero !== 3);
-
-    for (let i = 1; i <= 3; i++) {
-      $("etapa" + i).classList.toggle("atual", i === numero);
-    }
-
-    limparMensagem();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  // ETAPA 1: apresentar os produtos.
-  function criarProdutos() {
-    const lista = $("listaProdutos");
-    lista.innerHTML = "";
-
-    Object.entries(lanches).forEach(([chave, lanche]) => {
-      const card = document.createElement("div");
-      card.className = "produto";
-
-      const titulo = document.createElement("h3");
-      titulo.textContent = `${lanche.emoji} ${lanche.nome}`;
-
-      const descricao = document.createElement("p");
-      descricao.textContent =
-        `${lanche.ingredientes.length} ingredientes padrão`;
-
-      const botao = document.createElement("button");
-      botao.className = "principal";
-      botao.textContent = "ESCOLHER ESTE LANCHE";
-
-      botao.addEventListener("click", () => {
-        lancheSelecionado = chave;
-        ingredientesSelecionados = [...lanche.ingredientes];
-        adicionaisSelecionados = [];
-
-        criarListaIngredientes();
-        mostrarEtapa(2);
-      });
-
-      card.append(titulo, descricao, botao);
-      lista.appendChild(card);
-    });
-  }
-
-  // ETAPA 2: marcar ou desmarcar ingredientes.
-  function criarListaIngredientes() {
-    const lanche = lanches[lancheSelecionado];
-
-    $("nomeLancheIngredientes").textContent =
-      `Lanche escolhido: ${lanche.nome}`;
-
-    const lista = $("listaIngredientes");
-    lista.innerHTML = "";
-
-    lanche.ingredientes.forEach(ingrediente => {
-      const label = document.createElement("label");
-      label.className = "opcao";
-
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = ingredientesSelecionados.includes(ingrediente);
-
-      const nome = document.createElement("span");
-      nome.textContent = ingrediente;
-
-      const estado = document.createElement("small");
-      estado.textContent = checkbox.checked ? "Incluído" : "Retirado";
-
-      checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
-          if (!ingredientesSelecionados.includes(ingrediente)) {
-            ingredientesSelecionados.push(ingrediente);
-          }
-          estado.textContent = "Incluído";
-        } else {
-          ingredientesSelecionados =
-            ingredientesSelecionados.filter(item => item !== ingrediente);
-          estado.textContent = "Retirado";
-        }
-      });
-
-      label.append(checkbox, nome, estado);
-      lista.appendChild(label);
-    });
-  }
-
-  // ETAPA 3: selecionar extras.
-  function criarListaAdicionais() {
-    $("nomeLancheAdicionais").textContent =
-      `Lanche escolhido: ${lanches[lancheSelecionado].nome}`;
-
-    const lista = $("listaAdicionais");
-    lista.innerHTML = "";
-
-    adicionais.forEach(adicional => {
-      const label = document.createElement("label");
-      label.className = "opcao";
-
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = adicionaisSelecionados.includes(adicional);
-
-      const nome = document.createElement("span");
-      nome.textContent = adicional;
-
-      checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
-          if (!adicionaisSelecionados.includes(adicional)) {
-            adicionaisSelecionados.push(adicional);
-          }
-        } else {
-          adicionaisSelecionados =
-            adicionaisSelecionados.filter(item => item !== adicional);
-        }
-      });
-
-      label.append(checkbox, nome);
-      lista.appendChild(label);
-    });
-  }
-
-  $("voltarLanche").addEventListener("click", () => mostrarEtapa(1));
-
-  $("irAdicionais").addEventListener("click", () => {
-    criarListaAdicionais();
-    mostrarEtapa(3);
-  });
-
-  $("voltarIngredientes").addEventListener("click", () => mostrarEtapa(2));
-
-  $("adicionarCarrinho").addEventListener("click", () => {
-    const lanche = lanches[lancheSelecionado];
-
-    carrinho.push({
-      id: Date.now() + Math.random(),
-      chave: lancheSelecionado,
-      produto: lanche.nome,
-      ingredientes: [...ingredientesSelecionados],
-      adicionais: [...adicionaisSelecionados]
-    });
-
-    atualizarResumo();
-    mostrarEtapa(1);
-    mensagem("Lanche adicionado ao pedido!", "sucesso");
-  });
-
-  $("novoLanche").addEventListener("click", () => {
-    mostrarEtapa(1);
-  });
-
-  // CARRINHO
-  function atualizarResumo() {
-    const lista = $("listaResumo");
-    lista.innerHTML = "";
-
-    $("contadorCarrinho").textContent =
-      `🛒 Lanches no pedido: ${carrinho.length}`;
-
-    $("enviarPedido").disabled = carrinho.length === 0;
-
-    if (carrinho.length === 0) {
-      lista.textContent = "Nenhum lanche adicionado.";
-      return;
-    }
-
-    carrinho.forEach((item, indice) => {
-      const card = document.createElement("div");
-      card.className = "resumo-item";
-
-      const titulo = document.createElement("h3");
-      titulo.textContent = `${indice + 1}. ${item.produto}`;
-
-      const ingredientes = document.createElement("p");
-      ingredientes.textContent =
-        "Ingredientes: " +
-        (item.ingredientes.length ? item.ingredientes.join(", ") : "Nenhum");
-
-      const extras = document.createElement("p");
-      extras.textContent =
-        "Adicionais: " +
-        (item.adicionais.length ? item.adicionais.join(", ") : "Nenhum");
-
-      const remover = document.createElement("button");
-      remover.className = "perigo";
-      remover.textContent = "REMOVER LANCHE";
-
-      remover.addEventListener("click", () => {
-        carrinho = carrinho.filter(lanche => lanche.id !== item.id);
-        atualizarResumo();
-        limparMensagem();
-      });
-
-      card.append(titulo, ingredientes, extras, remover);
-      lista.appendChild(card);
-    });
-  }
-
-  // ENVIAR PARA O FIREBASE
-  $("enviarPedido").addEventListener("click", async () => {
-    if (!carrinho.length) return;
-
-    const botao = $("enviarPedido");
-    botao.disabled = true;
-    botao.textContent = "ENVIANDO...";
-
-    const pedido = {
-      ativo: true,
-      status: "aprovado",
-      itens: carrinho.map(item => ({
-        produto: semAcentos(item.produto),
-        ingredientes: [
-          ...item.ingredientes.map(semAcentos),
-          ...item.adicionais.map(adicional =>
-            "Adicional: " + semAcentos(adicional)
-          )
-        ]
-      }))
-    };
-
-    try {
-      // Mantém o caminho usado pelo site anterior.
-      await set(ref(database, "pedido"), pedido);
-
-      mensagem("✓ Pedido enviado com sucesso!", "sucesso");
-      botao.textContent = "PEDIDO ENVIADO";
-
-      carrinho = [];
-      atualizarResumo();
-    } catch (erro) {
-      console.error("Erro ao enviar pedido:", erro);
-      mensagem(
-        "Não foi possível enviar. Verifique a configuração e as regras do Firebase.",
-        "erro"
-      );
-      botao.disabled = false;
-      botao.textContent = "ENVIAR PEDIDO";
-    }
-  });
-
-  criarProdutos();
-  atualizarResumo();
-</script>
+
+    <header>
+
+        <h1>🍔 BRICKA</h1>
+
+        <p>Seu lanche do seu jeito!</p>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="card">
+
+            <h2>O que você deseja fazer?</h2>
+
+            <p>
+                Escolha uma das opções abaixo.
+            </p>
+
+
+            <div class="botoes">
+
+                <a
+                    href="pedido.html"
+                    class="botao">
+
+                    🍔 FAZER NOVO PEDIDO
+
+                </a>
+
+
+                <a
+                    href="acompanhar.html"
+                    class="botao acompanhar">
+
+                    🔎 ACOMPANHAR PEDIDO
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        BRICKA © 2026
+
+    </footer>
+
 </body>
+
 </html>
