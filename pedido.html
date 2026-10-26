@@ -48,6 +48,19 @@ textarea {
     font-family: inherit;
 
 }
+      #qrcodeAcompanhamento {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px auto;
+    min-height: 150px;
+}
+
+#qrcodeAcompanhamento img,
+#qrcodeAcompanhamento canvas {
+    max-width: 180px;
+    height: auto;
+}
 
 
 /* =====================================================
@@ -1291,6 +1304,10 @@ class="numero-pedido">
 #00000000
 
 </div>
+      
+<p>📱 Escaneie para acompanhar seu pedido:</p>
+
+<div id="qrcodeAcompanhamento"></div>
 
 
 <p id="resumoPagamento">
@@ -3045,22 +3062,15 @@ function confirmarPagamento() {
 ===================================================== */
 
 function acompanharPedido() {
-
     if (!numeroPedido) {
-
+        alert("Número do pedido não encontrado.");
         return;
-
     }
-
 
     window.location.href =
         "acompanhar.html?pedido=" +
-        encodeURIComponent(
-            numeroPedido
-        );
-
+        encodeURIComponent(numeroPedido);
 }
-
 
 /* =====================================================
    NOVO PEDIDO
