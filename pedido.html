@@ -11,18 +11,19 @@
 <title>BRICKA - Pedidos</title>
 
 
-<!-- =====================================================
-     QR CODE
-===================================================== -->
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+
+<!-- QR CODE -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 
 <style>
-
-/* =====================================================
-   GERAL
-===================================================== */
 
 * {
     box-sizing: border-box;
@@ -32,10 +33,7 @@ body {
 
     margin: 0;
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 
     background: #f3f3f3;
 
@@ -175,10 +173,7 @@ header p {
     display: grid;
 
     grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(260px, 1fr)
-        );
+        repeat(auto-fit, minmax(260px, 1fr));
 
     gap: 20px;
 
@@ -186,7 +181,69 @@ header p {
 
 
 /* =====================================================
-   CARDS
+   SELEÇÃO PROFISSIONAL DE LANCHES
+===================================================== */
+.selecao-lanches {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.8fr) minmax(300px, 1.2fr);
+    gap: 20px;
+    align-items: start;
+}
+.lista-produtos {
+    display: grid;
+    gap: 12px;
+}
+.produto-selecao {
+    width: 100%;
+    text-align: left;
+    border: 2px solid #e5e5e5;
+    border-radius: 14px;
+    padding: 16px;
+    background: #fff;
+    cursor: pointer;
+    transition: .18s ease;
+    color: #222;
+}
+.produto-selecao:hover { border-color: #999; transform: translateY(-1px); }
+.produto-selecao.selecionado { border-color: #111; box-shadow: 0 0 0 2px #1111; background: #fffdf8; }
+.produto-selecao .produto-titulo { display:flex; align-items:center; gap:10px; font-weight:800; font-size:16px; }
+.produto-selecao .produto-emoji { font-size:28px; }
+.produto-selecao .produto-descricao { display:block; color:#777; font-size:12px; margin-top:7px; }
+.produto-selecao .produto-rodape { display:flex; justify-content:space-between; align-items:center; margin-top:12px; gap:8px; }
+.produto-selecao .produto-valor { font-size:18px; font-weight:800; }
+.produto-selecao .produto-escolher { font-size:12px; font-weight:800; background:#f0f0f0; border-radius:7px; padding:7px 9px; }
+.painel-personalizacao { position: sticky; top: 90px; background:#fff; border:1px solid #e8e8e8; border-radius:18px; padding:22px; box-shadow:0 8px 26px rgba(0,0,0,.08); min-width:0; }
+.painel-topo { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; border-bottom:1px solid #eee; padding-bottom:16px; margin-bottom:14px; }
+.painel-topo h2 { margin:0 0 6px; }
+.painel-subtitulo { margin:0; color:#777; font-size:13px; }
+.painel-preco { white-space:nowrap; font-size:19px; font-weight:800; }
+.painel-dica { background:#f5f5f5; border-radius:9px; padding:10px 12px; color:#555; font-size:13px; margin:12px 0 16px; }
+.lista-ingredientes-painel { display:grid; gap:8px; }
+.linha-ingrediente { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid #f0f0f0; }
+.linha-ingrediente:last-child { border-bottom:0; }
+.ingrediente-info { min-width:0; }
+.ingrediente-nome { display:block; font-weight:700; }
+.ingrediente-status { display:block; font-size:12px; margin-top:3px; color:#14833b; }
+.ingrediente-status.removido { color:#888; }
+.controle-quantidade { display:flex; align-items:center; gap:9px; flex-shrink:0; }
+.controle-quantidade button { width:32px; height:32px; border:1px solid #ddd; border-radius:9px; background:#fff; font-size:20px; cursor:pointer; }
+.controle-quantidade button:last-child { background:#111; color:#fff; border-color:#111; }
+.controle-quantidade button:disabled { opacity:.35; cursor:not-allowed; }
+.controle-quantidade .qtd { min-width:18px; text-align:center; font-weight:800; }
+.painel-resumo { display:flex; justify-content:space-between; gap:12px; padding-top:15px; margin-top:10px; border-top:1px solid #eee; font-weight:800; }
+.painel-personalizacao .btn { margin-top:16px; }
+@media(max-width:760px) {
+    .selecao-lanches { grid-template-columns:1fr; }
+    .lista-produtos { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .produto-selecao { padding:12px; }
+    .produto-selecao .produto-titulo { font-size:14px; }
+    .produto-selecao .produto-emoji { font-size:23px; }
+    .produto-selecao .produto-rodape { align-items:flex-start; flex-direction:column; }
+    .painel-personalizacao { position:static; }
+}
+
+/* =====================================================
+   CARD
 ===================================================== */
 
 .card {
@@ -358,14 +415,6 @@ header p {
 
 }
 
-.btn-finalizar {
-
-    background: #0a8f3d;
-
-    color: white;
-
-}
-
 
 /* =====================================================
    CARRINHO
@@ -388,8 +437,7 @@ header p {
 
 .item-carrinho {
 
-    border-bottom:
-        1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 
     padding: 15px 0;
 
@@ -483,8 +531,7 @@ header p {
 
     padding-top: 20px;
 
-    border-top:
-        2px solid #111;
+    border-top: 2px solid #111;
 
     display: flex;
 
@@ -493,6 +540,16 @@ header p {
     font-size: 22px;
 
     font-weight: bold;
+
+}
+
+.finalizar {
+
+    background: #0a8f3d;
+
+    color: white;
+
+    margin-top: 15px;
 
 }
 
@@ -560,8 +617,7 @@ header p {
 
     display: grid;
 
-    grid-template-columns:
-        repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 
     gap: 15px;
 
@@ -612,7 +668,7 @@ header p {
 
 
 /* =====================================================
-   ÁREAS DE PAGAMENTO
+   ÁREA PAGAMENTO
 ===================================================== */
 
 .area-pagamento {
@@ -690,6 +746,8 @@ header p {
 
     padding: 12px;
 
+    word-break: break-all;
+
     font-weight: bold;
 
 }
@@ -702,8 +760,7 @@ header p {
 
     padding: 12px;
 
-    border:
-        2px solid #ddd;
+    border: 2px solid #ddd;
 
     border-radius: 8px;
 
@@ -720,6 +777,8 @@ header p {
     color: #777;
 
     font-size: 13px;
+
+    margin-top: 15px;
 
 }
 
@@ -742,8 +801,7 @@ header p {
 
     font-size: 20px;
 
-    border:
-        2px solid #ddd;
+    border: 2px solid #ddd;
 
     border-radius: 10px;
 
@@ -769,7 +827,7 @@ header p {
 
 
 /* =====================================================
-   TELA FINAL
+   SUCESSO
 ===================================================== */
 
 #telaSucesso {
@@ -786,19 +844,17 @@ header p {
 
     text-align: center;
 
-    padding: 20px;
-
 }
 
 .sucesso-container {
 
     background: white;
 
-    width: 100%;
-
     max-width: 500px;
 
-    padding: 35px 25px;
+    margin: 30px;
+
+    padding: 40px 25px;
 
     border-radius: 20px;
 
@@ -809,65 +865,17 @@ header p {
 
 .sucesso-icone {
 
-    font-size: 65px;
-
-}
-
-.sucesso-container h1 {
-
-    margin-bottom: 10px;
+    font-size: 70px;
 
 }
 
 .numero-pedido {
 
-    font-size: 30px;
+    font-size: 32px;
 
     font-weight: bold;
 
-    margin: 15px 0 25px;
-
-}
-
-
-/* =====================================================
-   QR CODE DE ACOMPANHAMENTO
-===================================================== */
-
-#qrcodeAcompanhamento {
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    margin: 25px auto;
-
-    padding: 15px;
-
-    background: white;
-
-    border-radius: 12px;
-
-    width: fit-content;
-
-    box-shadow:
-        0 2px 10px rgba(0,0,0,0.10);
-
-}
-
-#qrcodeAcompanhamento img {
-
-    display: block;
-
-}
-
-.texto-qr {
-
-    color: #666;
-
-    font-size: 14px;
+    margin: 10px 0 20px;
 
 }
 
@@ -880,15 +888,13 @@ header p {
 
     .opcoes-pagamento {
 
-        grid-template-columns:
-            1fr 1fr;
+        grid-template-columns: 1fr 1fr;
 
     }
 
     .opcao-pagamento {
 
-        padding:
-            15px 10px;
+        padding: 15px 10px;
 
     }
 
@@ -929,33 +935,31 @@ header p {
 
 <header>
 
-    <h1>🍔 BRICKA</h1>
+<h1>🍔 BRICKA</h1>
 
-    <p>
-        Monte seu lanche do seu jeito!
-    </p>
+<p>Monte seu lanche do seu jeito!</p>
 
 </header>
 
 
 <div class="tabs">
 
-    <button
-        class="tab-button active"
-        onclick="abrirAba('lanches', this)">
+<button
+class="tab-button active"
+onclick="abrirAba('lanches', this)">
 
-        🍔 LANCHES
+🍔 LANCHES
 
-    </button>
+</button>
 
 
-    <button
-        class="tab-button"
-        onclick="abrirAba('bebidas', this)">
+<button
+class="tab-button"
+onclick="abrirAba('bebidas', this)">
 
-        🥤 BEBIDAS
+🥤 BEBIDAS
 
-    </button>
+</button>
 
 </div>
 
@@ -963,81 +967,61 @@ header p {
 <div class="container">
 
 
-    <!-- =================================================
-         LANCHES
-    ================================================== -->
+<div
+id="lanches"
+class="tab-content active">
 
-    <div
-        id="lanches"
-        class="tab-content active">
+<div class="selecao-lanches">
+    <div id="listaLanches" class="lista-produtos"></div>
+    <section id="painelPersonalizacao" class="painel-personalizacao" aria-live="polite"></section>
+</div>
 
-        <div
-            id="listaLanches"
-            class="grid">
-        </div>
-
-    </div>
+</div>
 
 
-    <!-- =================================================
-         BEBIDAS
-    ================================================== -->
+<div
+id="bebidas"
+class="tab-content">
 
-    <div
-        id="bebidas"
-        class="tab-content">
+<div
+id="listaBebidas"
+class="grid">
+</div>
 
-        <div
-            id="listaBebidas"
-            class="grid">
-        </div>
-
-    </div>
+</div>
 
 
-    <!-- =================================================
-         CARRINHO
-    ================================================== -->
+<div class="carrinho">
 
-    <div class="carrinho">
+<h2>🛒 Seu pedido</h2>
 
-        <h2>
-            🛒 Seu pedido
-        </h2>
+<div id="listaCarrinho">
 
+<p>Nenhum item adicionado.</p>
 
-        <div id="listaCarrinho">
-
-            <p>
-                Nenhum item adicionado.
-            </p>
-
-        </div>
+</div>
 
 
-        <div class="total">
+<div class="total">
 
-            <span>
-                Total
-            </span>
+<span>Total</span>
 
-            <span id="valorTotal">
-                R$ 0,00
-            </span>
+<span id="valorTotal">
+R$ 0,00
+</span>
 
-        </div>
+</div>
 
 
-        <button
-            class="btn btn-finalizar"
-            onclick="abrirPagamento()">
+<button
+class="btn finalizar"
+onclick="abrirPagamento()">
 
-            💳 FINALIZAR E PAGAR
+💳 FINALIZAR E PAGAR
 
-        </button>
+</button>
 
-    </div>
-
+</div>
 
 </div>
 
@@ -1045,331 +1029,297 @@ header p {
 
 
 <!-- =====================================================
-     TELA DE PAGAMENTO
+     PAGAMENTO
 ===================================================== -->
 
 <div id="telaPagamento">
 
-    <div class="pagamento-container">
+<div class="pagamento-container">
 
 
-        <div class="pagamento-header">
+<div class="pagamento-header">
 
-            <h1>
-                💳 Pagamento
-            </h1>
+<h1>💳 Pagamento</h1>
 
-            <p>
-                Total do pedido
-            </p>
+<p>Total do pedido</p>
 
-            <div
-                class="valor-pagamento"
-                id="totalPagamento">
+<div
+class="valor-pagamento"
+id="totalPagamento">
 
-                R$ 0,00
+R$ 0,00
 
-            </div>
+</div>
 
-        </div>
+</div>
 
 
-        <h2>
-            Escolha a forma de pagamento
-        </h2>
+<h2>Escolha a forma de pagamento</h2>
 
 
-        <div class="opcoes-pagamento">
+<div class="opcoes-pagamento">
 
 
-            <div
-                class="opcao-pagamento"
-                id="opcaoDebito"
-                onclick="selecionarPagamento('debito')">
+<div
+class="opcao-pagamento"
+id="opcaoDebito"
+onclick="selecionarPagamento('debito')">
 
-                <div class="opcao-icone">
-                    💳
-                </div>
+<div class="opcao-icone">💳</div>
 
-                <div class="opcao-nome">
-                    Cartão de débito
-                </div>
+<div class="opcao-nome">
+Cartão de débito
+</div>
 
-            </div>
+</div>
 
 
-            <div
-                class="opcao-pagamento"
-                id="opcaoCredito"
-                onclick="selecionarPagamento('credito')">
+<div
+class="opcao-pagamento"
+id="opcaoCredito"
+onclick="selecionarPagamento('credito')">
 
-                <div class="opcao-icone">
-                    💳
-                </div>
+<div class="opcao-icone">💳</div>
 
-                <div class="opcao-nome">
-                    Cartão de crédito
-                </div>
+<div class="opcao-nome">
+Cartão de crédito
+</div>
 
-            </div>
+</div>
 
 
-            <div
-                class="opcao-pagamento"
-                id="opcaoPix"
-                onclick="selecionarPagamento('pix')">
+<div
+class="opcao-pagamento"
+id="opcaoPix"
+onclick="selecionarPagamento('pix')">
 
-                <div class="opcao-icone">
-                    📱
-                </div>
+<div class="opcao-icone">📱</div>
 
-                <div class="opcao-nome">
-                    PIX
-                </div>
+<div class="opcao-nome">
+PIX
+</div>
 
-            </div>
+</div>
 
 
-            <div
-                class="opcao-pagamento"
-                id="opcaoDinheiro"
-                onclick="selecionarPagamento('dinheiro')">
+<div
+class="opcao-pagamento"
+id="opcaoDinheiro"
+onclick="selecionarPagamento('dinheiro')">
 
-                <div class="opcao-icone">
-                    💵
-                </div>
+<div class="opcao-icone">💵</div>
 
-                <div class="opcao-nome">
-                    Dinheiro
-                </div>
+<div class="opcao-nome">
+Dinheiro
+</div>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
 
-        <!-- =================================================
-             CARTÃO
-        ================================================== -->
+<!-- CARTÃO -->
 
-        <div
-            id="areaCartao"
-            class="area-pagamento">
+<div
+id="areaCartao"
+class="area-pagamento">
 
-            <div class="cartao-info">
+<div class="cartao-info">
 
-                <div class="icone">
-                    💳
-                </div>
+<div class="icone">💳</div>
 
-                <h2 id="tituloCartao">
-                    Pagamento no cartão
-                </h2>
+<h2 id="tituloCartao">
+Pagamento no cartão
+</h2>
 
-                <p>
-                    Realize o pagamento
-                    na máquina de cartão.
-                </p>
+<p>
+Realize o pagamento na máquina de cartão.
+</p>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
 
-        <!-- =================================================
-             PIX
-        ================================================== -->
+<!-- PIX -->
 
-        <div
-            id="areaPix"
-            class="area-pagamento">
+<div
+id="areaPix"
+class="area-pagamento">
 
-            <div class="pix-container">
+<div class="pix-container">
 
-                <h2>
-                    📱 Pague com PIX
-                </h2>
+<h2>📱 Pague com PIX</h2>
 
-                <p>
-                    Escaneie o QR Code
-                    com o aplicativo do banco.
-                </p>
+<p>
+Escaneie o QR Code com o aplicativo do banco.
+</p>
 
 
-                <div id="qrcode"></div>
+<div id="qrcode"></div>
 
 
-                <p>
-                    <strong>
-                        Chave PIX
-                    </strong>
-                </p>
+<p>
+<strong>Chave PIX</strong>
+</p>
 
 
-                <div class="chave-pix">
+<div class="chave-pix">
++55 12 98172-2340
+</div>
 
-                    +55 12 98172-2340
 
-                </div>
+<p>
+<strong>PIX Copia e Cola</strong>
+</p>
 
 
-                <p>
-                    <strong>
-                        PIX Copia e Cola
-                    </strong>
-                </p>
+<textarea
+id="pixCopiaCola"
+class="pix-copia-cola"
+readonly>
+</textarea>
 
 
-                <textarea
-                    id="pixCopiaCola"
-                    class="pix-copia-cola"
-                    readonly>
-                </textarea>
+<button
+class="btn btn-principal"
+onclick="copiarPix()">
 
+📋 COPIAR PIX
 
-                <button
-                    class="btn btn-principal"
-                    onclick="copiarPix()">
+</button>
 
-                    📋 COPIAR PIX
 
-                </button>
+<p class="pix-aviso">
+O QR Code contém o valor exato do pedido.
+</p>
 
+</div>
 
-                <p class="pix-aviso">
+</div>
 
-                    O QR Code contém
-                    o valor exato do pedido.
 
-                </p>
+<!-- DINHEIRO -->
 
-            </div>
+<div
+id="areaDinheiro"
+class="area-pagamento">
 
-        </div>
+<div class="dinheiro-info">
 
+<h2>💵 Pagamento em dinheiro</h2>
 
-        <!-- =================================================
-             DINHEIRO
-        ================================================== -->
+<p>
+Informe quanto o cliente irá entregar.
+</p>
 
-        <div
-            id="areaDinheiro"
-            class="area-pagamento">
 
-            <div class="dinheiro-info">
+<input
+id="valorRecebido"
+class="campo-dinheiro"
+type="number"
+step="0.01"
+min="0"
+placeholder="Ex.: 50,00"
+oninput="calcularTroco()">
 
-                <h2>
-                    💵 Pagamento em dinheiro
-                </h2>
 
-                <p>
-                    Informe quanto o cliente
-                    irá entregar.
-                </p>
+<div
+id="troco"
+class="troco">
 
+Informe o valor recebido.
 
-                <input
-                    id="valorRecebido"
-                    class="campo-dinheiro"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    placeholder="Ex.: 50,00"
-                    oninput="calcularTroco()">
+</div>
 
+</div>
 
-                <div
-                    id="troco"
-                    class="troco">
+</div>
 
-                    Informe o valor recebido.
 
-                </div>
+<button
+class="btn"
+style="background:#0a8f3d;color:white"
+onclick="confirmarPagamento()">
 
-            </div>
+✅ CONFIRMAR PAGAMENTO
 
-        </div>
+</button>
 
 
-        <button
-            class="btn"
-            style="
-                background:#0a8f3d;
-                color:white;
-            "
-            onclick="confirmarPagamento()">
+<button
+class="btn btn-secundario"
+onclick="voltarParaPedido()">
 
-            ✅ CONFIRMAR PAGAMENTO
+← VOLTAR E ALTERAR PEDIDO
 
-        </button>
+</button>
 
 
-        <button
-            class="btn btn-secundario"
-            onclick="voltarParaPedido()">
-
-            ← VOLTAR E ALTERAR PEDIDO
-
-        </button>
-
-
-    </div>
+</div>
 
 </div>
 
 
 <!-- =====================================================
-     TELA FINAL
+     SUCESSO
 ===================================================== -->
 
 <div id="telaSucesso">
 
-    <div class="sucesso-container">
+<div class="sucesso-container">
+
+<div class="sucesso-icone">
+✅
+</div>
 
 
-        <div class="sucesso-icone">
-            ✅
-        </div>
+<h1>
+Pedido enviado!
+</h1>
 
 
-        <h1>
-            Pedido enviado!
-        </h1>
+<p>
+Seu número de pedido é:
+</p>
 
 
-        <p>
-            Seu pedido foi recebido.
-        </p>
+<div
+id="numeroPedidoSucesso"
+class="numero-pedido">
+
+#00000000
+
+</div>
 
 
-        <div
-            id="numeroPedidoSucesso"
-            class="numero-pedido">
-
-            #00000000
-
-        </div>
+<p id="resumoPagamento">
+</p>
 
 
-        <p>
-            📱 Escaneie o QR Code
-            para acompanhar seu pedido.
-        </p>
+<p>
+Acompanhe o andamento do seu pedido.
+</p>
 
 
-        <div id="qrcodeAcompanhamento">
-        </div>
+<button
+class="btn btn-principal"
+onclick="acompanharPedido()">
+
+📱 ACOMPANHAR PEDIDO
+
+</button>
 
 
-        <p class="texto-qr">
+<button
+class="btn btn-secundario"
+onclick="novoPedido()">
 
-            Acompanhe o andamento
-            do pedido pelo seu celular.
+🍔 FAZER NOVO PEDIDO
 
-        </p>
+</button>
 
-
-    </div>
+</div>
 
 </div>
 
@@ -1377,26 +1327,48 @@ header p {
 <script>
 
 /* =====================================================
-   CONFIGURAÇÃO
+   FIREBASE
 ===================================================== */
 
-/*
-   Usamos o Realtime Database diretamente.
+const firebaseConfig = {
 
-   Assim não é necessário colocar API KEY
-   ou APP ID neste arquivo.
-*/
+    apiKey: "AIzaSyDg_CLzbU0myOpjUYUSKTUKmteNvDP1sWDA",
 
-const FIREBASE_URL =
-    "https://bricka-96d91-default-rtdb.firebaseio.com";
+    authDomain:
+        "bricka-96d91.firebaseapp.com",
+
+    databaseURL:
+        "https://bricka-96d91-default-rtdb.firebaseio.com",
+
+    projectId:
+        "bricka-96d91",
+
+    storageBucket:
+        "bricka-96d91.firebasestorage.app",
+
+    messagingSenderId:
+        "503488792733",
+
+    appId:
+        "1:503488792733:web:3fb5ae349d09e82478cfec",
+
+    measurementId: "G-8ZX1JP1R7W"
+
+};
 
 
-/*
-   CHAVE PIX
+firebase.initializeApp(
+    firebaseConfig
+);
 
-   Formato utilizado no QR Code:
-   +55 12 98172-2340
-*/
+
+const database =
+    firebase.database();
+
+
+/* =====================================================
+   PIX
+===================================================== */
 
 const CHAVE_PIX =
     "+5512981722340";
@@ -1408,195 +1380,184 @@ const CHAVE_PIX =
 
 const lanches = [
 
-    {
-        chave: "x-salada",
-        nome: "X-SALADA",
-        emoji: "🍔",
-        preco: 15,
+{
+    chave: "x-salada",
+    nome: "X-SALADA",
+    emoji: "🍔",
+    preco: 15,
+    ingredientes: [
+        "Pão",
+        "Hambúrguer",
+        "Queijo",
+        "Presunto",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
+},
 
-        ingredientes: [
-            "Pão",
-            "Hambúrguer",
-            "Queijo",
-            "Presunto",
-            "Alface",
-            "Tomate",
-            "Milho",
-            "Batata palha",
-            "Molho"
-        ]
-    },
+{
+    chave: "x-bacon",
+    nome: "X-BACON",
+    emoji: "🥓",
+    preco: 18,
+    ingredientes: [
+        "Pão",
+        "Hambúrguer",
+        "Queijo",
+        "Bacon",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
+},
 
+{
+    chave: "x-frango",
+    nome: "X-FRANGO",
+    emoji: "🍗",
+    preco: 16,
+    ingredientes: [
+        "Pão",
+        "Frango",
+        "Queijo",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
+},
 
-    {
-        chave: "x-bacon",
-        nome: "X-BACON",
-        emoji: "🥓",
-        preco: 18,
+{
+    chave: "x-egg",
+    nome: "X-EGG",
+    emoji: "🍳",
+    preco: 17,
+    ingredientes: [
+        "Pão",
+        "Hambúrguer",
+        "Ovo",
+        "Queijo",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
+},
 
-        ingredientes: [
-            "Pão",
-            "Hambúrguer",
-            "Queijo",
-            "Bacon",
-            "Alface",
-            "Tomate",
-            "Milho",
-            "Batata palha",
-            "Molho"
-        ]
-    },
+{
+    chave: "x-calabresa",
+    nome: "X-CALABRESA",
+    emoji: "🌭",
+    preco: 18,
+    ingredientes: [
+        "Pão",
+        "Calabresa",
+        "Queijo",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
+},
 
-
-    {
-        chave: "x-frango",
-        nome: "X-FRANGO",
-        emoji: "🍗",
-        preco: 16,
-
-        ingredientes: [
-            "Pão",
-            "Frango",
-            "Queijo",
-            "Alface",
-            "Tomate",
-            "Milho",
-            "Batata palha",
-            "Molho"
-        ]
-    },
-
-
-    {
-        chave: "x-egg",
-        nome: "X-EGG",
-        emoji: "🍳",
-        preco: 17,
-
-        ingredientes: [
-            "Pão",
-            "Hambúrguer",
-            "Ovo",
-            "Queijo",
-            "Alface",
-            "Tomate",
-            "Milho",
-            "Batata palha",
-            "Molho"
-        ]
-    },
-
-
-    {
-        chave: "x-calabresa",
-        nome: "X-CALABRESA",
-        emoji: "🌭",
-        preco: 18,
-
-        ingredientes: [
-            "Pão",
-            "Calabresa",
-            "Queijo",
-            "Alface",
-            "Tomate",
-            "Milho",
-            "Batata palha",
-            "Molho"
-        ]
-    },
-
-
-    {
-        chave: "x-tudo",
-        nome: "X-TUDO",
-        emoji: "🍔",
-        preco: 22,
-
-        ingredientes: [
-            "Pão",
-            "Hambúrguer",
-            "Bacon",
-            "Presunto",
-            "Ovo",
-            "Queijo",
-            "Alface",
-            "Tomate",
-            "Milho",
-            "Batata palha",
-            "Molho"
-        ]
-    }
+{
+    chave: "x-tudo",
+    nome: "X-TUDO",
+    emoji: "🍔",
+    preco: 22,
+    ingredientes: [
+        "Pão",
+        "Hambúrguer",
+        "Bacon",
+        "Presunto",
+        "Ovo",
+        "Queijo",
+        "Alface",
+        "Tomate",
+        "Milho",
+        "Batata palha",
+        "Molho"
+    ]
+}
 
 ];
 
 
 const bebidas = [
 
-    {
-        nome: "Coca-Cola",
-        emoji: "🥤",
-        preco: 6
-    },
+{
+    nome: "Coca-Cola",
+    emoji: "🥤",
+    preco: 6
+},
 
-    {
-        nome: "Coca-Cola Zero",
-        emoji: "🥤",
-        preco: 6
-    },
+{
+    nome: "Coca-Cola Zero",
+    emoji: "🥤",
+    preco: 6
+},
 
-    {
-        nome: "Guaraná",
-        emoji: "🥤",
-        preco: 6
-    },
+{
+    nome: "Guaraná",
+    emoji: "🥤",
+    preco: 6
+},
 
-    {
-        nome: "Fanta Laranja",
-        emoji: "🥤",
-        preco: 6
-    },
+{
+    nome: "Fanta Laranja",
+    emoji: "🥤",
+    preco: 6
+},
 
-    {
-        nome: "Sprite",
-        emoji: "🥤",
-        preco: 6
-    },
+{
+    nome: "Sprite",
+    emoji: "🥤",
+    preco: 6
+},
 
-    {
-        nome: "Suco de Laranja",
-        emoji: "🍊",
-        preco: 7
-    },
+{
+    nome: "Suco de Laranja",
+    emoji: "🍊",
+    preco: 7
+},
 
-    {
-        nome: "Suco de Maracujá",
-        emoji: "🥭",
-        preco: 7
-    },
+{
+    nome: "Suco de Maracujá",
+    emoji: "🥭",
+    preco: 7
+},
 
-    {
-        nome: "Suco de Morango",
-        emoji: "🍓",
-        preco: 7
-    },
+{
+    nome: "Suco de Morango",
+    emoji: "🍓",
+    preco: 7
+},
 
-    {
-        nome: "Suco de Uva",
-        emoji: "🍇",
-        preco: 7
-    },
+{
+    nome: "Suco de Uva",
+    emoji: "🍇",
+    preco: 7
+},
 
-    {
-        nome: "Água Mineral",
-        emoji: "💧",
-        preco: 4
-    },
+{
+    nome: "Água Mineral",
+    emoji: "💧",
+    preco: 4
+},
 
-    {
-        nome: "Água com Gás",
-        emoji: "💧",
-        preco: 4.50
-    }
+{
+    nome: "Água com Gás",
+    emoji: "💧",
+    preco: 4.5
+}
 
 ];
 
@@ -1607,18 +1568,24 @@ const bebidas = [
 
 let carrinho = [];
 
+let lancheSelecionado = lanches[0]?.chave || null;
+
+let quantidadesIngredientes = {};
+
+let indiceEditando = null;
+
 let pagamentoSelecionado = null;
 
 let numeroPedido = null;
 
 
 /* =====================================================
-   FORMATAÇÃO
+   PREÇO
 ===================================================== */
 
 function formatarPreco(valor) {
 
-    return Number(valor).toLocaleString(
+    return valor.toLocaleString(
         "pt-BR",
         {
             style: "currency",
@@ -1635,7 +1602,7 @@ function formatarPreco(valor) {
 
 function removerAcentos(texto) {
 
-    return String(texto)
+    return texto
         .normalize("NFD")
         .replace(
             /[\u0300-\u036f]/g,
@@ -1646,35 +1613,27 @@ function removerAcentos(texto) {
 
 
 /* =====================================================
-   GERAR NÚMERO DO PEDIDO
+   NÚMERO DO PEDIDO
 ===================================================== */
 
 function gerarNumeroPedido() {
 
-    const agora =
-        new Date();
-
+    const agora = new Date();
 
     const hora =
-        agora
-            .getHours()
-            .toString()
-            .padStart(2, "0");
-
+        agora.getHours()
+        .toString()
+        .padStart(2, "0");
 
     const minuto =
-        agora
-            .getMinutes()
-            .toString()
-            .padStart(2, "0");
-
+        agora.getMinutes()
+        .toString()
+        .padStart(2, "0");
 
     const segundo =
-        agora
-            .getSeconds()
-            .toString()
-            .padStart(2, "0");
-
+        agora.getSeconds()
+        .toString()
+        .padStart(2, "0");
 
     const aleatorio =
         Math.floor(
@@ -1682,7 +1641,6 @@ function gerarNumeroPedido() {
         )
         .toString()
         .padStart(2, "0");
-
 
     return (
         hora +
@@ -1695,7 +1653,7 @@ function gerarNumeroPedido() {
 
 
 /* =====================================================
-   PREÇO DOS ADICIONAIS
+   PREÇO ADICIONAL
 ===================================================== */
 
 function precoAdicional(ingrediente) {
@@ -1721,31 +1679,18 @@ function precoAdicional(ingrediente) {
 
 function calcularAdicionais(item) {
 
-    if (
-        !item.adicionais
-    ) {
+    if (!item.adicionais) {
 
         return 0;
 
     }
 
-
     return item.adicionais.reduce(
-        (
-            total,
-            adicional
-        ) => {
+        (total, adicional) => {
 
-            return (
-                total +
-                (
-                    precoAdicional(
-                        adicional.nome
-                    )
-                    *
-                    adicional.quantidade
-                )
-            );
+            return total +
+                precoAdicional(adicional.nome) *
+                Math.max(0, Number(adicional.quantidade || 0) - 1);
 
         },
         0
@@ -1755,13 +1700,13 @@ function calcularAdicionais(item) {
 
 
 /* =====================================================
-   PREÇO DO ITEM
+   PREÇO ITEM
 ===================================================== */
 
 function calcularPrecoItem(item) {
 
     return (
-        Number(item.precoBase) +
+        item.precoBase +
         calcularAdicionais(item)
     );
 
@@ -1775,15 +1720,10 @@ function calcularPrecoItem(item) {
 function calcularTotal() {
 
     return carrinho.reduce(
-        (
-            total,
-            item
-        ) => {
+        (total, item) => {
 
-            return (
-                total +
-                calcularPrecoItem(item)
-            );
+            return total +
+                calcularPrecoItem(item);
 
         },
         0
@@ -1793,72 +1733,35 @@ function calcularTotal() {
 
 
 /* =====================================================
-   ABRIR ABA
+   ABAS
 ===================================================== */
 
-function abrirAba(
-    nome,
-    botao
-) {
+function abrirAba(nome, botao) {
 
     document
-        .querySelectorAll(
-            ".tab-content"
-        )
-        .forEach(
-            elemento => {
+        .querySelectorAll(".tab-content")
+        .forEach(tab => {
 
-                elemento
-                    .classList
-                    .remove("active");
+            tab.classList.remove("active");
 
-            }
-        );
+        });
 
 
     document
-        .querySelectorAll(
-            ".tab-button"
-        )
-        .forEach(
-            elemento => {
+        .querySelectorAll(".tab-button")
+        .forEach(btn => {
 
-                elemento
-                    .classList
-                    .remove("active");
+            btn.classList.remove("active");
 
-            }
-        );
+        });
 
 
     document
         .getElementById(nome)
-        .classList
-        .add("active");
+        .classList.add("active");
 
 
-    botao
-        .classList
-        .add("active");
-
-}
-
-
-/* =====================================================
-   CRIAR ID SEGURO
-===================================================== */
-
-function criarIdIngrediente(
-    chave,
-    indice
-) {
-
-    return (
-        "ing-" +
-        chave +
-        "-" +
-        indice
-    );
+    botao.classList.add("active");
 
 }
 
@@ -1867,331 +1770,127 @@ function criarIdIngrediente(
    RENDERIZAR LANCHES
 ===================================================== */
 
+function obterLancheSelecionado() {
+    return lanches.find(l => l.chave === lancheSelecionado) || lanches[0];
+}
+
+function iniciarQuantidades(lanche, quantidades = null) {
+    quantidadesIngredientes[lanche.chave] = {};
+    lanche.ingredientes.forEach(nome => {
+        const existente = quantidades?.find(a => a.nome === nome || a.ingrediente === nome);
+        quantidadesIngredientes[lanche.chave][nome] = existente ? Math.max(0, Number(existente.quantidade) || 0) : 1;
+    });
+}
+
 function renderizarLanches() {
-
-    const lista =
-        document.getElementById(
-            "listaLanches"
-        );
-
-
+    const lista = document.getElementById("listaLanches");
     lista.innerHTML = "";
 
-
-    lanches.forEach(
-        (
-            lanche,
-            indiceLanche
-        ) => {
-
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "card";
-
-
-            let ingredientesHTML =
-                "";
-
-
-            lanche.ingredientes
-                .forEach(
-                    (
-                        ingrediente,
-                        indiceIngrediente
-                    ) => {
-
-                        const id =
-                            criarIdIngrediente(
-                                lanche.chave,
-                                indiceIngrediente
-                            );
-
-
-                        ingredientesHTML += `
-
-                        <div class="ingrediente">
-
-                            <div
-                                class="ingrediente-esquerda">
-
-                                <input
-                                    type="checkbox"
-                                    id="${id}"
-                                    checked>
-
-                                <label
-                                    for="${id}">
-
-                                    ${ingrediente}
-
-                                </label>
-
-                            </div>
-
-
-                            <div
-                                class="adicional-controle">
-
-                                <button
-                                    class="menos"
-                                    onclick="alterarAdicional(
-                                        '${lanche.chave}',
-                                        ${indiceIngrediente},
-                                        -1
-                                    )">
-
-                                    −
-
-                                </button>
-
-
-                                <span
-                                    class="qtd-adicional"
-                                    id="qtd-${lanche.chave}-${indiceIngrediente}">
-
-                                    0
-
-                                </span>
-
-
-                                <button
-                                    class="mais"
-                                    onclick="alterarAdicional(
-                                        '${lanche.chave}',
-                                        ${indiceIngrediente},
-                                        1
-                                    )">
-
-                                    +
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                        `;
-
-                    }
-                );
-
-
-            card.innerHTML = `
-
-                <h2>
-
-                    ${lanche.emoji}
-
-                    ${lanche.nome}
-
-                </h2>
-
-
-                <div class="preco">
-
-                    ${formatarPreco(
-                        lanche.preco
-                    )}
-
-                </div>
-
-
-                <p>
-                    Escolha os ingredientes:
-                </p>
-
-
-                <div class="ingredientes">
-
-                    ${ingredientesHTML}
-
-                </div>
-
-
-                <button
-                    class="btn btn-principal"
-                    onclick="adicionarLanche(
-                        ${indiceLanche}
-                    )">
-
-                    ➕ ADICIONAR COMPLETO
-
-                </button>
-
-            `;
-
-
-            lista.appendChild(card);
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   ALTERAR ADICIONAL
-===================================================== */
-
-function alterarAdicional(
-    chave,
-    indiceIngrediente,
-    variacao
-) {
-
-    const elemento =
-        document.getElementById(
-            `qtd-${chave}-${indiceIngrediente}`
-        );
-
-
-    let quantidade =
-        parseInt(
-            elemento.innerText
-        ) || 0;
-
-
-    quantidade +=
-        variacao;
-
-
-    if (
-        quantidade < 0
-    ) {
-
-        quantidade = 0;
-
-    }
-
-
-    elemento.innerText =
-        quantidade;
-
-}
-
-
-/* =====================================================
-   ADICIONAR LANCHE
-===================================================== */
-
-function adicionarLanche(
-    indiceLanche
-) {
-
-    const lanche =
-        lanches[indiceLanche];
-
-
-    const ingredientesSelecionados =
-        [];
-
-
-    const adicionais =
-        [];
-
-
-    lanche.ingredientes
-        .forEach(
-            (
-                ingrediente,
-                indiceIngrediente
-            ) => {
-
-
-                const checkbox =
-                    document.getElementById(
-                        criarIdIngrediente(
-                            lanche.chave,
-                            indiceIngrediente
-                        )
-                    );
-
-
-                if (
-                    checkbox &&
-                    checkbox.checked
-                ) {
-
-                    ingredientesSelecionados
-                        .push(
-                            ingrediente
-                        );
-
-                }
-
-
-                const quantidadeElemento =
-                    document.getElementById(
-                        `qtd-${lanche.chave}-${indiceIngrediente}`
-                    );
-
-
-                const quantidade =
-                    parseInt(
-                        quantidadeElemento.innerText
-                    ) || 0;
-
-
-                if (
-                    quantidade > 0
-                ) {
-
-                    adicionais.push({
-
-                        nome:
-                            ingrediente,
-
-                        quantidade:
-                            quantidade
-
-                    });
-
-                }
-
-            }
-        );
-
-
-    carrinho.push({
-
-        id:
-            Date.now() +
-            Math.random(),
-
-        tipo:
-            "lanche",
-
-        chave:
-            lanche.chave,
-
-        produto:
-            lanche.nome,
-
-        precoBase:
-            lanche.preco,
-
-        ingredientes:
-            ingredientesSelecionados,
-
-        adicionais:
-            adicionais
-
+    lanches.forEach(lanche => {
+        if (!quantidadesIngredientes[lanche.chave]) iniciarQuantidades(lanche);
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "produto-selecao" + (lanche.chave === lancheSelecionado ? " selecionado" : "");
+        card.setAttribute("aria-pressed", String(lanche.chave === lancheSelecionado));
+        card.onclick = () => {
+            lancheSelecionado = lanche.chave;
+            indiceEditando = null;
+            renderizarLanches();
+        };
+        card.innerHTML = `
+            <span class="produto-titulo"><span class="produto-emoji">${lanche.emoji}</span><span>${lanche.nome}</span></span>
+            <span class="produto-descricao">${lanche.ingredientes.slice(0, 4).join(" · ")}${lanche.ingredientes.length > 4 ? " · ..." : ""}</span>
+            <span class="produto-rodape"><span class="produto-valor">${formatarPreco(lanche.preco)}</span><span class="produto-escolher">${lanche.chave === lancheSelecionado ? "✓ SELECIONADO" : "PERSONALIZAR →"}</span></span>`;
+        lista.appendChild(card);
     });
-
-
-    atualizarCarrinho();
-
+    renderizarPainelPersonalizacao();
 }
 
+function renderizarPainelPersonalizacao() {
+    const painel = document.getElementById("painelPersonalizacao");
+    const lanche = obterLancheSelecionado();
+    if (!lanche) { painel.innerHTML = "Selecione um lanche."; return; }
+    if (!quantidadesIngredientes[lanche.chave]) iniciarQuantidades(lanche);
+    const quantidades = quantidadesIngredientes[lanche.chave];
+    const totalUnidades = Object.values(quantidades).reduce((s, q) => s + q, 0);
+    const extras = lanche.ingredientes.reduce((s, nome) => s + precoAdicional(nome) * Math.max(0, quantidades[nome] - 1), 0);
+    const editando = indiceEditando !== null;
+    painel.innerHTML = `
+        <div class="painel-topo">
+            <div><h2>${lanche.emoji} ${lanche.nome}</h2><p class="painel-subtitulo">Personalize os ingredientes do seu lanche</p></div>
+            <div class="painel-preco">${formatarPreco(lanche.preco + extras)}</div>
+        </div>
+        <div class="painel-dica">✓ A receita completa já vem incluída. Cada ingrediente começa com <strong>1 unidade</strong>. Use − para remover ou + para adicionar mais.</div>
+        <div class="lista-ingredientes-painel">
+            ${lanche.ingredientes.map((nome, i) => {
+                const q = quantidades[nome] || 0;
+                const id = `ing-${lanche.chave}-${i}`;
+                return `<div class="linha-ingrediente">
+                    <div class="ingrediente-info"><span class="ingrediente-nome">${nome}</span><span class="ingrediente-status ${q === 0 ? "removido" : ""}">${q === 0 ? "Removido da receita" : q === 1 ? "Incluído na receita" : `${q} unidades incluídas`}</span></div>
+                    <div class="controle-quantidade"><button type="button" aria-label="Diminuir ${nome}" onclick="alterarAdicional('${lanche.chave}', ${i}, -1)" ${q === 0 ? "disabled" : ""}>−</button><span class="qtd" id="${id}">${q}</span><button type="button" aria-label="Aumentar ${nome}" onclick="alterarAdicional('${lanche.chave}', ${i}, 1)">+</button></div>
+                </div>`;
+            }).join("")}
+        </div>
+        <div class="painel-resumo"><span>${totalUnidades} unidade(s) de ingredientes</span><span>${formatarPreco(lanche.preco + extras)}</span></div>
+        <button class="btn btn-principal" type="button" onclick="${editando ? `salvarEdicaoLanche()` : `adicionarLanche('${lanche.chave}')`}">${editando ? "✓ SALVAR ALTERAÇÕES" : "＋ ADICIONAR AO PEDIDO"}</button>
+        ${editando ? `<button class="btn btn-secundario" type="button" onclick="cancelarEdicao()">CANCELAR EDIÇÃO</button>` : ""}
+    `;
+}
+
+function alterarAdicional(chave, indiceIngrediente, variacao) {
+    const lanche = lanches.find(l => l.chave === chave);
+    if (!lanche) return;
+    const ingrediente = lanche.ingredientes[indiceIngrediente];
+    if (!quantidadesIngredientes[chave]) iniciarQuantidades(lanche);
+    const atual = Number(quantidadesIngredientes[chave][ingrediente] || 0);
+    quantidadesIngredientes[chave][ingrediente] = Math.max(0, atual + variacao);
+    renderizarPainelPersonalizacao();
+}
+
+function criarItemLanche(lanche) {
+    const quantidades = quantidadesIngredientes[lanche.chave] || {};
+    const ingredientesSelecionados = lanche.ingredientes.filter(nome => (quantidades[nome] || 0) > 0);
+    const adicionais = lanche.ingredientes
+        .filter(nome => (quantidades[nome] || 0) > 0)
+        .map(nome => ({ nome, quantidade: quantidades[nome] }));
+    return {
+        id: Date.now() + Math.random(),
+        tipo: "lanche",
+        chave: lanche.chave,
+        produto: lanche.nome,
+        precoBase: lanche.preco,
+        ingredientes: ingredientesSelecionados,
+        adicionais
+    };
+}
+
+function adicionarLanche(chave) {
+    const lanche = lanches.find(item => item.chave === chave);
+    if (!lanche) return;
+    carrinho.push(criarItemLanche(lanche));
+    atualizarCarrinho();
+    alert(`${lanche.nome} adicionado ao pedido!`);
+}
+
+function salvarEdicaoLanche() {
+    if (indiceEditando === null) return;
+    const lanche = obterLancheSelecionado();
+    if (!lanche) return;
+    const itemAtualizado = criarItemLanche(lanche);
+    itemAtualizado.id = carrinho[indiceEditando].id;
+    carrinho[indiceEditando] = itemAtualizado;
+    indiceEditando = null;
+    atualizarCarrinho();
+    renderizarLanches();
+}
+
+function cancelarEdicao() {
+    indiceEditando = null;
+    renderizarLanches();
+}
 
 /* =====================================================
-   RENDERIZAR BEBIDAS
+   BEBIDAS
 ===================================================== */
 
 function renderizarBebidas() {
@@ -2206,51 +1905,35 @@ function renderizarBebidas() {
 
 
     bebidas.forEach(
-        (
-            bebida,
-            indice
-        ) => {
-
+        (bebida, indice) => {
 
             const card =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
-            card.className =
-                "card";
+            card.className = "card";
 
 
             card.innerHTML = `
 
-                <h2>
+            <h2>
+                ${bebida.emoji}
+                ${bebida.nome}
+            </h2>
 
-                    ${bebida.emoji}
+            <div class="preco">
+                ${formatarPreco(bebida.preco)}
+            </div>
 
-                    ${bebida.nome}
+            <button
+            class="btn btn-principal"
+            onclick="adicionarBebida(
+                ${indice}
+            )">
 
-                </h2>
+                ➕ ADICIONAR
 
-
-                <div class="preco">
-
-                    ${formatarPreco(
-                        bebida.preco
-                    )}
-
-                </div>
-
-
-                <button
-                    class="btn btn-principal"
-                    onclick="adicionarBebida(
-                        ${indice}
-                    )">
-
-                    ➕ ADICIONAR
-
-                </button>
+            </button>
 
             `;
 
@@ -2267,9 +1950,7 @@ function renderizarBebidas() {
    ADICIONAR BEBIDA
 ===================================================== */
 
-function adicionarBebida(
-    indice
-) {
+function adicionarBebida(indice) {
 
     const bebida =
         bebidas[indice];
@@ -2281,20 +1962,15 @@ function adicionarBebida(
             Date.now() +
             Math.random(),
 
-        tipo:
-            "bebida",
+        tipo: "bebida",
 
-        produto:
-            bebida.nome,
+        produto: bebida.nome,
 
-        precoBase:
-            bebida.preco,
+        precoBase: bebida.preco,
 
-        ingredientes:
-            [],
+        ingredientes: [],
 
-        adicionais:
-            []
+        adicionais: []
 
     });
 
@@ -2340,16 +2016,10 @@ function atualizarCarrinho() {
 
 
     carrinho.forEach(
-        (
-            item,
-            indice
-        ) => {
-
+        (item, indice) => {
 
             const div =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             div.className =
@@ -2358,12 +2028,10 @@ function atualizarCarrinho() {
 
             const ingredientes =
                 item.ingredientes
-                    ?.join(", ") ||
-                "";
+                    ?.join(", ") || "";
 
 
-            let adicionaisHTML =
-                "";
+            let adicionaisHTML = "";
 
 
             if (
@@ -2377,16 +2045,8 @@ function atualizarCarrinho() {
                             adicional => {
 
                                 return `
-                                    ${adicional.quantidade}x
-                                    ${adicional.nome}
-                                    -
-                                    ${formatarPreco(
-                                        precoAdicional(
-                                            adicional.nome
-                                        )
-                                        *
-                                        adicional.quantidade
-                                    )}
+                                ${adicional.quantidade}x
+                                ${adicional.nome}
                                 `;
 
                             }
@@ -2398,109 +2058,106 @@ function atualizarCarrinho() {
 
             div.innerHTML = `
 
-                <div class="item-topo">
+            <div class="item-topo">
+
+                <strong>
+                    ${item.produto}
+                </strong>
+
+                <span class="item-preco">
+
+                    ${formatarPreco(
+                        calcularPrecoItem(item)
+                    )}
+
+                </span>
+
+            </div>
+
+
+            ${
+                ingredientes
+                ?
+                `
+                <div class="item-ingredientes">
 
                     <strong>
-                        ${item.produto}
+                    Ingredientes:
                     </strong>
 
-
-                    <span class="item-preco">
-
-                        ${formatarPreco(
-                            calcularPrecoItem(item)
-                        )}
-
-                    </span>
+                    ${ingredientes}
 
                 </div>
+                `
+                :
+                ""
+            }
+
+
+            ${
+                adicionaisHTML
+                ?
+                `
+                <div class="item-adicionais">
+
+                    <strong>
+                    Adicionais:
+                    </strong>
+
+                    <br>
+
+                    ${adicionaisHTML}
+
+                </div>
+                `
+                :
+                ""
+            }
+
+
+            <div class="acoes-item">
+
+                <button
+                class="duplicar"
+                onclick="duplicarItem(
+                    ${indice}
+                )">
+
+                    ➕
+
+                </button>
 
 
                 ${
-                    ingredientes
+                    item.tipo === "lanche"
                     ?
                     `
-                    <div
-                        class="item-ingredientes">
+                    <button
+                    class="editar"
+                    onclick="editarItem(
+                        ${indice}
+                    )">
 
-                        <strong>
-                            Ingredientes:
-                        </strong>
+                        ✏ EDITAR
 
-                        ${ingredientes}
-
-                    </div>
+                    </button>
                     `
                     :
                     ""
                 }
 
 
-                ${
-                    adicionaisHTML
-                    ?
-                    `
-                    <div
-                        class="item-adicionais">
+                <button
+                class="remover"
+                onclick="removerItem(
+                    ${indice}
+                )">
 
-                        <strong>
-                            Adicionais:
-                        </strong>
+                    🗑 REMOVER
 
-                        <br>
+                </button>
 
-                        ${adicionaisHTML}
-
-                    </div>
-                    `
-                    :
-                    ""
-                }
-
-
-                <div class="acoes-item">
-
-                    <button
-                        class="duplicar"
-                        onclick="duplicarItem(
-                            ${indice}
-                        )">
-
-                        ➕
-
-                    </button>
-
-
-                    ${
-                        item.tipo === "lanche"
-                        ?
-                        `
-                        <button
-                            class="editar"
-                            onclick="editarItem(
-                                ${indice}
-                            )">
-
-                            ✏ EDITAR
-
-                        </button>
-                        `
-                        :
-                        ""
-                    }
-
-
-                    <button
-                        class="remover"
-                        onclick="removerItem(
-                            ${indice}
-                        )">
-
-                        🗑 REMOVER
-
-                    </button>
-
-                </div>
+            </div>
 
             `;
 
@@ -2517,9 +2174,7 @@ function atualizarCarrinho() {
    DUPLICAR
 ===================================================== */
 
-function duplicarItem(
-    indice
-) {
+function duplicarItem(indice) {
 
     const copia =
         JSON.parse(
@@ -2534,10 +2189,7 @@ function duplicarItem(
         Math.random();
 
 
-    carrinho.push(
-        copia
-    );
-
+    carrinho.push(copia);
 
     atualizarCarrinho();
 
@@ -2548,15 +2200,12 @@ function duplicarItem(
    REMOVER
 ===================================================== */
 
-function removerItem(
-    indice
-) {
+function removerItem(indice) {
 
     carrinho.splice(
         indice,
         1
     );
-
 
     atualizarCarrinho();
 
@@ -2567,121 +2216,20 @@ function removerItem(
    EDITAR
 ===================================================== */
 
-function editarItem(
-    indice
-) {
-
-    const item =
-        carrinho[indice];
-
-
-    if (
-        item.tipo !== "lanche"
-    ) {
-
-        return;
-
-    }
-
-
-    const lanche =
-        lanches.find(
-            l =>
-                l.chave ===
-                item.chave
-        );
-
-
-    if (!lanche) {
-
-        return;
-
-    }
-
-
-    lanche.ingredientes
-        .forEach(
-            (
-                ingrediente,
-                indiceIngrediente
-            ) => {
-
-
-                const checkbox =
-                    document.getElementById(
-                        criarIdIngrediente(
-                            lanche.chave,
-                            indiceIngrediente
-                        )
-                    );
-
-
-                if (checkbox) {
-
-                    checkbox.checked =
-                        item.ingredientes
-                            .includes(
-                                ingrediente
-                            );
-
-                }
-
-
-                const adicional =
-                    item.adicionais?.find(
-                        adicional =>
-                            adicional.nome ===
-                            ingrediente
-                    );
-
-
-                const quantidade =
-                    adicional
-                    ?
-                    adicional.quantidade
-                    :
-                    0;
-
-
-                const elemento =
-                    document.getElementById(
-                        `qtd-${lanche.chave}-${indiceIngrediente}`
-                    );
-
-
-                if (elemento) {
-
-                    elemento.innerText =
-                        quantidade;
-
-                }
-
-            }
-        );
-
-
-    carrinho.splice(
-        indice,
-        1
-    );
-
-
-    atualizarCarrinho();
-
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
+function editarItem(indice) {
+    const item = carrinho[indice];
+    if (!item || item.tipo !== "lanche") return;
+    const lanche = lanches.find(l => l.chave === item.chave);
+    if (!lanche) return;
+    lancheSelecionado = lanche.chave;
+    iniciarQuantidades(lanche, item.adicionais || item.ingredientes.map(nome => ({nome, quantidade: 1})));
+    indiceEditando = indice;
+    renderizarLanches();
+    window.scrollTo({top: 0, behavior: "smooth"});
 }
 
-
 /* =====================================================
-   ABRIR PAGAMENTO
+   PAGAMENTO
 ===================================================== */
 
 function abrirPagamento() {
@@ -2720,18 +2268,15 @@ function abrirPagamento() {
 
 
     window.scrollTo({
-
         top: 0,
-
         behavior: "smooth"
-
     });
 
 }
 
 
 /* =====================================================
-   VOLTAR PARA O PEDIDO
+   VOLTAR
 ===================================================== */
 
 function voltarParaPedido() {
@@ -2747,15 +2292,6 @@ function voltarParaPedido() {
     ).style.display =
         "block";
 
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
 }
 
 
@@ -2763,9 +2299,7 @@ function voltarParaPedido() {
    SELECIONAR PAGAMENTO
 ===================================================== */
 
-function selecionarPagamento(
-    tipo
-) {
+function selecionarPagamento(tipo) {
 
     pagamentoSelecionado =
         tipo;
@@ -2778,8 +2312,7 @@ function selecionarPagamento(
         .forEach(
             elemento => {
 
-                elemento
-                    .classList
+                elemento.classList
                     .remove(
                         "selecionada"
                     );
@@ -2788,31 +2321,26 @@ function selecionarPagamento(
         );
 
 
-    const mapa = {
+    const nomes = {
 
-        debito:
-            "opcaoDebito",
+        debito: "Debito",
 
-        credito:
-            "opcaoCredito",
+        credito: "Credito",
 
-        pix:
-            "opcaoPix",
+        pix: "Pix",
 
-        dinheiro:
-            "opcaoDinheiro"
+        dinheiro: "Dinheiro"
 
     };
 
 
     document
         .getElementById(
-            mapa[tipo]
+            "opcao" +
+            nomes[tipo]
         )
         .classList
-        .add(
-            "selecionada"
-        );
+        .add("selecionada");
 
 
     document
@@ -2822,11 +2350,8 @@ function selecionarPagamento(
         .forEach(
             area => {
 
-                area
-                    .classList
-                    .remove(
-                        "active"
-                    );
+                area.classList
+                    .remove("active");
 
             }
         );
@@ -2842,16 +2367,12 @@ function selecionarPagamento(
                 "areaCartao"
             )
             .classList
-            .add(
-                "active"
-            );
+            .add("active");
 
 
-        document
-            .getElementById(
-                "tituloCartao"
-            )
-            .innerText =
+        document.getElementById(
+            "tituloCartao"
+        ).innerText =
 
             tipo === "debito"
 
@@ -2864,37 +2385,29 @@ function selecionarPagamento(
     }
 
 
-    if (
-        tipo === "pix"
-    ) {
+    if (tipo === "pix") {
 
         document
             .getElementById(
                 "areaPix"
             )
             .classList
-            .add(
-                "active"
-            );
+            .add("active");
 
 
-        gerarQRCodePix();
+        gerarQRCode();
 
     }
 
 
-    if (
-        tipo === "dinheiro"
-    ) {
+    if (tipo === "dinheiro") {
 
         document
             .getElementById(
                 "areaDinheiro"
             )
             .classList
-            .add(
-                "active"
-            );
+            .add("active");
 
     }
 
@@ -2902,39 +2415,24 @@ function selecionarPagamento(
 
 
 /* =====================================================
-   PIX - CAMPO
+   PIX
 ===================================================== */
 
-function campoPix(
-    id,
-    valor
-) {
+function campoPix(id, valor) {
 
     return (
         id +
-        String(
-            valor.length
-        )
-        .padStart(
-            2,
-            "0"
-        ) +
+        String(valor.length)
+            .padStart(2, "0") +
         valor
     );
 
 }
 
 
-/* =====================================================
-   PIX - CRC16
-===================================================== */
+function crc16(payload) {
 
-function crc16(
-    payload
-) {
-
-    let crc =
-        0xFFFF;
+    let crc = 0xFFFF;
 
 
     for (
@@ -2955,8 +2453,7 @@ function crc16(
         ) {
 
             if (
-                (crc & 0x8000)
-                !== 0
+                (crc & 0x8000) !== 0
             ) {
 
                 crc =
@@ -2969,7 +2466,6 @@ function crc16(
                     0xFFFF;
 
             }
-
             else {
 
                 crc =
@@ -2987,17 +2483,10 @@ function crc16(
     return crc
         .toString(16)
         .toUpperCase()
-        .padStart(
-            4,
-            "0"
-        );
+        .padStart(4, "0");
 
 }
 
-
-/* =====================================================
-   PIX - PAYLOAD
-===================================================== */
 
 function gerarPayloadPix(
     chave,
@@ -3097,14 +2586,11 @@ function gerarPayloadPix(
         );
 
 
-    payload +=
-        "6304";
+    payload += "6304";
 
 
     payload +=
-        crc16(
-            payload
-        );
+        crc16(payload);
 
 
     return payload;
@@ -3112,11 +2598,7 @@ function gerarPayloadPix(
 }
 
 
-/* =====================================================
-   PIX - QR CODE
-===================================================== */
-
-function gerarQRCodePix() {
+function gerarQRCode() {
 
     const elemento =
         document.getElementById(
@@ -3124,11 +2606,10 @@ function gerarQRCodePix() {
         );
 
 
-    elemento.innerHTML =
-        "";
+    elemento.innerHTML = "";
 
 
-    const payload =
+    const codigoPix =
         gerarPayloadPix(
             CHAVE_PIX,
             calcularTotal()
@@ -3138,19 +2619,11 @@ function gerarQRCodePix() {
     new QRCode(
         elemento,
         {
-
-            text:
-                payload,
-
-            width:
-                220,
-
-            height:
-                220,
-
+            text: codigoPix,
+            width: 220,
+            height: 220,
             correctLevel:
                 QRCode.CorrectLevel.M
-
         }
     );
 
@@ -3158,60 +2631,12 @@ function gerarQRCodePix() {
     document.getElementById(
         "pixCopiaCola"
     ).value =
-        payload;
+        codigoPix;
 
 }
 
-
-/* =====================================================
-   COPIAR PIX
-===================================================== */
 
 function copiarPix() {
-
-    const campo =
-        document.getElementById(
-            "pixCopiaCola"
-        );
-
-
-    if (
-        navigator.clipboard
-    ) {
-
-        navigator.clipboard
-            .writeText(
-                campo.value
-            )
-            .then(
-                () => {
-
-                    alert(
-                        "✅ PIX Copia e Cola copiado!"
-                    );
-
-                }
-            )
-            .catch(
-                () => {
-
-                    copiarPixAlternativo();
-
-                }
-            );
-
-    }
-
-    else {
-
-        copiarPixAlternativo();
-
-    }
-
-}
-
-
-function copiarPixAlternativo() {
 
     const campo =
         document.getElementById(
@@ -3222,20 +2647,32 @@ function copiarPixAlternativo() {
     campo.select();
 
 
-    document.execCommand(
-        "copy"
-    );
+    navigator.clipboard
+        .writeText(
+            campo.value
+        )
+        .then(() => {
 
+            alert(
+                "✅ PIX Copia e Cola copiado!"
+            );
 
-    alert(
-        "✅ PIX Copia e Cola copiado!"
-    );
+        })
+        .catch(() => {
+
+            document.execCommand("copy");
+
+            alert(
+                "✅ PIX Copia e Cola copiado!"
+            );
+
+        });
 
 }
 
 
 /* =====================================================
-   TROCO
+   DINHEIRO
 ===================================================== */
 
 function calcularTroco() {
@@ -3258,48 +2695,34 @@ function calcularTroco() {
         );
 
 
-    if (
-        recebido <= 0
-    ) {
+    if (recebido === 0) {
 
         elemento.innerText =
             "Informe o valor recebido.";
 
-        elemento
-            .classList
-            .remove(
-                "erro"
-            );
+        elemento.classList
+            .remove("erro");
 
         return;
 
     }
 
 
-    if (
-        recebido < total
-    ) {
+    if (recebido < total) {
 
         elemento.innerText =
             "Valor insuficiente.";
 
-
-        elemento
-            .classList
-            .add(
-                "erro"
-            );
+        elemento.classList
+            .add("erro");
 
         return;
 
     }
 
 
-    elemento
-        .classList
-        .remove(
-            "erro"
-        );
+    elemento.classList
+        .remove("erro");
 
 
     elemento.innerText =
@@ -3315,11 +2738,9 @@ function calcularTroco() {
    CONFIRMAR PAGAMENTO
 ===================================================== */
 
-async function confirmarPagamento() {
+function confirmarPagamento() {
 
-    if (
-        !pagamentoSelecionado
-    ) {
+    if (!pagamentoSelecionado) {
 
         alert(
             "Selecione uma forma de pagamento."
@@ -3334,30 +2755,14 @@ async function confirmarPagamento() {
         calcularTotal();
 
 
-    if (
-        total <= 0
-    ) {
-
-        alert(
-            "O pedido está vazio."
-        );
-
-        return;
-
-    }
+    numeroPedido =
+        gerarNumeroPedido();
 
 
-    let valorRecebido =
-        null;
+    let valorRecebido = null;
 
+    let troco = null;
 
-    let troco =
-        null;
-
-
-    /*
-       DINHEIRO
-    */
 
     if (
         pagamentoSelecionado ===
@@ -3392,20 +2797,7 @@ async function confirmarPagamento() {
     }
 
 
-    /*
-       GERA NÚMERO
-    */
-
-    numeroPedido =
-        gerarNumeroPedido();
-
-
-    /*
-       NOME DO PAGAMENTO
-    */
-
-    let nomePagamento =
-        "";
+    let nomePagamento = "";
 
 
     switch (
@@ -3446,88 +2838,14 @@ async function confirmarPagamento() {
     }
 
 
-    /*
-       MONTA ITENS
-    */
+    /* =================================================
+       CRIA PEDIDO
+    ================================================= */
 
-    const itens =
-        carrinho.map(
-            item => {
-
-                return {
-
-                    tipo:
-                        item.tipo,
-
-                    produto:
-                        removerAcentos(
-                            item.produto
-                        ),
-
-                    precoBase:
-                        item.precoBase,
-
-                    precoTotal:
-                        calcularPrecoItem(
-                            item
-                        ),
-
-                    ingredientes:
-                        item.ingredientes
-                            .map(
-                                ingrediente =>
-                                    removerAcentos(
-                                        ingrediente
-                                    )
-                            ),
-
-                    adicionais:
-                        item.adicionais
-                            .map(
-                                adicional => {
-
-                                    const preco =
-                                        precoAdicional(
-                                            adicional.nome
-                                        );
-
-
-                                    return {
-
-                                        ingrediente:
-                                            removerAcentos(
-                                                adicional.nome
-                                            ),
-
-                                        quantidade:
-                                            adicional.quantidade,
-
-                                        precoUnitario:
-                                            preco,
-
-                                        subtotal:
-                                            preco *
-                                            adicional.quantidade
-
-                                    };
-
-                                }
-                            )
-
-                };
-
-            }
-        );
-
-
-    /*
-       PEDIDO PRINCIPAL
-    */
 
     const pedido = {
 
-        ativo:
-            true,
+        ativo: true,
 
         numero:
             numeroPedido,
@@ -3552,14 +2870,70 @@ async function confirmarPagamento() {
         },
 
         itens:
-            itens
+
+            carrinho.map(
+                item => ({
+
+                    tipo:
+                        item.tipo,
+
+                    produto:
+                        removerAcentos(
+                            item.produto
+                        ),
+
+                    precoBase:
+                        item.precoBase,
+
+                    precoTotal:
+                        calcularPrecoItem(
+                            item
+                        ),
+
+                    ingredientes:
+
+                        item.ingredientes
+                            .map(
+                                ingrediente =>
+                                    removerAcentos(
+                                        ingrediente
+                                    )
+                            ),
+
+                    adicionais:
+
+                        item.adicionais
+                            .map(
+                                adicional => ({
+
+                                    ingrediente:
+                                        removerAcentos(
+                                            adicional.nome
+                                        ),
+
+                                    quantidade:
+                                        adicional.quantidade,
+
+                                    precoUnitario:
+                                        precoAdicional(
+                                            adicional.nome
+                                        ),
+
+                                    subtotal:
+                                        precoAdicional(
+                                            adicional.nome
+                                        )
+                                        *
+                                        adicional.quantidade
+
+                                })
+                            )
+
+                })
+            )
 
     };
 
-
-    /*
-       DADOS EXTRAS DO PAGAMENTO
-    */
 
     if (
         pagamentoSelecionado ===
@@ -3590,258 +2964,137 @@ async function confirmarPagamento() {
     }
 
 
-    try {
+    /* =================================================
+       ENVIA PARA /PEDIDOS
+    ================================================= */
 
-        /*
-           =================================================
-           1. SALVA O PEDIDO PRINCIPAL
-           =================================================
-        */
 
-        const resposta =
-            await fetch(
-                FIREBASE_URL +
-                "/pedidos/" +
-                encodeURIComponent(
-                    numeroPedido
-                ) +
-                ".json",
-                {
+    database
+        .ref("pedidos")
+        .child(numeroPedido)
+        .set(pedido)
 
-                    method:
-                        "PUT",
+        .then(() => {
 
-                    headers: {
 
-                        "Content-Type":
-                            "application/json"
+            document.getElementById(
+                "numeroPedidoSucesso"
+            ).innerText =
+                "#" +
+                numeroPedido;
 
-                    },
 
-                    body:
-                        JSON.stringify(
-                            pedido
-                        )
+            let mensagem =
+                "Pagamento: " +
+                nomePagamento;
 
-                }
+
+            if (
+                pagamentoSelecionado ===
+                "dinheiro"
+            ) {
+
+                mensagem +=
+                    "<br><br>" +
+
+                    "Total: " +
+                    formatarPreco(total) +
+
+                    "<br>" +
+
+                    "Troco: " +
+                    formatarPreco(troco);
+
+            }
+
+
+            document.getElementById(
+                "resumoPagamento"
+            ).innerHTML =
+                mensagem;
+
+
+            document.getElementById(
+                "telaPagamento"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "telaSucesso"
+            ).style.display =
+                "flex";
+
+        })
+
+        .catch(erro => {
+
+            console.error(erro);
+
+            alert(
+                "❌ Erro ao enviar o pedido."
             );
-
-
-        if (
-            !resposta.ok
-        ) {
-
-            throw new Error(
-                "Erro ao salvar pedido."
-            );
-
-        }
-
-
-        /*
-           =================================================
-           2. MANTÉM COMPATIBILIDADE
-              COM O ESP32
-           =================================================
-
-           O ESP32 que você já possui
-           pode continuar lendo /pedido.
-        */
-
-        const respostaESP =
-            await fetch(
-                FIREBASE_URL +
-                "/pedido.json",
-                {
-
-                    method:
-                        "PUT",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify(
-                            pedido
-                        )
-
-                }
-            );
-
-
-        if (
-            !respostaESP.ok
-        ) {
-
-            console.warn(
-                "Pedido salvo em /pedidos, mas não foi possível atualizar /pedido."
-            );
-
-        }
-
-
-        /*
-           =================================================
-           3. MOSTRA NÚMERO
-           =================================================
-        */
-
-        document.getElementById(
-            "numeroPedidoSucesso"
-        ).innerText =
-            "#" +
-            numeroPedido;
-
-
-        /*
-           =================================================
-           4. GERA QR CODE DE ACOMPANHAMENTO
-           =================================================
-        */
-
-        gerarQRCodeAcompanhamento(
-            numeroPedido
-        );
-
-
-        /*
-           =================================================
-           5. TROCA DE TELA
-           =================================================
-        */
-
-        document.getElementById(
-            "telaPagamento"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "telaSucesso"
-        ).style.display =
-            "flex";
-
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth"
 
         });
-
-
-    }
-
-    catch (
-        erro
-    ) {
-
-        console.error(
-            erro
-        );
-
-
-        alert(
-            "❌ Não foi possível enviar o pedido. Verifique sua conexão e tente novamente."
-        );
-
-    }
 
 }
 
 
 /* =====================================================
-   QR CODE DE ACOMPANHAMENTO
+   ACOMPANHAR PEDIDO
 ===================================================== */
 
-function gerarQRCodeAcompanhamento(
-    numero
-) {
+function acompanharPedido() {
 
-    const elemento =
-        document.getElementById(
-            "qrcodeAcompanhamento"
-        );
-
-
-    if (!elemento) {
+    if (!numeroPedido) {
 
         return;
 
     }
 
 
-    elemento.innerHTML =
-        "";
-
-
-    /*
-       Pega automaticamente o endereço
-       atual do GitHub Pages.
-
-       Exemplo:
-
-       https://usuario.github.io/BRICKA/
-
-       vira:
-
-       https://usuario.github.io/BRICKA/
-       acompanhar.html?pedido=123
-    */
-
-    const caminho =
-        window.location.pathname;
-
-
-    const indiceBarra =
-        caminho.lastIndexOf("/");
-
-
-    const pasta =
-        caminho.substring(
-            0,
-            indiceBarra + 1
-        );
-
-
-    const link =
-        window.location.origin +
-        pasta +
+    window.location.href =
         "acompanhar.html?pedido=" +
         encodeURIComponent(
-            numero
+            numeroPedido
         );
 
-
-    console.log(
-        "QR Code de acompanhamento:",
-        link
-    );
+}
 
 
-    new QRCode(
-        elemento,
-        {
+/* =====================================================
+   NOVO PEDIDO
+===================================================== */
 
-            text:
-                link,
+function novoPedido() {
 
-            width:
-                230,
+    carrinho = [];
 
-            height:
-                230,
+    pagamentoSelecionado =
+        null;
 
-            correctLevel:
-                QRCode.CorrectLevel.M
+    numeroPedido = null;
 
-        }
-    );
+
+    atualizarCarrinho();
+
+
+    document.getElementById(
+        "telaSucesso"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "telaPrincipal"
+    ).style.display =
+        "block";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 
@@ -3850,6 +3103,8 @@ function gerarQRCodeAcompanhamento(
    INICIALIZAÇÃO
 ===================================================== */
 
+lanches.forEach(lanche => iniciarQuantidades(lanche));
+
 renderizarLanches();
 
 renderizarBebidas();
@@ -3857,7 +3112,6 @@ renderizarBebidas();
 atualizarCarrinho();
 
 </script>
-
 
 </body>
 
