@@ -1242,185 +1242,25 @@ class="btn"
 style="background:#0a8f3d;color:white"
 onclick="confirmarPagamento()">
 
-✅ /* =====================================================
-   CONFIRMAR PAGAMENTO
-===================================================== */
+✅ CONFIRMAR PAGAMENTO
 
-function confirmarPagamento() {
+</button>
 
-    if (!pagamentoSelecionado) {
-        alert("Selecione uma forma de pagamento.");
-        return;
-    }
 
-    const total = calcularTotal();
+<button
+class="btn btn-secundario"
+onclick="voltarParaPedido()">
 
-    let valorRecebido = null;
-    let troco = null;
+← VOLTAR E ALTERAR PEDIDO
 
-    if (pagamentoSelecionado === "dinheiro") {
+</button>
 
-        valorRecebido =
-            parseFloat(
-                document.getElementById("valorRecebido").value
-            ) || 0;
 
-        if (valorRecebido < total) {
-            alert("O valor recebido é menor que o total.");
-            return;
-        }
+</div>
 
-        troco = valorRecebido - total;
-    }
+</div>
 
-    numeroPedido = gerarNumeroPedido();
 
-    let nomePagamento = "";
-
-    switch (pagamentoSelecionado) {
-
-        case "debito":
-            nomePagamento = "Cartao de Debito";
-            break;
-
-        case "credito":
-            nomePagamento = "Cartao de Credito";
-            break;
-
-        case "pix":
-            nomePagamento = "PIX";
-            break;
-
-        case "dinheiro":
-            nomePagamento = "Dinheiro";
-            break;
-    }
-
-    const pedido = {
-
-        ativo: true,
-
-        numero: numeroPedido,
-
-        status: "aprovado",
-
-        criadoEm: Date.now(),
-
-        total: total,
-
-        pagamento: {
-            metodo: nomePagamento,
-            codigo: pagamentoSelecionado
-        },
-
-        itens: carrinho.map(item => ({
-
-            tipo: item.tipo,
-
-            produto: removerAcentos(item.produto),
-
-            precoBase: item.precoBase,
-
-            precoTotal: calcularPrecoItem(item),
-
-            ingredientes: item.ingredientes.map(
-                ingrediente => removerAcentos(ingrediente)
-            ),
-
-            adicionais: item.adicionais.map(adicional => ({
-
-                ingrediente: removerAcentos(adicional.nome),
-
-                quantidade: adicional.quantidade,
-
-                precoUnitario: precoAdicional(adicional.nome),
-
-                subtotal:
-                    precoAdicional(adicional.nome) *
-                    Math.max(0, adicional.quantidade - 1)
-
-            }))
-
-        }))
-
-    };
-
-    if (pagamentoSelecionado === "dinheiro") {
-
-        pedido.pagamento.valorRecebido = valorRecebido;
-        pedido.pagamento.troco = troco;
-    }
-
-    if (pagamentoSelecionado === "pix") {
-
-        pedido.pagamento.chavePix = CHAVE_PIX;
-    }
-
-    const botaoConfirmar = document.querySelector(
-        '#telaPagamento button[onclick="confirmarPagamento()"]'
-    );
-
-    if (botaoConfirmar) {
-        botaoConfirmar.disabled = true;
-        botaoConfirmar.textContent = "ENVIANDO PEDIDO...";
-    }
-
-    database
-        .ref("pedidos")
-        .child(numeroPedido)
-        .set(pedido)
-
-        .then(() => {
-
-            document.getElementById(
-                "numeroPedidoSucesso"
-            ).innerText = "#" + numeroPedido;
-
-            let mensagem = "Pagamento: " + nomePagamento;
-
-            if (pagamentoSelecionado === "dinheiro") {
-
-                mensagem +=
-                    "<br><br>Total: " +
-                    formatarPreco(total) +
-                    "<br>Troco: " +
-                    formatarPreco(troco);
-            }
-
-            document.getElementById(
-                "resumoPagamento"
-            ).innerHTML = mensagem;
-
-            document.getElementById(
-                "telaPagamento"
-            ).style.display = "none";
-
-            document.getElementById(
-                "telaSucesso"
-            ).style.display = "flex";
-
-            iniciarContagemNovoPedido();
-
-        })
-
-        .catch(erro => {
-
-            console.error("Erro ao enviar pedido:", erro);
-
-            alert("❌ Erro ao enviar o pedido. Tente novamente.");
-
-        })
-
-        .finally(() => {
-
-            if (botaoConfirmar) {
-                botaoConfirmar.disabled = false;
-                botaoConfirmar.textContent = "✅ CONFIRMAR PAGAMENTO";
-            }
-
-        });
-
-}
 <!-- =====================================================
      SUCESSO
 ===================================================== -->
