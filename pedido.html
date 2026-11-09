@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -124,6 +123,9 @@ header p {
     font-weight: bold;
 
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 
     background: #ddd;
 
@@ -968,7 +970,7 @@ header p {
 
 <button
 class="tab-button active"
-onclick="abrirAba('lanches', this)">
+data-aba="lanches">
 
 🍔 LANCHES
 
@@ -977,7 +979,7 @@ onclick="abrirAba('lanches', this)">
 
 <button
 class="tab-button"
-onclick="abrirAba('bebidas', this)">
+data-aba="bebidas">
 
 🥤 BEBIDAS
 
@@ -1761,33 +1763,53 @@ function calcularTotal() {
 ===================================================== */
 
 function abrirAba(nome, botao) {
+    const conteudo = document.getElementById(nome);
+    if (!conteudo) return;
 
-    document
-        .querySelectorAll(".tab-content")
-        .forEach(tab => {
+    document.querySelectorAll(".tab-content").forEach(tab => {
+        tab.classList.toggle("active", tab.id === nome);
+    });
 
-            tab.classList.remove("active");
+    document.querySelectorAll(".tab-button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.aba === nome);
+    });
 
+    // Garante que a troca aconteça imediatamente, sem depender de um segundo toque.
+    conteudo.style.display = "block";
+    window.requestAnimationFrame(() => {
+        document.querySelectorAll(".tab-content").forEach(tab => {
+            if (tab.id !== nome) tab.style.display = "none";
         });
-
-
-    document
-        .querySelectorAll(".tab-button")
-        .forEach(btn => {
-
-            btn.classList.remove("active");
-
-        });
-
-
-    document
-        .getElementById(nome)
-        .classList.add("active");
-
-
-    botao.classList.add("active");
-
+    });
 }
+
+// Nas telas sensíveis ao toque, usa o primeiro contato do dedo.
+// O clique tradicional continua disponível para mouse e teclado.
+(function configurarToqueDasAbas() {
+    const abas = document.querySelector(".tabs");
+    if (!abas) return;
+
+    let ultimoToque = 0;
+
+    abas.querySelectorAll(".tab-button").forEach(botao => {
+        botao.addEventListener("pointerdown", evento => {
+            if (evento.pointerType !== "touch") return;
+            evento.preventDefault();
+            ultimoToque = Date.now();
+            abrirAba(botao.dataset.aba, botao);
+        }, { passive: false });
+
+        botao.addEventListener("click", evento => {
+            // Evita executar novamente o mesmo comando após o pointerdown do toque.
+            if (Date.now() - ultimoToque < 800) {
+                evento.preventDefault();
+                evento.stopPropagation();
+                return;
+            }
+            abrirAba(botao.dataset.aba, botao);
+        });
+    });
+})();
 
 
 /* =====================================================
