@@ -1,212 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BRICKA - Pedidos</title>
-
-
-<!-- FIREBASE -->
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-
-<!-- QR CODE -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-
 <style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-
-    margin: 0;
-
-    font-family: Arial, Helvetica, sans-serif;
-
-    background: #f3f3f3;
-
-    color: #222;
-
-}
-
-button,
-input,
-textarea {
-
-    font-family: inherit;
-
-}
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-header {
-
-    background: #111;
-
-    color: white;
-
-    text-align: center;
-
-    padding: 22px;
-
-}
-
-header h1 {
-
-    margin: 0;
-
-    font-size: 30px;
-
-}
-
-header p {
-
-    margin: 8px 0 0;
-
-    color: #ddd;
-
-}
-
-
-/* =====================================================
-   ABAS
-===================================================== */
-
-.tabs {
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    padding: 15px;
-
-    background: white;
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 20;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,0.08);
-
-}
-
-.tab-button {
-
-    border: none;
-
-    padding: 12px 25px;
-
-    border-radius: 10px;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-
-    background: #ddd;
-
-}
-
-.tab-button.active {
-
-    background: #111;
-
-    color: white;
-
-}
-
-
-/* =====================================================
-   CONTAINER
-===================================================== */
-
-.container {
-
-    max-width: 1100px;
-
-    margin: auto;
-
-    padding: 20px;
-
-}
-
-.tab-content {
-
-    display: none;
-
-}
-
-.tab-content.active {
-
-    display: block;
-
-}
-
-
-/* =====================================================
-   GRID
-===================================================== */
-
-.grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(260px, 1fr));
-
-    gap: 20px;
-
-}
-
-
-/* =====================================================
-   SELEÇÃO PROFISSIONAL DE LANCHES
-===================================================== */
-.selecao-lanches {
-    display: grid;
-    grid-template-columns: minmax(220px, 0.8fr) minmax(300px, 1.2fr);
-    gap: 20px;
-    align-items: start;
-}
-.lista-produtos {
-    display: grid;
-    gap: 12px;
-}
-.produto-selecao {
-    width: 100%;
-    text-align: left;
-    border: 2px solid #e5e5e5;
-    border-radius: 14px;
-    padding: 16px;
-    background: #fff;
-    cursor: pointer;
-    transition: .18s ease;
-    color: #222;
-}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f3f3f3; color: #222; }
+button,input,textarea { font-family: inherit; }
+header { background: #111; color: white; text-align: center; padding: 22px; }
+header h1 { margin: 0; font-size: 30px; }
+header p { margin: 8px 0 0; color: #ddd; }
+.tabs { display: flex; justify-content: center; gap: 10px; padding: 15px; background: white; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.tab-button { border: none; padding: 12px 25px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; background: #ddd; }
+.tab-button.active { background: #111; color: white; }
+.container { max-width: 1100px; margin: auto; padding: 20px; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.selecao-lanches { display: grid; grid-template-columns: minmax(220px, 0.8fr) minmax(300px, 1.2fr); gap: 20px; align-items: start; }
+.lista-produtos { display: grid; gap: 12px; }
+.produto-selecao { width: 100%; text-align: left; border: 2px solid #e5e5e5; border-radius: 14px; padding: 16px; background: #fff; cursor: pointer; transition: .18s ease; color: #222; }
 .produto-selecao:hover { border-color: #999; transform: translateY(-1px); }
 .produto-selecao.selecionado { border-color: #111; box-shadow: 0 0 0 2px #1111; background: #fffdf8; }
 .produto-selecao .produto-titulo { display:flex; align-items:center; gap:10px; font-weight:800; font-size:16px; }
@@ -236,2959 +53,759 @@ header p {
 .painel-resumo { display:flex; justify-content:space-between; gap:12px; padding-top:15px; margin-top:10px; border-top:1px solid #eee; font-weight:800; }
 .painel-personalizacao .btn { margin-top:16px; }
 @media(max-width:760px) {
-    .selecao-lanches { grid-template-columns:1fr; }
-    .lista-produtos { grid-template-columns:repeat(2,minmax(0,1fr)); }
-    .produto-selecao { padding:12px; }
-    .produto-selecao .produto-titulo { font-size:14px; }
-    .produto-selecao .produto-emoji { font-size:23px; }
-    .produto-selecao .produto-rodape { align-items:flex-start; flex-direction:column; }
-    .painel-personalizacao { position:static; }
+.selecao-lanches { grid-template-columns:1fr; }
+.lista-produtos { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.produto-selecao { padding:12px; }
+.produto-selecao .produto-titulo { font-size:14px; }
+.produto-selecao .produto-emoji { font-size:23px; }
+.produto-selecao .produto-rodape { align-items:flex-start; flex-direction:column; }
+.painel-personalizacao { position:static; }
 }
-
-/* =====================================================
-   CARD
-===================================================== */
-
-.card {
-
-    background: white;
-
-    border-radius: 15px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,0.10);
-
-}
-
-.card h2 {
-
-    margin-top: 0;
-
-}
-
-.preco {
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    margin: 10px 0;
-
-}
-
-
-/* =====================================================
-   INGREDIENTES
-===================================================== */
-
-.ingredientes {
-
-    display: grid;
-
-    gap: 8px;
-
-    margin: 15px 0;
-
-}
-
-.ingrediente {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    background: #f5f5f5;
-
-    padding: 8px;
-
-    border-radius: 8px;
-
-}
-
-.ingrediente-esquerda {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-}
-
-.ingrediente input {
-
-    width: 18px;
-
-    height: 18px;
-
-}
-
-.adicional-controle {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-}
-
-.adicional-controle button {
-
-    width: 28px;
-
-    height: 28px;
-
-    border: none;
-
-    border-radius: 6px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-
-}
-
-.adicional-controle .menos {
-
-    background: #ddd;
-
-}
-
-.adicional-controle .mais {
-
-    background: #111;
-
-    color: white;
-
-}
-
-.qtd-adicional {
-
-    min-width: 20px;
-
-    text-align: center;
-
-    font-weight: bold;
-
-}
-
-
-/* =====================================================
-   BOTÕES
-===================================================== */
-
-.btn {
-
-    width: 100%;
-
-    border: none;
-
-    border-radius: 10px;
-
-    padding: 13px;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    margin-top: 8px;
-
-}
-
-.btn-principal {
-
-    background: #111;
-
-    color: white;
-
-}
-
-.btn-secundario {
-
-    background: #ddd;
-
-    color: #111;
-
-}
-
-
-/* =====================================================
-   CARRINHO
-===================================================== */
-
-.carrinho {
-
-    margin-top: 30px;
-
-    background: white;
-
-    border-radius: 15px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,0.10);
-
-}
-
-.item-carrinho {
-
-    border-bottom: 1px solid #ddd;
-
-    padding: 15px 0;
-
-}
-
-.item-carrinho:last-child {
-
-    border-bottom: none;
-
-}
-
-.item-topo {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 10px;
-
-}
-
-.item-preco {
-
-    font-weight: bold;
-
-}
-
-.item-ingredientes {
-
-    color: #555;
-
-    font-size: 14px;
-
-    margin: 8px 0;
-
-}
-
-.item-adicionais {
-
-    color: #333;
-
-    font-size: 14px;
-
-}
-
-.acoes-item {
-
-    display: flex;
-
-    gap: 8px;
-
-    margin-top: 10px;
-
-    flex-wrap: wrap;
-
-}
-
-.acoes-item button {
-
-    border: none;
-
-    padding: 7px 10px;
-
-    border-radius: 7px;
-
-    cursor: pointer;
-
-}
-
-.editar {
-
-    background: #ddd;
-
-}
-
-.remover {
-
-    background: #ffdddd;
-
-}
-
-.duplicar {
-
-    background: #ddffdd;
-
-}
-
-.total {
-
-    margin-top: 20px;
-
-    padding-top: 20px;
-
-    border-top: 2px solid #111;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    font-size: 22px;
-
-    font-weight: bold;
-
-}
-
-.finalizar {
-
-    background: #0a8f3d;
-
-    color: white;
-
-    margin-top: 15px;
-
-}
-
-
-/* =====================================================
-   PAGAMENTO
-===================================================== */
-
-#telaPagamento {
-
-    display: none;
-
-    min-height: 100vh;
-
-    background: #f3f3f3;
-
-}
-
-.pagamento-container {
-
-    max-width: 650px;
-
-    margin: auto;
-
-    padding: 25px 20px 50px;
-
-}
-
-.pagamento-header {
-
-    background: #111;
-
-    color: white;
-
-    border-radius: 15px;
-
-    padding: 22px;
-
-    text-align: center;
-
-    margin-bottom: 25px;
-
-}
-
-.pagamento-header h1 {
-
-    margin: 0 0 10px;
-
-}
-
-.valor-pagamento {
-
-    font-size: 32px;
-
-    font-weight: bold;
-
-}
-
-
-/* =====================================================
-   OPÇÕES DE PAGAMENTO
-===================================================== */
-
-.opcoes-pagamento {
-
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 15px;
-
-}
-
-.opcao-pagamento {
-
-    background: white;
-
-    border: 3px solid transparent;
-
-    border-radius: 15px;
-
-    padding: 20px;
-
-    text-align: center;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,0.08);
-
-}
-
-.opcao-pagamento.selecionada {
-
-    border-color: #111;
-
-    background: #f0f0f0;
-
-}
-
-.opcao-icone {
-
-    font-size: 40px;
-
-}
-
-.opcao-nome {
-
-    font-size: 18px;
-
-    font-weight: bold;
-
-    margin-top: 8px;
-
-}
-
-
-/* =====================================================
-   ÁREA PAGAMENTO
-===================================================== */
-
-.area-pagamento {
-
-    display: none;
-
-    background: white;
-
-    border-radius: 15px;
-
-    margin-top: 20px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 3px 10px rgba(0,0,0,0.08);
-
-}
-
-.area-pagamento.active {
-
-    display: block;
-
-}
-
-
-/* =====================================================
-   CARTÃO
-===================================================== */
-
-.cartao-info {
-
-    text-align: center;
-
-}
-
-.cartao-info .icone {
-
-    font-size: 60px;
-
-}
-
-.cartao-info p {
-
-    color: #666;
-
-}
-
-
-/* =====================================================
-   PIX
-===================================================== */
-
-.pix-container {
-
-    text-align: center;
-
-}
-
-#qrcode {
-
-    display: flex;
-
-    justify-content: center;
-
-    margin: 20px 0;
-
-}
-
-.chave-pix {
-
-    background: #f0f0f0;
-
-    border-radius: 8px;
-
-    padding: 12px;
-
-    word-break: break-all;
-
-    font-weight: bold;
-
-}
-
-.pix-copia-cola {
-
-    width: 100%;
-
-    min-height: 90px;
-
-    padding: 12px;
-
-    border: 2px solid #ddd;
-
-    border-radius: 8px;
-
-    resize: none;
-
-    font-size: 12px;
-
-    margin-top: 8px;
-
-}
-
-.pix-aviso {
-
-    color: #777;
-
-    font-size: 13px;
-
-    margin-top: 15px;
-
-}
-
-
-/* =====================================================
-   DINHEIRO
-===================================================== */
-
-.dinheiro-info {
-
-    text-align: center;
-
-}
-
-.campo-dinheiro {
-
-    width: 100%;
-
-    padding: 14px;
-
-    font-size: 20px;
-
-    border: 2px solid #ddd;
-
-    border-radius: 10px;
-
-    margin-top: 10px;
-
-}
-
-.troco {
-
-    margin-top: 15px;
-
-    font-size: 22px;
-
-    font-weight: bold;
-
-}
-
-.troco.erro {
-
-    color: #c00;
-
-}
-
-
-/* =====================================================
-   SUCESSO
-===================================================== */
-
-#telaSucesso {
-
-    display: none;
-
-    min-height: 100vh;
-
-    background: #f3f3f3;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-}
-
-.sucesso-container {
-
-    background: white;
-
-    max-width: 500px;
-
-    margin: 30px;
-
-    padding: 40px 25px;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 5px 20px rgba(0,0,0,0.12);
-
-}
-
-.sucesso-icone {
-
-    font-size: 70px;
-
-}
-
-.numero-pedido {
-
-    font-size: 32px;
-
-    font-weight: bold;
-
-    margin: 10px 0 20px;
-
-}
-
-/* QR Code compacto para preservar o layout anterior */
-#qrcodeAcompanhamento {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    height: 150px;
-    margin: 10px auto 14px;
-    padding: 8px;
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 10px;
-}
-#qrcodeAcompanhamento img,
-#qrcodeAcompanhamento canvas {
-    display: block;
-    width: 132px !important;
-    height: 132px !important;
-}
+.card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.10); }
+.card h2 { margin-top: 0; }
+.preco { font-size: 20px; font-weight: bold; margin: 10px 0; }
+.ingredientes { display: grid; gap: 8px; margin: 15px 0; }
+.ingrediente { display: flex; justify-content: space-between; align-items: center; background: #f5f5f5; padding: 8px; border-radius: 8px; }
+.ingrediente-esquerda { display: flex; align-items: center; gap: 8px; }
+.ingrediente input { width: 18px; height: 18px; }
+.adicional-controle { display: flex; align-items: center; gap: 5px; }
+.adicional-controle button { width: 28px; height: 28px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.adicional-controle .menos { background: #ddd; }
+.adicional-controle .mais { background: #111; color: white; }
+.qtd-adicional { min-width: 20px; text-align: center; font-weight: bold; }
+.btn { width: 100%; border: none; border-radius: 10px; padding: 13px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+.btn-principal { background: #111; color: white; }
+.btn-secundario { background: #ddd; color: #111; }
+.carrinho { margin-top: 30px; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.10); }
+.item-carrinho { border-bottom: 1px solid #ddd; padding: 15px 0; }
+.item-carrinho:last-child { border-bottom: none; }
+.item-topo { display: flex; justify-content: space-between; gap: 10px; }
+.item-preco { font-weight: bold; }
+.item-ingredientes { color: #555; font-size: 14px; margin: 8px 0; }
+.item-adicionais { color: #333; font-size: 14px; }
+.acoes-item { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.acoes-item button { border: none; padding: 7px 10px; border-radius: 7px; cursor: pointer; }
+.editar { background: #ddd; }
+.remover { background: #ffdddd; }
+.duplicar { background: #ddffdd; }
+.total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #111; display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; }
+.finalizar { background: #0a8f3d; color: white; margin-top: 15px; }
+.dados-atendimento { margin-top: 22px; padding: 20px; background: #fff; border: 1px solid #e7e7e7; border-radius: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.07); }
+.dados-atendimento h3 { margin: 0 0 8px; }
+.dados-atendimento .ajuda { margin: 0 0 16px; color: #666; font-size: 14px; }
+.campo-mesa { width: 100%; max-width: 260px; padding: 13px; border: 2px solid #ddd; border-radius: 9px; font-size: 18px; }
+.opcoes-entrega-bebida { display: grid; gap: 10px; margin-top: 12px; }
+.opcao-entrega-bebida { display: flex; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid #ddd; border-radius: 9px; cursor: pointer; }
+.opcao-entrega-bebida input { margin-top: 3px; }
+.opcao-entrega-bebida strong { display: block; }
+.opcao-entrega-bebida small { display: block; margin-top: 3px; color: #666; }
+#avisoSemBebida { color: #777; font-size: 13px; margin: 10px 0 0; }
+#telaPagamento { display: none; min-height: 100vh; background: #f3f3f3; }
+.pagamento-container { max-width: 650px; margin: auto; padding: 25px 20px 50px; }
+.pagamento-header { background: #111; color: white; border-radius: 15px; padding: 22px; text-align: center; margin-bottom: 25px; }
+.pagamento-header h1 { margin: 0 0 10px; }
+.valor-pagamento { font-size: 32px; font-weight: bold; }
+.opcoes-pagamento { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.opcao-pagamento { background: white; border: 3px solid transparent; border-radius: 15px; padding: 20px; text-align: center; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+.opcao-pagamento.selecionada { border-color: #111; background: #f0f0f0; }
+.opcao-icone { font-size: 40px; }
+.opcao-nome { font-size: 18px; font-weight: bold; margin-top: 8px; }
+.area-pagamento { display: none; background: white; border-radius: 15px; margin-top: 20px; padding: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+.area-pagamento.active { display: block; }
+.cartao-info { text-align: center; }
+.cartao-info .icone { font-size: 60px; }
+.cartao-info p { color: #666; }
+.pix-container { text-align: center; }
+#qrcode { display: flex; justify-content: center; margin: 20px 0; }
+.chave-pix { background: #f0f0f0; border-radius: 8px; padding: 12px; word-break: break-all; font-weight: bold; }
+.pix-copia-cola { width: 100%; min-height: 90px; padding: 12px; border: 2px solid #ddd; border-radius: 8px; resize: none; font-size: 12px; margin-top: 8px; }
+.pix-aviso { color: #777; font-size: 13px; margin-top: 15px; }
+.dinheiro-info { text-align: center; }
+.campo-dinheiro { width: 100%; padding: 14px; font-size: 20px; border: 2px solid #ddd; border-radius: 10px; margin-top: 10px; }
+.troco { margin-top: 15px; font-size: 22px; font-weight: bold; }
+.troco.erro { color: #c00; }
+#telaSucesso { display: none; min-height: 100vh; background: #f3f3f3; align-items: center; justify-content: center; text-align: center; }
+.sucesso-container { background: white; max-width: 500px; margin: 30px; padding: 40px 25px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.12); }
+.sucesso-icone { font-size: 70px; }
+.numero-pedido { font-size: 32px; font-weight: bold; margin: 10px 0 20px; }
+#qrcodeAcompanhamento { display: flex; justify-content: center; align-items: center; width: 150px; height: 150px; margin: 10px auto 14px; padding: 8px; background: #fff; border: 1px solid #eee; border-radius: 10px; }
+#qrcodeAcompanhamento img,#qrcodeAcompanhamento canvas { display: block; width: 132px !important; height: 132px !important; }
 .texto-qr { margin: 6px 0 10px; color: #666; font-size: 13px; }
-
-
-/* =====================================================
-   RESPONSIVO
-===================================================== */
-
 @media (max-width: 600px) {
-
-    .opcoes-pagamento {
-
-        grid-template-columns: 1fr 1fr;
-
-    }
-
-    .opcao-pagamento {
-
-        padding: 15px 10px;
-
-    }
-
-    .opcao-icone {
-
-        font-size: 32px;
-
-    }
-
-    .opcao-nome {
-
-        font-size: 15px;
-
-    }
-
-    .item-topo {
-
-        flex-direction: column;
-
-    }
-
+.opcoes-pagamento { grid-template-columns: 1fr 1fr; }
+.opcao-pagamento { padding: 15px 10px; }
+.opcao-icone { font-size: 32px; }
+.opcao-nome { font-size: 15px; }
+.item-topo { flex-direction: column; }
 }
-
 </style>
-
 </head>
-
-
 <body>
-
-
-<!-- =====================================================
-     TELA PRINCIPAL
-===================================================== -->
-
 <div id="telaPrincipal">
-
-
 <header>
-
 <h1>🍔 BRICKA</h1>
-
 <p>Monte seu lanche do seu jeito!</p>
-
 </header>
-
-
 <div class="tabs">
-
-<button
-class="tab-button active"
-data-aba="lanches">
-
-🍔 LANCHES
-
-</button>
-
-
-<button
-class="tab-button"
-data-aba="bebidas">
-
-🥤 BEBIDAS
-
-</button>
-
+<button class="tab-button active" onclick="abrirAba('lanches', this)">🍔 LANCHES</button>
+<button class="tab-button" onclick="abrirAba('bebidas', this)">🥤 BEBIDAS</button>
 </div>
-
-
 <div class="container">
-
-
-<div
-id="lanches"
-class="tab-content active">
-
+<div id="lanches" class="tab-content active">
 <div class="selecao-lanches">
-    <div id="listaLanches" class="lista-produtos"></div>
-    <section id="painelPersonalizacao" class="painel-personalizacao" aria-live="polite"></section>
+<div id="listaLanches" class="lista-produtos"></div>
+<section id="painelPersonalizacao" class="painel-personalizacao" aria-live="polite"></section>
 </div>
-
 </div>
-
-
-<div
-id="bebidas"
-class="tab-content">
-
-<div
-id="listaBebidas"
-class="grid">
+<div id="bebidas" class="tab-content">
+<div id="listaBebidas" class="grid"></div>
 </div>
-
-</div>
-
-
 <div class="carrinho">
-
 <h2>🛒 Seu pedido</h2>
-
-<div id="listaCarrinho">
-
-<p>Nenhum item adicionado.</p>
-
+<div id="listaCarrinho"><p>Nenhum item adicionado.</p></div>
+<div class="total"><span>Total</span><span id="valorTotal">R$ 0,00</span></div>
+<section class="dados-atendimento" aria-labelledby="tituloAtendimento">
+<h3 id="tituloAtendimento">📍 Onde você está?</h3>
+<p class="ajuda">Informe o número da mesa para entregarmos seu pedido no lugar certo.</p>
+<label for="numeroMesa"><strong>Número da mesa</strong></label><br>
+<input class="campo-mesa" type="number" id="numeroMesa" min="1" step="1" inputmode="numeric" placeholder="Ex.: 12" required>
+<div id="opcoesEntregaBebida">
+<h3 style="margin-top:20px;">🥤 Quando deseja receber sua bebida?</h3>
+<div class="opcoes-entrega-bebida">
+<label class="opcao-entrega-bebida">
+<input type="radio" name="entregaBebida" value="imediatamente">
+<span><strong>Trazer a bebida agora</strong><small>Entregar na mesa assim que possível, antes do lanche ficar pronto.</small></span>
+</label>
+<label class="opcao-entrega-bebida">
+<input type="radio" name="entregaBebida" value="junto_com_pedido" checked>
+<span><strong>Trazer junto com o pedido</strong><small>Entregar a bebida quando os lanches estiverem prontos.</small></span>
+</label>
 </div>
-
-
-<div class="total">
-
-<span>Total</span>
-
-<span id="valorTotal">
-R$ 0,00
-</span>
-
 </div>
-
-
-<button
-class="btn finalizar"
-onclick="abrirPagamento()">
-
-💳 FINALIZAR E PAGAR
-
-</button>
-
+<p id="avisoSemBebida" hidden>Adicione uma bebida ao carrinho para escolher o momento da entrega.</p>
+</section>
+<button class="btn finalizar" onclick="abrirPagamento()">💳 FINALIZAR E PAGAR</button>
 </div>
-
 </div>
-
 </div>
-
-
-<!-- =====================================================
-     PAGAMENTO
-===================================================== -->
-
 <div id="telaPagamento">
-
 <div class="pagamento-container">
-
-
 <div class="pagamento-header">
-
 <h1>💳 Pagamento</h1>
-
 <p>Total do pedido</p>
-
-<div
-class="valor-pagamento"
-id="totalPagamento">
-
-R$ 0,00
-
+<div class="valor-pagamento" id="totalPagamento">R$ 0,00</div>
 </div>
-
-</div>
-
-
 <h2>Escolha a forma de pagamento</h2>
-
-
 <div class="opcoes-pagamento">
-
-
-<div
-class="opcao-pagamento"
-id="opcaoDebito"
-onclick="selecionarPagamento('debito')">
-
-<div class="opcao-icone">💳</div>
-
-<div class="opcao-nome">
-Cartão de débito
+<div class="opcao-pagamento" id="opcaoDebito" onclick="selecionarPagamento('debito')"><div class="opcao-icone">💳</div><div class="opcao-nome">Cartão de débito</div></div>
+<div class="opcao-pagamento" id="opcaoCredito" onclick="selecionarPagamento('credito')"><div class="opcao-icone">💳</div><div class="opcao-nome">Cartão de crédito</div></div>
+<div class="opcao-pagamento" id="opcaoPix" onclick="selecionarPagamento('pix')"><div class="opcao-icone">📱</div><div class="opcao-nome">PIX</div></div>
+<div class="opcao-pagamento" id="opcaoDinheiro" onclick="selecionarPagamento('dinheiro')"><div class="opcao-icone">💵</div><div class="opcao-nome">Dinheiro</div></div>
 </div>
-
-</div>
-
-
-<div
-class="opcao-pagamento"
-id="opcaoCredito"
-onclick="selecionarPagamento('credito')">
-
-<div class="opcao-icone">💳</div>
-
-<div class="opcao-nome">
-Cartão de crédito
-</div>
-
-</div>
-
-
-<div
-class="opcao-pagamento"
-id="opcaoPix"
-onclick="selecionarPagamento('pix')">
-
-<div class="opcao-icone">📱</div>
-
-<div class="opcao-nome">
-PIX
-</div>
-
-</div>
-
-
-<div
-class="opcao-pagamento"
-id="opcaoDinheiro"
-onclick="selecionarPagamento('dinheiro')">
-
-<div class="opcao-icone">💵</div>
-
-<div class="opcao-nome">
-Dinheiro
-</div>
-
-</div>
-
-</div>
-
-
-<!-- CARTÃO -->
-
-<div
-id="areaCartao"
-class="area-pagamento">
-
+<div id="areaCartao" class="area-pagamento">
 <div class="cartao-info">
-
 <div class="icone">💳</div>
-
-<h2 id="tituloCartao">
-Pagamento no cartão
-</h2>
-
-<p>
-Realize o pagamento na máquina de cartão.
-</p>
-
+<h2 id="tituloCartao">Pagamento no cartão</h2>
+<p>Realize o pagamento na máquina de cartão.</p>
 </div>
-
 </div>
-
-
-<!-- PIX -->
-
-<div
-id="areaPix"
-class="area-pagamento">
-
+<div id="areaPix" class="area-pagamento">
 <div class="pix-container">
-
 <h2>📱 Pague com PIX</h2>
-
-<p>
-Escaneie o QR Code com o aplicativo do banco.
-</p>
-
-
+<p>Escaneie o QR Code com o aplicativo do banco.</p>
 <div id="qrcode"></div>
-
-
-<p>
-<strong>Chave PIX</strong>
-</p>
-
-
-<div class="chave-pix">
-+55 12 98172-2340
+<p><strong>Chave PIX</strong></p>
+<div class="chave-pix">+55 12 98172-2340</div>
+<p><strong>PIX Copia e Cola</strong></p>
+<textarea id="pixCopiaCola" class="pix-copia-cola" readonly></textarea>
+<button class="btn btn-principal" onclick="copiarPix()">📋 COPIAR PIX</button>
+<p class="pix-aviso">O QR Code contém o valor exato do pedido.</p>
 </div>
-
-
-<p>
-<strong>PIX Copia e Cola</strong>
-</p>
-
-
-<textarea
-id="pixCopiaCola"
-class="pix-copia-cola"
-readonly>
-</textarea>
-
-
-<button
-class="btn btn-principal"
-onclick="copiarPix()">
-
-📋 COPIAR PIX
-
-</button>
-
-
-<p class="pix-aviso">
-O QR Code contém o valor exato do pedido.
-</p>
-
 </div>
-
-</div>
-
-
-<!-- DINHEIRO -->
-
-<div
-id="areaDinheiro"
-class="area-pagamento">
-
+<div id="areaDinheiro" class="area-pagamento">
 <div class="dinheiro-info">
-
 <h2>💵 Pagamento em dinheiro</h2>
-
-<p>
-Informe quanto o cliente irá entregar.
-</p>
-
-
-<input
-id="valorRecebido"
-class="campo-dinheiro"
-type="number"
-step="0.01"
-min="0"
-placeholder="Ex.: 50,00"
-oninput="calcularTroco()">
-
-
-<div
-id="troco"
-class="troco">
-
-Informe o valor recebido.
-
+<p>Informe quanto o cliente irá entregar.</p>
+<input id="valorRecebido" class="campo-dinheiro" type="number" step="0.01" min="0" placeholder="Ex.: 50,00" oninput="calcularTroco()">
+<div id="troco" class="troco">Informe o valor recebido.</div>
 </div>
-
 </div>
-
+<button class="btn" style="background:#0a8f3d;color:white" onclick="confirmarPagamento()">✅ CONFIRMAR PAGAMENTO</button>
+<button class="btn btn-secundario" onclick="voltarParaPedido()">← VOLTAR E ALTERAR PEDIDO</button>
 </div>
-
-
-<button
-class="btn"
-style="background:#0a8f3d;color:white"
-onclick="confirmarPagamento()">
-
-✅ CONFIRMAR PAGAMENTO
-
-</button>
-
-
-<button
-class="btn btn-secundario"
-onclick="voltarParaPedido()">
-
-← VOLTAR E ALTERAR PEDIDO
-
-</button>
-
-
 </div>
-
-</div>
-
-
-<!-- =====================================================
-     SUCESSO
-===================================================== -->
-
 <div id="telaSucesso">
-
 <div class="sucesso-container">
-
-<div class="sucesso-icone">
-✅
-</div>
-
-
-<h1>
-Pedido enviado!
-</h1>
-
-
-<p>
-Seu número de pedido é:
-</p>
-
-
-<div
-id="numeroPedidoSucesso"
-class="numero-pedido">
-
-#00000000
-
-</div>
-
+<div class="sucesso-icone">✅</div>
+<h1>Pedido enviado!</h1>
+<p>Seu número de pedido é:</p>
+<div id="numeroPedidoSucesso" class="numero-pedido">#00000000</div>
 <p class="texto-qr">📱 Escaneie para acompanhar seu pedido:</p>
 <div id="qrcodeAcompanhamento" aria-label="QR Code para acompanhar o pedido"></div>
-
-<p id="resumoPagamento">
-</p>
-
-
-<p>
-Acompanhe o andamento do seu pedido.
-</p>
-
-
-<button
-class="btn btn-principal"
-onclick="acompanharPedido()">
-
-📱 ACOMPANHAR PEDIDO
-
-</button>
-
-
-<button
-class="btn btn-secundario"
-onclick="novoPedido()">
-
-🍔 FAZER NOVO PEDIDO
-
-</button>
-
+<p id="resumoPagamento"></p>
+<p>Acompanhe o andamento do seu pedido.</p>
+<button class="btn btn-principal" onclick="acompanharPedido()">📱 ACOMPANHAR PEDIDO</button>
+<button class="btn btn-secundario" onclick="novoPedido()">🍔 FAZER NOVO PEDIDO</button>
 </div>
-
 </div>
-
-
 <script>
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
 const firebaseConfig = {
-
-    apiKey: "AIzaSyDg_CLzbU0myOpjUYUSKTUKmteNvDP1sWDA",
-
-    authDomain:
-        "bricka-96d91.firebaseapp.com",
-
-    databaseURL:
-        "https://bricka-96d91-default-rtdb.firebaseio.com",
-
-    projectId:
-        "bricka-96d91",
-
-    storageBucket:
-        "bricka-96d91.firebasestorage.app",
-
-    messagingSenderId:
-        "503488792733",
-
-    appId:
-        "1:503488792733:web:3fb5ae349d09e82478cfec",
-
-    measurementId: "G-8ZX1JP1R7W"
-
+apiKey: "AIzaSyDg_CLzbU0myOpjUYUSKTUKmteNvDP1sWDA",
+authDomain: "bricka-96d91.firebaseapp.com",
+databaseURL: "https://bricka-96d91-default-rtdb.firebaseio.com",
+projectId: "bricka-96d91",
+storageBucket: "bricka-96d91.firebasestorage.app",
+messagingSenderId: "503488792733",
+appId: "1:503488792733:web:3fb5ae349d09e82478cfec",
+measurementId: "G-8ZX1JP1R7W"
 };
-
-
-firebase.initializeApp(
-    firebaseConfig
-);
-
-
-const database =
-    firebase.database();
-
-
-/* =====================================================
-   PIX
-===================================================== */
-
-const CHAVE_PIX =
-    "+5512981722340";
-
-
-/* =====================================================
-   PRODUTOS
-===================================================== */
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+const CHAVE_PIX = "+5512981722340";
 
 const lanches = [
-
-{
-    chave: "x-salada",
-    nome: "X-SALADA",
-    emoji: "🍔",
-    preco: 15,
-    ingredientes: [
-        "Pão",
-        "Hambúrguer",
-        "Queijo",
-        "Presunto",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
-
-{
-    chave: "x-bacon",
-    nome: "X-BACON",
-    emoji: "🥓",
-    preco: 18,
-    ingredientes: [
-        "Pão",
-        "Hambúrguer",
-        "Queijo",
-        "Bacon",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
-
-{
-    chave: "x-frango",
-    nome: "X-FRANGO",
-    emoji: "🍗",
-    preco: 16,
-    ingredientes: [
-        "Pão",
-        "Frango",
-        "Queijo",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
-
-{
-    chave: "x-egg",
-    nome: "X-EGG",
-    emoji: "🍳",
-    preco: 17,
-    ingredientes: [
-        "Pão",
-        "Hambúrguer",
-        "Ovo",
-        "Queijo",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
-
-{
-    chave: "x-calabresa",
-    nome: "X-CALABRESA",
-    emoji: "🌭",
-    preco: 18,
-    ingredientes: [
-        "Pão",
-        "Calabresa",
-        "Queijo",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-},
-
-{
-    chave: "x-tudo",
-    nome: "X-TUDO",
-    emoji: "🍔",
-    preco: 22,
-    ingredientes: [
-        "Pão",
-        "Hambúrguer",
-        "Bacon",
-        "Presunto",
-        "Ovo",
-        "Queijo",
-        "Alface",
-        "Tomate",
-        "Milho",
-        "Batata palha",
-        "Molho"
-    ]
-}
-
+{chave:"x-salada",nome:"X-SALADA",emoji:"🍔",preco:15,ingredientes:["Pão","Hambúrguer","Queijo","Presunto","Alface","Tomate","Milho","Batata palha","Molho"]},
+{chave:"x-bacon",nome:"X-BACON",emoji:"🥓",preco:18,ingredientes:["Pão","Hambúrguer","Queijo","Bacon","Alface","Tomate","Milho","Batata palha","Molho"]},
+{chave:"x-frango",nome:"X-FRANGO",emoji:"🍗",preco:16,ingredientes:["Pão","Frango","Queijo","Alface","Tomate","Milho","Batata palha","Molho"]},
+{chave:"x-egg",nome:"X-EGG",emoji:"🍳",preco:17,ingredientes:["Pão","Hambúrguer","Ovo","Queijo","Alface","Tomate","Milho","Batata palha","Molho"]},
+{chave:"x-calabresa",nome:"X-CALABRESA",emoji:"🌭",preco:18,ingredientes:["Pão","Calabresa","Queijo","Alface","Tomate","Milho","Batata palha","Molho"]},
+{chave:"x-tudo",nome:"X-TUDO",emoji:"🍔",preco:22,ingredientes:["Pão","Hambúrguer","Bacon","Presunto","Ovo","Queijo","Alface","Tomate","Milho","Batata palha","Molho"]}
 ];
-
 
 const bebidas = [
-
-{
-    nome: "Coca-Cola",
-    emoji: "🥤",
-    preco: 6
-},
-
-{
-    nome: "Coca-Cola Zero",
-    emoji: "🥤",
-    preco: 6
-},
-
-{
-    nome: "Guaraná",
-    emoji: "🥤",
-    preco: 6
-},
-
-{
-    nome: "Fanta Laranja",
-    emoji: "🥤",
-    preco: 6
-},
-
-{
-    nome: "Sprite",
-    emoji: "🥤",
-    preco: 6
-},
-
-{
-    nome: "Suco de Laranja",
-    emoji: "🍊",
-    preco: 7
-},
-
-{
-    nome: "Suco de Maracujá",
-    emoji: "🥭",
-    preco: 7
-},
-
-{
-    nome: "Suco de Morango",
-    emoji: "🍓",
-    preco: 7
-},
-
-{
-    nome: "Suco de Uva",
-    emoji: "🍇",
-    preco: 7
-},
-
-{
-    nome: "Água Mineral",
-    emoji: "💧",
-    preco: 4
-},
-
-{
-    nome: "Água com Gás",
-    emoji: "💧",
-    preco: 4.5
-}
-
+{nome:"Coca-Cola",emoji:"🥤",preco:6},
+{nome:"Coca-Cola Zero",emoji:"🥤",preco:6},
+{nome:"Guaraná",emoji:"🥤",preco:6},
+{nome:"Fanta Laranja",emoji:"🥤",preco:6},
+{nome:"Sprite",emoji:"🥤",preco:6},
+{nome:"Suco de Laranja",emoji:"🍊",preco:7},
+{nome:"Suco de Maracujá",emoji:"🥭",preco:7},
+{nome:"Suco de Morango",emoji:"🍓",preco:7},
+{nome:"Suco de Uva",emoji:"🍇",preco:7},
+{nome:"Água Mineral",emoji:"💧",preco:4},
+{nome:"Água com Gás",emoji:"💧",preco:4.5}
 ];
 
-
-/* =====================================================
-   VARIÁVEIS
-===================================================== */
-
 let carrinho = [];
-
 let lancheSelecionado = lanches[0]?.chave || null;
-
 let quantidadesIngredientes = {};
-
 let indiceEditando = null;
-
 let pagamentoSelecionado = null;
-
 let numeroPedido = null;
 
-
-/* =====================================================
-   PREÇO
-===================================================== */
-
 function formatarPreco(valor) {
-
-    return valor.toLocaleString(
-        "pt-BR",
-        {
-            style: "currency",
-            currency: "BRL"
-        }
-    );
-
+return valor.toLocaleString("pt-BR", {style:"currency",currency:"BRL"});
 }
-
-
-/* =====================================================
-   REMOVER ACENTOS
-===================================================== */
 
 function removerAcentos(texto) {
-
-    return texto
-        .normalize("NFD")
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        );
-
+return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
-
-
-/* =====================================================
-   NÚMERO DO PEDIDO
-===================================================== */
 
 function gerarNumeroPedido() {
-
-    const agora = new Date();
-
-    const hora =
-        agora.getHours()
-        .toString()
-        .padStart(2, "0");
-
-    const minuto =
-        agora.getMinutes()
-        .toString()
-        .padStart(2, "0");
-
-    const segundo =
-        agora.getSeconds()
-        .toString()
-        .padStart(2, "0");
-
-    const aleatorio =
-        Math.floor(
-            Math.random() * 100
-        )
-        .toString()
-        .padStart(2, "0");
-
-    return (
-        hora +
-        minuto +
-        segundo +
-        aleatorio
-    );
-
+const agora = new Date();
+const hora = agora.getHours().toString().padStart(2,"0");
+const minuto = agora.getMinutes().toString().padStart(2,"0");
+const segundo = agora.getSeconds().toString().padStart(2,"0");
+const aleatorio = Math.floor(Math.random()*100).toString().padStart(2,"0");
+return hora + minuto + segundo + aleatorio;
 }
-
-
-/* =====================================================
-   PREÇO ADICIONAL
-===================================================== */
 
 function precoAdicional(ingrediente) {
-
-    if (
-        ingrediente
-            .toLowerCase()
-            .includes("hambúrguer")
-    ) {
-
-        return 3;
-
-    }
-
-    return 1;
-
+if (ingrediente.toLowerCase().includes("hambúrguer")) return 3;
+return 1;
 }
-
-
-/* =====================================================
-   CALCULAR ADICIONAIS
-===================================================== */
 
 function calcularAdicionais(item) {
-
-    if (!item.adicionais) {
-
-        return 0;
-
-    }
-
-    return item.adicionais.reduce(
-        (total, adicional) => {
-
-            return total +
-                precoAdicional(adicional.nome) *
-                Math.max(0, Number(adicional.quantidade || 0) - 1);
-
-        },
-        0
-    );
-
+if (!item.adicionais) return 0;
+return item.adicionais.reduce((total, adicional) => {
+return total + precoAdicional(adicional.nome) * Math.max(0, Number(adicional.quantidade || 0) - 1);
+}, 0);
 }
-
-
-/* =====================================================
-   PREÇO ITEM
-===================================================== */
 
 function calcularPrecoItem(item) {
-
-    return (
-        item.precoBase +
-        calcularAdicionais(item)
-    );
-
+return item.precoBase + calcularAdicionais(item);
 }
-
-
-/* =====================================================
-   TOTAL
-===================================================== */
 
 function calcularTotal() {
-
-    return carrinho.reduce(
-        (total, item) => {
-
-            return total +
-                calcularPrecoItem(item);
-
-        },
-        0
-    );
-
+return carrinho.reduce((total, item) => total + calcularPrecoItem(item), 0);
 }
-
-
-/* =====================================================
-   ABAS
-===================================================== */
 
 function abrirAba(nome, botao) {
-    const conteudo = document.getElementById(nome);
-    if (!conteudo) return;
-
-    document.querySelectorAll(".tab-content").forEach(tab => {
-        tab.classList.toggle("active", tab.id === nome);
-    });
-
-    document.querySelectorAll(".tab-button").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.aba === nome);
-    });
-
-    // Garante que a troca aconteça imediatamente, sem depender de um segundo toque.
-    conteudo.style.display = "block";
-    window.requestAnimationFrame(() => {
-        document.querySelectorAll(".tab-content").forEach(tab => {
-            if (tab.id !== nome) tab.style.display = "none";
-        });
-    });
+document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
+document.getElementById(nome).classList.add("active");
+botao.classList.add("active");
 }
 
-// Nas telas sensíveis ao toque, usa o primeiro contato do dedo.
-// O clique tradicional continua disponível para mouse e teclado.
-(function configurarToqueDasAbas() {
-    const abas = document.querySelector(".tabs");
-    if (!abas) return;
-
-    let ultimoToque = 0;
-
-    abas.querySelectorAll(".tab-button").forEach(botao => {
-        botao.addEventListener("pointerdown", evento => {
-            if (evento.pointerType !== "touch") return;
-            evento.preventDefault();
-            ultimoToque = Date.now();
-            abrirAba(botao.dataset.aba, botao);
-        }, { passive: false });
-
-        botao.addEventListener("click", evento => {
-            // Evita executar novamente o mesmo comando após o pointerdown do toque.
-            if (Date.now() - ultimoToque < 800) {
-                evento.preventDefault();
-                evento.stopPropagation();
-                return;
-            }
-            abrirAba(botao.dataset.aba, botao);
-        });
-    });
-})();
-
-
-/* =====================================================
-   RENDERIZAR LANCHES
-===================================================== */
-
 function obterLancheSelecionado() {
-    return lanches.find(l => l.chave === lancheSelecionado) || lanches[0];
+return lanches.find(l => l.chave === lancheSelecionado) || lanches[0];
 }
 
 function iniciarQuantidades(lanche, quantidades = null) {
-    quantidadesIngredientes[lanche.chave] = {};
-    lanche.ingredientes.forEach(nome => {
-        const existente = quantidades?.find(a => a.nome === nome || a.ingrediente === nome);
-        quantidadesIngredientes[lanche.chave][nome] = existente ? Math.max(0, Number(existente.quantidade) || 0) : 1;
-    });
+quantidadesIngredientes[lanche.chave] = {};
+lanche.ingredientes.forEach(nome => {
+const existente = quantidades?.find(a => a.nome === nome || a.ingrediente === nome);
+quantidadesIngredientes[lanche.chave][nome] = existente ? Math.max(0, Number(existente.quantidade) || 0) : 1;
+});
 }
 
 function renderizarLanches() {
-    const lista = document.getElementById("listaLanches");
-    lista.innerHTML = "";
-
-    lanches.forEach(lanche => {
-        if (!quantidadesIngredientes[lanche.chave]) iniciarQuantidades(lanche);
-        const card = document.createElement("button");
-        card.type = "button";
-        card.className = "produto-selecao" + (lanche.chave === lancheSelecionado ? " selecionado" : "");
-        card.setAttribute("aria-pressed", String(lanche.chave === lancheSelecionado));
-        card.onclick = () => {
-            lancheSelecionado = lanche.chave;
-            indiceEditando = null;
-            renderizarLanches();
-        };
-        card.innerHTML = `
-            <span class="produto-titulo"><span class="produto-emoji">${lanche.emoji}</span><span>${lanche.nome}</span></span>
-            <span class="produto-descricao">${lanche.ingredientes.slice(0, 4).join(" · ")}${lanche.ingredientes.length > 4 ? " · ..." : ""}</span>
-            <span class="produto-rodape"><span class="produto-valor">${formatarPreco(lanche.preco)}</span><span class="produto-escolher">${lanche.chave === lancheSelecionado ? "✓ SELECIONADO" : "PERSONALIZAR →"}</span></span>`;
-        lista.appendChild(card);
-    });
-    renderizarPainelPersonalizacao();
+const lista = document.getElementById("listaLanches");
+lista.innerHTML = "";
+lanches.forEach(lanche => {
+if (!quantidadesIngredientes[lanche.chave]) iniciarQuantidades(lanche);
+const card = document.createElement("button");
+card.type = "button";
+card.className = "produto-selecao" + (lanche.chave === lancheSelecionado ? " selecionado" : "");
+card.setAttribute("aria-pressed", String(lanche.chave === lancheSelecionado));
+card.onclick = () => {
+lancheSelecionado = lanche.chave;
+indiceEditando = null;
+renderizarLanches();
+};
+card.innerHTML = `
+<span class="produto-titulo"><span class="produto-emoji">${lanche.emoji}</span><span>${lanche.nome}</span></span>
+<span class="produto-descricao">${lanche.ingredientes.slice(0,4).join(" · ")}${lanche.ingredientes.length > 4 ? " · ..." : ""}</span>
+<span class="produto-rodape"><span class="produto-valor">${formatarPreco(lanche.preco)}</span><span class="produto-escolher">${lanche.chave === lancheSelecionado ? "✓ SELECIONADO" : "PERSONALIZAR →"}</span></span>`;
+lista.appendChild(card);
+});
+renderizarPainelPersonalizacao();
 }
 
 function renderizarPainelPersonalizacao() {
-    const painel = document.getElementById("painelPersonalizacao");
-    const lanche = obterLancheSelecionado();
-    if (!lanche) { painel.innerHTML = "Selecione um lanche."; return; }
-    if (!quantidadesIngredientes[lanche.chave]) iniciarQuantidades(lanche);
-    const quantidades = quantidadesIngredientes[lanche.chave];
-    const totalUnidades = Object.values(quantidades).reduce((s, q) => s + q, 0);
-    const extras = lanche.ingredientes.reduce((s, nome) => s + precoAdicional(nome) * Math.max(0, quantidades[nome] - 1), 0);
-    const editando = indiceEditando !== null;
-    painel.innerHTML = `
-        <div class="painel-topo">
-            <div><h2>${lanche.emoji} ${lanche.nome}</h2><p class="painel-subtitulo">Personalize os ingredientes do seu lanche</p></div>
-            <div class="painel-preco">${formatarPreco(lanche.preco + extras)}</div>
-        </div>
-        <div class="painel-dica">✓ A receita completa já vem incluída. Cada ingrediente começa com <strong>1 unidade</strong>. Use − para remover ou + para adicionar mais.</div>
-        <div class="lista-ingredientes-painel">
-            ${lanche.ingredientes.map((nome, i) => {
-                const q = quantidades[nome] || 0;
-                const id = `ing-${lanche.chave}-${i}`;
-                return `<div class="linha-ingrediente">
-                    <div class="ingrediente-info"><span class="ingrediente-nome">${nome}</span><span class="ingrediente-status ${q === 0 ? "removido" : ""}">${q === 0 ? "Removido da receita" : q === 1 ? "Incluído na receita" : `${q} unidades incluídas`}</span></div>
-                    <div class="controle-quantidade"><button type="button" aria-label="Diminuir ${nome}" onclick="alterarAdicional('${lanche.chave}', ${i}, -1)" ${q === 0 ? "disabled" : ""}>−</button><span class="qtd" id="${id}">${q}</span><button type="button" aria-label="Aumentar ${nome}" onclick="alterarAdicional('${lanche.chave}', ${i}, 1)">+</button></div>
-                </div>`;
-            }).join("")}
-        </div>
-        <div class="painel-resumo"><span>${totalUnidades} unidade(s) de ingredientes</span><span>${formatarPreco(lanche.preco + extras)}</span></div>
-        <button class="btn btn-principal" type="button" onclick="${editando ? `salvarEdicaoLanche()` : `adicionarLanche('${lanche.chave}')`}">${editando ? "✓ SALVAR ALTERAÇÕES" : "＋ ADICIONAR AO PEDIDO"}</button>
-        ${editando ? `<button class="btn btn-secundario" type="button" onclick="cancelarEdicao()">CANCELAR EDIÇÃO</button>` : ""}
-    `;
+const painel = document.getElementById("painelPersonalizacao");
+const lanche = obterLancheSelecionado();
+if (!lanche) { painel.innerHTML = "Selecione um lanche."; return; }
+if (!quantidadesIngredientes[lanche.chave]) iniciarQuantidades(lanche);
+const quantidades = quantidadesIngredientes[lanche.chave];
+const totalUnidades = Object.values(quantidades).reduce((s,q) => s+q, 0);
+const extras = lanche.ingredientes.reduce((s,nome) => s + precoAdicional(nome)*Math.max(0,quantidades[nome]-1), 0);
+const editando = indiceEditando !== null;
+painel.innerHTML = `
+<div class="painel-topo">
+<div><h2>${lanche.emoji} ${lanche.nome}</h2><p class="painel-subtitulo">Personalize os ingredientes do seu lanche</p></div>
+<div class="painel-preco">${formatarPreco(lanche.preco+extras)}</div>
+</div>
+<div class="painel-dica">✓ A receita completa já vem incluída. Cada ingrediente começa com <strong>1 unidade</strong>. Use − para remover ou + para adicionar mais.</div>
+<div class="lista-ingredientes-painel">
+${lanche.ingredientes.map((nome,i) => {
+const q = quantidades[nome] || 0;
+const id = `ing-${lanche.chave}-${i}`;
+return `<div class="linha-ingrediente">
+<div class="ingrediente-info"><span class="ingrediente-nome">${nome}</span><span class="ingrediente-status ${q===0 ? "removido" : ""}">${q===0 ? "Removido da receita" : q===1 ? "Incluído na receita" : `${q} unidades incluídas`}</span></div>
+<div class="controle-quantidade"><button type="button" aria-label="Diminuir ${nome}" onclick="alterarAdicional('${lanche.chave}',${i},-1)" ${q===0 ? "disabled" : ""}>−</button><span class="qtd" id="${id}">${q}</span><button type="button" aria-label="Aumentar ${nome}" onclick="alterarAdicional('${lanche.chave}',${i},1)">+</button></div>
+</div>`;
+}).join("")}
+</div>
+<div class="painel-resumo"><span>${totalUnidades} unidade(s) de ingredientes</span><span>${formatarPreco(lanche.preco+extras)}</span></div>
+<button class="btn btn-principal" type="button" onclick="${editando ? "salvarEdicaoLanche()" : `adicionarLanche('${lanche.chave}')`}">${editando ? "✓ SALVAR ALTERAÇÕES" : "＋ ADICIONAR AO PEDIDO"}</button>
+${editando ? `<button class="btn btn-secundario" type="button" onclick="cancelarEdicao()">CANCELAR EDIÇÃO</button>` : ""}
+`;
 }
 
 function alterarAdicional(chave, indiceIngrediente, variacao) {
-    const lanche = lanches.find(l => l.chave === chave);
-    if (!lanche) return;
-    const ingrediente = lanche.ingredientes[indiceIngrediente];
-    if (!quantidadesIngredientes[chave]) iniciarQuantidades(lanche);
-    const atual = Number(quantidadesIngredientes[chave][ingrediente] || 0);
-    quantidadesIngredientes[chave][ingrediente] = Math.max(0, atual + variacao);
-    renderizarPainelPersonalizacao();
+const lanche = lanches.find(l => l.chave === chave);
+if (!lanche) return;
+const ingrediente = lanche.ingredientes[indiceIngrediente];
+if (!quantidadesIngredientes[chave]) iniciarQuantidades(lanche);
+const atual = Number(quantidadesIngredientes[chave][ingrediente] || 0);
+quantidadesIngredientes[chave][ingrediente] = Math.max(0, atual + variacao);
+renderizarPainelPersonalizacao();
 }
 
 function criarItemLanche(lanche) {
-    const quantidades = quantidadesIngredientes[lanche.chave] || {};
-    const ingredientesSelecionados = lanche.ingredientes.filter(nome => (quantidades[nome] || 0) > 0);
-    const adicionais = lanche.ingredientes
-        .filter(nome => (quantidades[nome] || 0) > 0)
-        .map(nome => ({ nome, quantidade: quantidades[nome] }));
-    return {
-        id: Date.now() + Math.random(),
-        tipo: "lanche",
-        chave: lanche.chave,
-        produto: lanche.nome,
-        precoBase: lanche.preco,
-        ingredientes: ingredientesSelecionados,
-        adicionais
-    };
+const quantidades = quantidadesIngredientes[lanche.chave] || {};
+const ingredientesSelecionados = lanche.ingredientes.filter(nome => (quantidades[nome] || 0) > 0);
+const adicionais = lanche.ingredientes.filter(nome => (quantidades[nome] || 0) > 0).map(nome => ({nome,quantidade:quantidades[nome]}));
+return {
+id: Date.now()+Math.random(),
+tipo: "lanche",
+chave: lanche.chave,
+produto: lanche.nome,
+precoBase: lanche.preco,
+ingredientes: ingredientesSelecionados,
+adicionais
+};
 }
 
 function adicionarLanche(chave) {
-    const lanche = lanches.find(item => item.chave === chave);
-    if (!lanche) return;
-    carrinho.push(criarItemLanche(lanche));
-    atualizarCarrinho();
-    alert(`${lanche.nome} adicionado ao pedido!`);
+const lanche = lanches.find(item => item.chave === chave);
+if (!lanche) return;
+carrinho.push(criarItemLanche(lanche));
+atualizarCarrinho();
+alert(`${lanche.nome} adicionado ao pedido!`);
 }
 
 function salvarEdicaoLanche() {
-    if (indiceEditando === null) return;
-    const lanche = obterLancheSelecionado();
-    if (!lanche) return;
-    const itemAtualizado = criarItemLanche(lanche);
-    itemAtualizado.id = carrinho[indiceEditando].id;
-    carrinho[indiceEditando] = itemAtualizado;
-    indiceEditando = null;
-    atualizarCarrinho();
-    renderizarLanches();
+if (indiceEditando === null) return;
+const lanche = obterLancheSelecionado();
+if (!lanche) return;
+const itemAtualizado = criarItemLanche(lanche);
+itemAtualizado.id = carrinho[indiceEditando].id;
+carrinho[indiceEditando] = itemAtualizado;
+indiceEditando = null;
+atualizarCarrinho();
+renderizarLanches();
 }
 
 function cancelarEdicao() {
-    indiceEditando = null;
-    renderizarLanches();
+indiceEditando = null;
+renderizarLanches();
 }
-
-/* =====================================================
-   BEBIDAS
-===================================================== */
 
 function renderizarBebidas() {
-
-    const lista =
-        document.getElementById(
-            "listaBebidas"
-        );
-
-
-    lista.innerHTML = "";
-
-
-    bebidas.forEach(
-        (bebida, indice) => {
-
-            const card =
-                document.createElement("div");
-
-
-            card.className = "card";
-
-
-            card.innerHTML = `
-
-            <h2>
-                ${bebida.emoji}
-                ${bebida.nome}
-            </h2>
-
-            <div class="preco">
-                ${formatarPreco(bebida.preco)}
-            </div>
-
-            <button
-            class="btn btn-principal"
-            onclick="adicionarBebida(
-                ${indice}
-            )">
-
-                ➕ ADICIONAR
-
-            </button>
-
-            `;
-
-
-            lista.appendChild(card);
-
-        }
-    );
-
+const lista = document.getElementById("listaBebidas");
+lista.innerHTML = "";
+bebidas.forEach((bebida,indice) => {
+const card = document.createElement("div");
+card.className = "card";
+card.innerHTML = `
+<h2>${bebida.emoji} ${bebida.nome}</h2>
+<div class="preco">${formatarPreco(bebida.preco)}</div>
+<button class="btn btn-principal" onclick="adicionarBebida(${indice})">➕ ADICIONAR</button>`;
+lista.appendChild(card);
+});
 }
-
-
-/* =====================================================
-   ADICIONAR BEBIDA
-===================================================== */
 
 function adicionarBebida(indice) {
-
-    const bebida =
-        bebidas[indice];
-
-
-    carrinho.push({
-
-        id:
-            Date.now() +
-            Math.random(),
-
-        tipo: "bebida",
-
-        produto: bebida.nome,
-
-        precoBase: bebida.preco,
-
-        ingredientes: [],
-
-        adicionais: []
-
-    });
-
-
-    atualizarCarrinho();
-
+const bebida = bebidas[indice];
+carrinho.push({
+id: Date.now()+Math.random(),
+tipo: "bebida",
+produto: bebida.nome,
+precoBase: bebida.preco,
+ingredientes: [],
+adicionais: []
+});
+atualizarCarrinho();
 }
 
-
-/* =====================================================
-   ATUALIZAR CARRINHO
-===================================================== */
+function atualizarOpcoesEntregaBebida() {
+const possuiBebida = carrinho.some(item => item.tipo === "bebida");
+const opcoes = document.getElementById("opcoesEntregaBebida");
+const aviso = document.getElementById("avisoSemBebida");
+if (opcoes) opcoes.style.display = possuiBebida ? "block" : "none";
+if (aviso) aviso.hidden = possuiBebida;
+}
 
 function atualizarCarrinho() {
-
-    const lista =
-        document.getElementById(
-            "listaCarrinho"
-        );
-
-
-    document.getElementById(
-        "valorTotal"
-    ).innerText =
-        formatarPreco(
-            calcularTotal()
-        );
-
-
-    if (
-        carrinho.length === 0
-    ) {
-
-        lista.innerHTML =
-            "<p>Nenhum item adicionado.</p>";
-
-        return;
-
-    }
-
-
-    lista.innerHTML = "";
-
-
-    carrinho.forEach(
-        (item, indice) => {
-
-            const div =
-                document.createElement("div");
-
-
-            div.className =
-                "item-carrinho";
-
-
-            const ingredientes =
-                item.ingredientes
-                    ?.join(", ") || "";
-
-
-            let adicionaisHTML = "";
-
-
-            if (
-                item.adicionais &&
-                item.adicionais.length
-            ) {
-
-                adicionaisHTML =
-                    item.adicionais
-                        .map(
-                            adicional => {
-
-                                return `
-                                ${adicional.quantidade}x
-                                ${adicional.nome}
-                                `;
-
-                            }
-                        )
-                        .join("<br>");
-
-            }
-
-
-            div.innerHTML = `
-
-            <div class="item-topo">
-
-                <strong>
-                    ${item.produto}
-                </strong>
-
-                <span class="item-preco">
-
-                    ${formatarPreco(
-                        calcularPrecoItem(item)
-                    )}
-
-                </span>
-
-            </div>
-
-
-            ${
-                ingredientes
-                ?
-                `
-                <div class="item-ingredientes">
-
-                    <strong>
-                    Ingredientes:
-                    </strong>
-
-                    ${ingredientes}
-
-                </div>
-                `
-                :
-                ""
-            }
-
-
-            ${
-                adicionaisHTML
-                ?
-                `
-                <div class="item-adicionais">
-
-                    <strong>
-                    Adicionais:
-                    </strong>
-
-                    <br>
-
-                    ${adicionaisHTML}
-
-                </div>
-                `
-                :
-                ""
-            }
-
-
-            <div class="acoes-item">
-
-                <button
-                class="duplicar"
-                onclick="duplicarItem(
-                    ${indice}
-                )">
-
-                    ➕
-
-                </button>
-
-
-                ${
-                    item.tipo === "lanche"
-                    ?
-                    `
-                    <button
-                    class="editar"
-                    onclick="editarItem(
-                        ${indice}
-                    )">
-
-                        ✏ EDITAR
-
-                    </button>
-                    `
-                    :
-                    ""
-                }
-
-
-                <button
-                class="remover"
-                onclick="removerItem(
-                    ${indice}
-                )">
-
-                    🗑 REMOVER
-
-                </button>
-
-            </div>
-
-            `;
-
-
-            lista.appendChild(div);
-
-        }
-    );
-
+atualizarOpcoesEntregaBebida();
+const lista = document.getElementById("listaCarrinho");
+document.getElementById("valorTotal").innerText = formatarPreco(calcularTotal());
+if (carrinho.length === 0) {
+lista.innerHTML = "<p>Nenhum item adicionado.</p>";
+return;
 }
-
-
-/* =====================================================
-   DUPLICAR
-===================================================== */
+lista.innerHTML = "";
+carrinho.forEach((item,indice) => {
+const div = document.createElement("div");
+div.className = "item-carrinho";
+const ingredientes = item.ingredientes?.join(", ") || "";
+let adicionaisHTML = "";
+if (item.adicionais && item.adicionais.length) {
+adicionaisHTML = item.adicionais.map(adicional => `${adicional.quantidade}x ${adicional.nome}`).join("<br>");
+}
+div.innerHTML = `
+<div class="item-topo">
+<strong>${item.produto}</strong>
+<span class="item-preco">${formatarPreco(calcularPrecoItem(item))}</span>
+</div>
+${ingredientes ? `<div class="item-ingredientes"><strong>Ingredientes:</strong> ${ingredientes}</div>` : ""}
+${adicionaisHTML ? `<div class="item-adicionais"><strong>Adicionais:</strong><br>${adicionaisHTML}</div>` : ""}
+<div class="acoes-item">
+<button class="duplicar" onclick="duplicarItem(${indice})">➕</button>
+${item.tipo === "lanche" ? `<button class="editar" onclick="editarItem(${indice})">✏ EDITAR</button>` : ""}
+<button class="remover" onclick="removerItem(${indice})">🗑 REMOVER</button>
+</div>`;
+lista.appendChild(div);
+});
+}
 
 function duplicarItem(indice) {
-
-    const copia =
-        JSON.parse(
-            JSON.stringify(
-                carrinho[indice]
-            )
-        );
-
-
-    copia.id =
-        Date.now() +
-        Math.random();
-
-
-    carrinho.push(copia);
-
-    atualizarCarrinho();
-
+const copia = JSON.parse(JSON.stringify(carrinho[indice]));
+copia.id = Date.now()+Math.random();
+carrinho.push(copia);
+atualizarCarrinho();
 }
-
-
-/* =====================================================
-   REMOVER
-===================================================== */
 
 function removerItem(indice) {
-
-    carrinho.splice(
-        indice,
-        1
-    );
-
-    atualizarCarrinho();
-
+carrinho.splice(indice,1);
+atualizarCarrinho();
 }
-
-
-/* =====================================================
-   EDITAR
-===================================================== */
 
 function editarItem(indice) {
-    const item = carrinho[indice];
-    if (!item || item.tipo !== "lanche") return;
-    const lanche = lanches.find(l => l.chave === item.chave);
-    if (!lanche) return;
-    lancheSelecionado = lanche.chave;
-    iniciarQuantidades(lanche, item.adicionais || item.ingredientes.map(nome => ({nome, quantidade: 1})));
-    indiceEditando = indice;
-    renderizarLanches();
-    window.scrollTo({top: 0, behavior: "smooth"});
+const item = carrinho[indice];
+if (!item || item.tipo !== "lanche") return;
+const lanche = lanches.find(l => l.chave === item.chave);
+if (!lanche) return;
+lancheSelecionado = lanche.chave;
+iniciarQuantidades(lanche,item.adicionais || item.ingredientes.map(nome => ({nome,quantidade:1})));
+indiceEditando = indice;
+renderizarLanches();
+window.scrollTo({top:0,behavior:"smooth"});
 }
-
-/* =====================================================
-   PAGAMENTO
-===================================================== */
 
 function abrirPagamento() {
-
-    if (
-        carrinho.length === 0
-    ) {
-
-        alert(
-            "Adicione pelo menos um item ao pedido."
-        );
-
-        return;
-
-    }
-
-
-    document.getElementById(
-        "totalPagamento"
-    ).innerText =
-        formatarPreco(
-            calcularTotal()
-        );
-
-
-    document.getElementById(
-        "telaPrincipal"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "telaPagamento"
-    ).style.display =
-        "block";
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
+if (carrinho.length === 0) {
+alert("Adicione pelo menos um item ao pedido.");
+return;
 }
-
-
-/* =====================================================
-   VOLTAR
-===================================================== */
+const campoMesa = document.getElementById("numeroMesa");
+const mesaInformada = campoMesa.value.trim();
+if (!mesaInformada || !Number.isInteger(Number(mesaInformada)) || Number(mesaInformada) < 1) {
+alert("Informe um número de mesa válido antes de continuar.");
+campoMesa.focus();
+return;
+}
+const possuiBebida = carrinho.some(item => item.tipo === "bebida");
+const escolhaEntregaBebida = document.querySelector('input[name="entregaBebida"]:checked');
+if (possuiBebida && !escolhaEntregaBebida) {
+alert("Escolha quando deseja receber sua bebida.");
+return;
+}
+document.getElementById("totalPagamento").innerText = formatarPreco(calcularTotal());
+document.getElementById("telaPrincipal").style.display = "none";
+document.getElementById("telaPagamento").style.display = "block";
+window.scrollTo({top:0,behavior:"smooth"});
+}
 
 function voltarParaPedido() {
-
-    document.getElementById(
-        "telaPagamento"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "telaPrincipal"
-    ).style.display =
-        "block";
-
+document.getElementById("telaPagamento").style.display = "none";
+document.getElementById("telaPrincipal").style.display = "block";
 }
-
-
-/* =====================================================
-   SELECIONAR PAGAMENTO
-===================================================== */
 
 function selecionarPagamento(tipo) {
-
-    pagamentoSelecionado =
-        tipo;
-
-
-    document
-        .querySelectorAll(
-            ".opcao-pagamento"
-        )
-        .forEach(
-            elemento => {
-
-                elemento.classList
-                    .remove(
-                        "selecionada"
-                    );
-
-            }
-        );
-
-
-    const nomes = {
-
-        debito: "Debito",
-
-        credito: "Credito",
-
-        pix: "Pix",
-
-        dinheiro: "Dinheiro"
-
-    };
-
-
-    document
-        .getElementById(
-            "opcao" +
-            nomes[tipo]
-        )
-        .classList
-        .add("selecionada");
-
-
-    document
-        .querySelectorAll(
-            ".area-pagamento"
-        )
-        .forEach(
-            area => {
-
-                area.classList
-                    .remove("active");
-
-            }
-        );
-
-
-    if (
-        tipo === "debito" ||
-        tipo === "credito"
-    ) {
-
-        document
-            .getElementById(
-                "areaCartao"
-            )
-            .classList
-            .add("active");
-
-
-        document.getElementById(
-            "tituloCartao"
-        ).innerText =
-
-            tipo === "debito"
-
-            ?
-            "Pagamento no débito"
-
-            :
-            "Pagamento no crédito";
-
-    }
-
-
-    if (tipo === "pix") {
-
-        document
-            .getElementById(
-                "areaPix"
-            )
-            .classList
-            .add("active");
-
-
-        gerarQRCode();
-
-    }
-
-
-    if (tipo === "dinheiro") {
-
-        document
-            .getElementById(
-                "areaDinheiro"
-            )
-            .classList
-            .add("active");
-
-    }
-
+pagamentoSelecionado = tipo;
+document.querySelectorAll(".opcao-pagamento").forEach(elemento => elemento.classList.remove("selecionada"));
+const nomes = {debito:"Debito",credito:"Credito",pix:"Pix",dinheiro:"Dinheiro"};
+document.getElementById("opcao"+nomes[tipo]).classList.add("selecionada");
+document.querySelectorAll(".area-pagamento").forEach(area => area.classList.remove("active"));
+if (tipo === "debito" || tipo === "credito") {
+document.getElementById("areaCartao").classList.add("active");
+document.getElementById("tituloCartao").innerText = tipo === "debito" ? "Pagamento no débito" : "Pagamento no crédito";
+}
+if (tipo === "pix") {
+document.getElementById("areaPix").classList.add("active");
+gerarQRCode();
+}
+if (tipo === "dinheiro") {
+document.getElementById("areaDinheiro").classList.add("active");
+}
 }
 
-
-/* =====================================================
-   PIX
-===================================================== */
-
-function campoPix(id, valor) {
-
-    return (
-        id +
-        String(valor.length)
-            .padStart(2, "0") +
-        valor
-    );
-
+function campoPix(id,valor) {
+return id + String(valor.length).padStart(2,"0") + valor;
 }
-
 
 function crc16(payload) {
-
-    let crc = 0xFFFF;
-
-
-    for (
-        let i = 0;
-        i < payload.length;
-        i++
-    ) {
-
-        crc ^=
-            payload.charCodeAt(i)
-            << 8;
-
-
-        for (
-            let j = 0;
-            j < 8;
-            j++
-        ) {
-
-            if (
-                (crc & 0x8000) !== 0
-            ) {
-
-                crc =
-                    (
-                        (crc << 1)
-                        ^
-                        0x1021
-                    )
-                    &
-                    0xFFFF;
-
-            }
-            else {
-
-                crc =
-                    (crc << 1)
-                    &
-                    0xFFFF;
-
-            }
-
-        }
-
-    }
-
-
-    return crc
-        .toString(16)
-        .toUpperCase()
-        .padStart(4, "0");
-
+let crc = 0xFFFF;
+for (let i=0; i<payload.length; i++) {
+crc ^= payload.charCodeAt(i) << 8;
+for (let j=0; j<8; j++) {
+if ((crc & 0x8000) !== 0) {
+crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+} else {
+crc = (crc << 1) & 0xFFFF;
+}
+}
+}
+return crc.toString(16).toUpperCase().padStart(4,"0");
 }
 
-
-function gerarPayloadPix(
-    chave,
-    valor
-) {
-
-    const gui =
-        campoPix(
-            "00",
-            "br.gov.bcb.pix"
-        );
-
-
-    const chaveCampo =
-        campoPix(
-            "01",
-            chave
-        );
-
-
-    const merchantAccount =
-        campoPix(
-            "26",
-            gui +
-            chaveCampo
-        );
-
-
-    const valorFormatado =
-        Number(valor)
-            .toFixed(2);
-
-
-    let payload = "";
-
-
-    payload +=
-        campoPix(
-            "00",
-            "01"
-        );
-
-
-    payload +=
-        merchantAccount;
-
-
-    payload +=
-        campoPix(
-            "52",
-            "0000"
-        );
-
-
-    payload +=
-        campoPix(
-            "53",
-            "986"
-        );
-
-
-    payload +=
-        campoPix(
-            "54",
-            valorFormatado
-        );
-
-
-    payload +=
-        campoPix(
-            "58",
-            "BR"
-        );
-
-
-    payload +=
-        campoPix(
-            "59",
-            "BRICKA"
-        );
-
-
-    payload +=
-        campoPix(
-            "60",
-            "BRASIL"
-        );
-
-
-    payload +=
-        campoPix(
-            "62",
-            campoPix(
-                "05",
-                "***"
-            )
-        );
-
-
-    payload += "6304";
-
-
-    payload +=
-        crc16(payload);
-
-
-    return payload;
-
+function gerarPayloadPix(chave,valor) {
+const gui = campoPix("00","br.gov.bcb.pix");
+const chaveCampo = campoPix("01",chave);
+const merchantAccount = campoPix("26",gui+chaveCampo);
+const valorFormatado = Number(valor).toFixed(2);
+let payload = "";
+payload += campoPix("00","01");
+payload += merchantAccount;
+payload += campoPix("52","0000");
+payload += campoPix("53","986");
+payload += campoPix("54",valorFormatado);
+payload += campoPix("58","BR");
+payload += campoPix("59","BRICKA");
+payload += campoPix("60","BRASIL");
+payload += campoPix("62",campoPix("05","***"));
+payload += "6304";
+payload += crc16(payload);
+return payload;
 }
-
 
 function gerarQRCode() {
-
-    const elemento =
-        document.getElementById(
-            "qrcode"
-        );
-
-
-    elemento.innerHTML = "";
-
-
-    const codigoPix =
-        gerarPayloadPix(
-            CHAVE_PIX,
-            calcularTotal()
-        );
-
-
-    new QRCode(
-        elemento,
-        {
-            text: codigoPix,
-            width: 220,
-            height: 220,
-            correctLevel:
-                QRCode.CorrectLevel.M
-        }
-    );
-
-
-    document.getElementById(
-        "pixCopiaCola"
-    ).value =
-        codigoPix;
-
+const elemento = document.getElementById("qrcode");
+elemento.innerHTML = "";
+const codigoPix = gerarPayloadPix(CHAVE_PIX,calcularTotal());
+new QRCode(elemento,{
+text:codigoPix,
+width:220,
+height:220,
+correctLevel:QRCode.CorrectLevel.M
+});
+document.getElementById("pixCopiaCola").value = codigoPix;
 }
-
 
 function copiarPix() {
-
-    const campo =
-        document.getElementById(
-            "pixCopiaCola"
-        );
-
-
-    campo.select();
-
-
-    navigator.clipboard
-        .writeText(
-            campo.value
-        )
-        .then(() => {
-
-            alert(
-                "✅ PIX Copia e Cola copiado!"
-            );
-
-        })
-        .catch(() => {
-
-            document.execCommand("copy");
-
-            alert(
-                "✅ PIX Copia e Cola copiado!"
-            );
-
-        });
-
+const campo = document.getElementById("pixCopiaCola");
+campo.select();
+navigator.clipboard.writeText(campo.value).then(() => {
+alert("✅ PIX Copia e Cola copiado!");
+}).catch(() => {
+document.execCommand("copy");
+alert("✅ PIX Copia e Cola copiado!");
+});
 }
-
-
-/* =====================================================
-   DINHEIRO
-===================================================== */
 
 function calcularTroco() {
-
-    const recebido =
-        parseFloat(
-            document.getElementById(
-                "valorRecebido"
-            ).value
-        ) || 0;
-
-
-    const total =
-        calcularTotal();
-
-
-    const elemento =
-        document.getElementById(
-            "troco"
-        );
-
-
-    if (recebido === 0) {
-
-        elemento.innerText =
-            "Informe o valor recebido.";
-
-        elemento.classList
-            .remove("erro");
-
-        return;
-
-    }
-
-
-    if (recebido < total) {
-
-        elemento.innerText =
-            "Valor insuficiente.";
-
-        elemento.classList
-            .add("erro");
-
-        return;
-
-    }
-
-
-    elemento.classList
-        .remove("erro");
-
-
-    elemento.innerText =
-        "Troco: " +
-        formatarPreco(
-            recebido - total
-        );
-
+const recebido = parseFloat(document.getElementById("valorRecebido").value) || 0;
+const total = calcularTotal();
+const elemento = document.getElementById("troco");
+if (recebido === 0) {
+elemento.innerText = "Informe o valor recebido.";
+elemento.classList.remove("erro");
+return;
 }
-
-
-/* =====================================================
-   CONFIRMAR PAGAMENTO
-===================================================== */
+if (recebido < total) {
+elemento.innerText = "Valor insuficiente.";
+elemento.classList.add("erro");
+return;
+}
+elemento.classList.remove("erro");
+elemento.innerText = "Troco: " + formatarPreco(recebido-total);
+}
 
 function confirmarPagamento() {
-
-    if (!pagamentoSelecionado) {
-
-        alert(
-            "Selecione uma forma de pagamento."
-        );
-
-        return;
-
-    }
-
-
-    const total =
-        calcularTotal();
-
-
-    numeroPedido =
-        gerarNumeroPedido();
-
-
-    let valorRecebido = null;
-
-    let troco = null;
-
-
-    if (
-        pagamentoSelecionado ===
-        "dinheiro"
-    ) {
-
-        valorRecebido =
-            parseFloat(
-                document.getElementById(
-                    "valorRecebido"
-                ).value
-            ) || 0;
-
-
-        if (
-            valorRecebido < total
-        ) {
-
-            alert(
-                "O valor recebido é menor que o total."
-            );
-
-            return;
-
-        }
-
-
-        troco =
-            valorRecebido -
-            total;
-
-    }
-
-
-    let nomePagamento = "";
-
-
-    switch (
-        pagamentoSelecionado
-    ) {
-
-        case "debito":
-
-            nomePagamento =
-                "Cartao de Debito";
-
-            break;
-
-
-        case "credito":
-
-            nomePagamento =
-                "Cartao de Credito";
-
-            break;
-
-
-        case "pix":
-
-            nomePagamento =
-                "PIX";
-
-            break;
-
-
-        case "dinheiro":
-
-            nomePagamento =
-                "Dinheiro";
-
-            break;
-
-    }
-
-
-    /* =================================================
-       CRIA PEDIDO
-    ================================================= */
-
-
-    const pedido = {
-
-        ativo: true,
-
-        numero:
-            numeroPedido,
-
-        status:
-            "aprovado",
-
-        criadoEm:
-            Date.now(),
-
-        total:
-            total,
-
-        pagamento: {
-
-            metodo:
-                nomePagamento,
-
-            codigo:
-                pagamentoSelecionado
-
-        },
-
-        itens:
-
-            carrinho.map(
-                item => ({
-
-                    tipo:
-                        item.tipo,
-
-                    produto:
-                        removerAcentos(
-                            item.produto
-                        ),
-
-                    precoBase:
-                        item.precoBase,
-
-                    precoTotal:
-                        calcularPrecoItem(
-                            item
-                        ),
-
-                    ingredientes:
-
-                        item.ingredientes
-                            .map(
-                                ingrediente =>
-                                    removerAcentos(
-                                        ingrediente
-                                    )
-                            ),
-
-                    adicionais:
-
-                        item.adicionais
-                            .map(
-                                adicional => ({
-
-                                    ingrediente:
-                                        removerAcentos(
-                                            adicional.nome
-                                        ),
-
-                                    quantidade:
-                                        adicional.quantidade,
-
-                                    precoUnitario:
-                                        precoAdicional(
-                                            adicional.nome
-                                        ),
-
-                                    subtotal:
-                                        precoAdicional(
-                                            adicional.nome
-                                        )
-                                        *
-                                        adicional.quantidade
-
-                                })
-                            )
-
-                })
-            )
-
-    };
-
-
-    if (
-        pagamentoSelecionado ===
-        "dinheiro"
-    ) {
-
-        pedido.pagamento
-            .valorRecebido =
-                valorRecebido;
-
-
-        pedido.pagamento
-            .troco =
-                troco;
-
-    }
-
-
-    if (
-        pagamentoSelecionado ===
-        "pix"
-    ) {
-
-        pedido.pagamento
-            .chavePix =
-                CHAVE_PIX;
-
-    }
-
-
-    /* =================================================
-       ENVIA PARA /PEDIDOS
-    ================================================= */
-
-
-    database
-        .ref("pedidos")
-        .child(numeroPedido)
-        .set(pedido)
-
-        .then(() => {
-
-
-            document.getElementById(
-                "numeroPedidoSucesso"
-            ).innerText =
-                "#" +
-                numeroPedido;
-
-            gerarQRCodeAcompanhamento();
-
-
-            let mensagem =
-                "Pagamento: " +
-                nomePagamento;
-
-
-            if (
-                pagamentoSelecionado ===
-                "dinheiro"
-            ) {
-
-                mensagem +=
-                    "<br><br>" +
-
-                    "Total: " +
-                    formatarPreco(total) +
-
-                    "<br>" +
-
-                    "Troco: " +
-                    formatarPreco(troco);
-
-            }
-
-
-            document.getElementById(
-                "resumoPagamento"
-            ).innerHTML =
-                mensagem;
-
-
-            document.getElementById(
-                "telaPagamento"
-            ).style.display =
-                "none";
-
-
-            document.getElementById(
-                "telaSucesso"
-            ).style.display =
-                "flex";
-
-        })
-
-        .catch(erro => {
-
-            console.error(erro);
-
-            alert(
-                "❌ Erro ao enviar o pedido."
-            );
-
-        });
-
+const campoMesa = document.getElementById("numeroMesa");
+const mesaInformada = campoMesa ? campoMesa.value.trim() : "";
+if (!mesaInformada || !Number.isInteger(Number(mesaInformada)) || Number(mesaInformada) < 1) {
+alert("Informe um número de mesa válido antes de finalizar o pedido.");
+if (campoMesa) campoMesa.focus();
+return;
+}
+const possuiBebida = carrinho.some(item => item.tipo === "bebida");
+const escolhaEntregaBebida = document.querySelector('input[name="entregaBebida"]:checked');
+if (possuiBebida && !escolhaEntregaBebida) {
+alert("Escolha quando deseja receber a bebida.");
+return;
+}
+if (!pagamentoSelecionado) {
+alert("Selecione uma forma de pagamento.");
+return;
+}
+const total = calcularTotal();
+numeroPedido = gerarNumeroPedido();
+let valorRecebido = null;
+let troco = null;
+if (pagamentoSelecionado === "dinheiro") {
+valorRecebido = parseFloat(document.getElementById("valorRecebido").value) || 0;
+if (valorRecebido < total) {
+alert("O valor recebido é menor que o total.");
+return;
+}
+troco = valorRecebido-total;
+}
+let nomePagamento = "";
+switch (pagamentoSelecionado) {
+case "debito": nomePagamento = "Cartao de Debito"; break;
+case "credito": nomePagamento = "Cartao de Credito"; break;
+case "pix": nomePagamento = "PIX"; break;
+case "dinheiro": nomePagamento = "Dinheiro"; break;
 }
 
+const pedido = {
+ativo: true,
+numero: numeroPedido,
+status: "aprovado",
+criadoEm: Date.now(),
+total: total,
+mesa: Number(mesaInformada),
+entregaBebida: possuiBebida ? escolhaEntregaBebida.value : "sem_bebida",
+pagamento: {
+metodo: nomePagamento,
+codigo: pagamentoSelecionado
+},
+itens: carrinho.map(item => ({
+tipo: item.tipo,
+produto: removerAcentos(item.produto),
+precoBase: item.precoBase,
+precoTotal: calcularPrecoItem(item),
+ingredientes: item.ingredientes.map(ingrediente => removerAcentos(ingrediente)),
+adicionais: item.adicionais.map(adicional => ({
+ingrediente: removerAcentos(adicional.nome),
+quantidade: adicional.quantidade,
+precoUnitario: precoAdicional(adicional.nome),
+subtotal: precoAdicional(adicional.nome)*adicional.quantidade
+}))
+}))
+};
 
-/* =====================================================
-   QR CODE DE ACOMPANHAMENTO
-===================================================== */
+if (pagamentoSelecionado === "dinheiro") {
+pedido.pagamento.valorRecebido = valorRecebido;
+pedido.pagamento.troco = troco;
+}
+if (pagamentoSelecionado === "pix") {
+pedido.pagamento.chavePix = CHAVE_PIX;
+}
+
+database.ref("pedidos").child(numeroPedido).set(pedido).then(() => {
+document.getElementById("numeroPedidoSucesso").innerText = "#"+numeroPedido;
+gerarQRCodeAcompanhamento();
+let mensagem = "Pagamento: " + nomePagamento;
+if (pagamentoSelecionado === "dinheiro") {
+mensagem += "<br><br>Total: " + formatarPreco(total) + "<br>Troco: " + formatarPreco(troco);
+}
+document.getElementById("resumoPagamento").innerHTML = mensagem;
+document.getElementById("telaPagamento").style.display = "none";
+document.getElementById("telaSucesso").style.display = "flex";
+}).catch(erro => {
+console.error(erro);
+alert("❌ Erro ao enviar o pedido.");
+});
+}
 
 function gerarQRCodeAcompanhamento() {
-    const elemento = document.getElementById("qrcodeAcompanhamento");
-    if (!elemento || !numeroPedido) return;
-    elemento.innerHTML = "";
-
-    if (typeof QRCode === "undefined") {
-        elemento.textContent = "QR Code indisponível. Use o botão Acompanhar Pedido.";
-        return;
-    }
-
-    const destino = new URL("acompanhar.html", window.location.href);
-    destino.searchParams.set("pedido", numeroPedido);
-
-    new QRCode(elemento, {
-        text: destino.toString(),
-        width: 132,
-        height: 132,
-        colorDark: "#111111",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.M
-    });
+const elemento = document.getElementById("qrcodeAcompanhamento");
+if (!elemento || !numeroPedido) return;
+elemento.innerHTML = "";
+if (typeof QRCode === "undefined") {
+elemento.textContent = "QR Code indisponível. Use o botão Acompanhar Pedido.";
+return;
 }
-
-
-/* =====================================================
-   ACOMPANHAR PEDIDO
-===================================================== */
+const destino = new URL("acompanhar.html",window.location.href);
+destino.searchParams.set("pedido",numeroPedido);
+new QRCode(elemento,{
+text:destino.toString(),
+width:132,
+height:132,
+colorDark:"#111111",
+colorLight:"#ffffff",
+correctLevel:QRCode.CorrectLevel.M
+});
+}
 
 function acompanharPedido() {
-
-    if (!numeroPedido) {
-
-        return;
-
-    }
-
-
-    window.location.href =
-        "acompanhar.html?pedido=" +
-        encodeURIComponent(
-            numeroPedido
-        );
-
+if (!numeroPedido) return;
+window.location.href = "acompanhar.html?pedido=" + encodeURIComponent(numeroPedido);
 }
-
-
-/* =====================================================
-   NOVO PEDIDO
-===================================================== */
 
 function novoPedido() {
-
-    carrinho = [];
-
-    pagamentoSelecionado =
-        null;
-
-    numeroPedido = null;
-
-
-    atualizarCarrinho();
-
-
-    document.getElementById(
-        "telaSucesso"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "telaPrincipal"
-    ).style.display =
-        "block";
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
+carrinho = [];
+pagamentoSelecionado = null;
+numeroPedido = null;
+document.getElementById("numeroMesa").value = "";
+document.querySelectorAll('input[name="entregaBebida"]').forEach(opcao => {
+opcao.checked = opcao.value === "junto_com_pedido";
+});
+atualizarCarrinho();
+document.getElementById("telaSucesso").style.display = "none";
+document.getElementById("telaPrincipal").style.display = "block";
+window.scrollTo({top:0,behavior:"smooth"});
 }
 
-
-/* =====================================================
-   INICIALIZAÇÃO
-===================================================== */
-
 lanches.forEach(lanche => iniciarQuantidades(lanche));
-
 renderizarLanches();
-
 renderizarBebidas();
-
 atualizarCarrinho();
-
 </script>
-
 </body>
-
 </html>
